@@ -1,0 +1,14 @@
+{
+    "name": "drupal/helfi_navigation",
+    "type": "drupal-module",
+    "description": "Helfi - Navigation",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+        "drupal/coder": "^8.3"
+    }
+}
