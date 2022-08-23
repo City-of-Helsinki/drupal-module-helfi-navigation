@@ -7,7 +7,6 @@ namespace Drupal\helfi_navigation;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -127,7 +126,7 @@ final class ApiManager {
       $response = $this->httpClient->request($method, $url, $options);
       return \GuzzleHttp\json_decode($response->getBody()->getContents());
     }
-    catch (GuzzleException | \InvalidArgumentException $e) {
+    catch (\Exception $e) {
       // Log the error and re-throw the exception.
       $this->logger->error('Request failed with error: ' . $e->getMessage());
       throw $e;
