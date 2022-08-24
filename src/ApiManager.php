@@ -4,9 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation;
 
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -14,9 +19,15 @@ use Psr\Log\LoggerInterface;
  */
 final class ApiManager {
 
+  use CacheKeyTrait;
+
   /**
    * Construct an instance.
    *
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   The cache service.
    * @param \GuzzleHttp\ClientInterface $httpClient
    *   The HTTP client.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
@@ -25,10 +36,50 @@ final class ApiManager {
    *   Logger channel.
    */
   public function __construct(
+    private TimeInterface $time,
+    private CacheBackendInterface $cache,
     private ClientInterface $httpClient,
     private EnvironmentResolver $environmentResolver,
     private LoggerInterface $logger,
   ) {
+  }
+
+  /**
+   * Gets the cached data for given menu and language.
+   *
+   * @param string $key
+   *   The  cache key.
+   * @param callable $callback
+   *   The callback to handle requests.
+   *
+   * @return object|null
+   *   The cache or null.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  private function cache(string $key, callable $callback) : ? MaybeCache {
+    $exception = new TransferException('Failed to update cache.');
+    $cache = $this->cache->get($key)?->data;
+    $updateCache = $cache === NULL;
+
+    if ($cache instanceof MaybeCache) {
+      $updateCache = $cache->hasExpired($this->time->getRequestTime());
+    }
+
+    // Attempt to re-fetch the data in case cache does not exist or has
+    // expired, but allow stale cache to be used in case data cannot be
+    // updated.
+    if ($updateCache) {
+      try {
+        $maybeCache = $callback();
+        $this->cache->set($key, $maybeCache, tags: $maybeCache->tags);
+        return $maybeCache;
+      }
+      catch (GuzzleException $e) {
+        $exception = $e;
+      }
+    }
+    return !$cache instanceof MaybeCache ? throw $exception : $cache;
   }
 
   /**
@@ -47,7 +98,17 @@ final class ApiManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getExternalMenu(string $langcode, string $menuId, array $options = []) : object {
-    return $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $langcode, $options);
+    $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
+
+    return $this
+      ->cache($key, function () use ($menuId, $langcode, $options) : MaybeCache {
+        return new MaybeCache(
+          $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $langcode, $options),
+          $this->time->getRequestTime(),
+          ['external_menu:%s:%s', $menuId, $langcode],
+        );
+      })
+      ->data;
   }
 
   /**
@@ -64,7 +125,17 @@ final class ApiManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getMainMenu(string $langcode, array $options = []) : object {
-    return $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options);
+    $key = $this->getCacheKey(sprintf('external_menu:main:%s', $langcode), $options);
+
+    return $this
+      ->cache($key, function () use ($langcode, $options) : MaybeCache {
+        return new MaybeCache(
+          $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options),
+          $this->time->getRequestTime(),
+          ['external_menu:main:%s', $langcode]
+        );
+      })
+      ->data;
   }
 
   /**

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_navigation\Unit;
 
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\ApiManager;
@@ -36,7 +37,10 @@ class ApiManagerTest extends UnitTestCase {
    * @return \Drupal\helfi_navigation\ApiManager
    *   The api manager instance.
    */
-  private function getSut(ClientInterface $client, LoggerInterface $logger) : ApiManager {
+  private function getSut(ClientInterface $client, LoggerInterface $logger = NULL) : ApiManager {
+    if (!$logger) {
+      $logger = $this->prophesize(LoggerInterface::class)->reveal();
+    }
     $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
       'helfi_api_base.environment_resolver.settings' => [
         'project_name' => Project::ASUMINEN,
@@ -44,7 +48,11 @@ class ApiManagerTest extends UnitTestCase {
       ],
     ]));
 
-    return new ApiManager($client, $environmentResolver, $logger);
+    $cache = $this->prophesize(CacheBackendInterface::class);
+    $cache->get(Argument::any())
+      ->willReturn(FALSE);
+    $cache->set(Argument::any(), Argument::any(), CacheBackendInterface::CACHE_PERMANENT, Argument::any())->shouldBeCalled();
+    return new ApiManager($cache->reveal(), $client, $environmentResolver, $logger);
   }
 
   /**
@@ -59,7 +67,7 @@ class ApiManagerTest extends UnitTestCase {
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
       new Response(200, body: json_encode(['key' => 'value'])),
     ]);
-    $sut = $this->getSut($client, $this->prophesize(LoggerInterface::class)->reveal());
+    $sut = $this->getSut($client);
     $sut->updateMainMenu('fi', '123', ['key' => 'value']);
 
     $this->assertCount(1, $requests);
@@ -67,6 +75,42 @@ class ApiManagerTest extends UnitTestCase {
     $this->assertFalse($requests[0]['options']['verify']);
     // Make sure Authorization header was set.
     $this->assertEquals('123', $requests[0]['request']->getHeader('Authorization')[0]);
+  }
+
+  /**
+   * Tests getExternalMenu().
+   *
+   * @covers ::getExternalMenu
+   * @covers ::__construct
+   * @covers ::makeRequest
+   */
+  public function testGetExternalMenu() : void {
+    $requests = [];
+    $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+      new Response(200, body: json_encode(['key' => 'value'])),
+    ]);
+    $sut = $this->getSut($client);
+    $response = $sut->getExternalMenu('fi', 'main');
+    $this->assertInstanceOf(\stdClass::class, $response);
+    $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+  }
+
+  /**
+   * Tests getMainMenu().
+   *
+   * @covers ::getExternalMenu
+   * @covers ::__construct
+   * @covers ::makeRequest
+   */
+  public function testGetMainMenu() : void {
+    $requests = [];
+    $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+      new Response(200, body: json_encode(['key' => 'value'])),
+    ]);
+    $sut = $this->getSut($client);
+    $response = $sut->getMainMenu('fi');
+    $this->assertInstanceOf(\stdClass::class, $response);
+    $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
   }
 
   /**

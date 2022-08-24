@@ -66,18 +66,15 @@ class ExternalMenuTreeFactory {
    * @param array $options
    *   Options for the menu link item handling.
    *
-   * @return \Drupal\helfi_navigation\ExternalMenuTree|null
+   * @return array|null
    *   The resulting menu tree instance.
    */
-  public function transform(array $menu, array $options = []) :? ExternalMenuTree {
+  public function transform(array $menu, array $options = []) :? array {
     $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_type'])];
 
     $tree = $this->transformItems($menu, $options);
 
-    if (!empty($tree)) {
-      return new ExternalMenuTree($tree);
-    }
-    return NULL;
+    return $tree ?? NULL;
   }
 
   /**
