@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;

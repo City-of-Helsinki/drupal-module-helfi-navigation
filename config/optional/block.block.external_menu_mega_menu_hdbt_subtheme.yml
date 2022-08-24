@@ -7,7 +7,7 @@ dependencies:
     - hdbt_subtheme
 id: external_menu_mega_menu_hdbt_subtheme
 theme: hdbt_subtheme
-region: header_bottom
+region: header_branding
 weight: 0
 provider: null
 plugin: 'external_menu_block_main_navigation'
