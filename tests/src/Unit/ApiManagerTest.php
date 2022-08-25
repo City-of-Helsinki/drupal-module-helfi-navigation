@@ -81,8 +81,8 @@ class ApiManagerTest extends UnitTestCase {
   ) : ApiManager {
     $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
       'helfi_api_base.environment_resolver.settings' => [
-        'project_name' => Project::ASUMINEN,
-        'environment_name' => 'local',
+        EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
+        EnvironmentResolver::ENVIRONMENT_NAME_KEY => 'local',
       ],
     ]));
     return new ApiManager($time, $this->cache, $client, $environmentResolver, $logger);
