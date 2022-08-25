@@ -6,7 +6,6 @@ namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
-use Drupal\helfi_navigation\ExternalMenuTree;
 use Drupal\helfi_navigation\ExternalMenuTreeFactory;
 use Drupal\helfi_navigation\ApiManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -90,11 +89,11 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
     $menu_tree = $this->menuTreeFactory
       ->transform($this->buildMenuTree(), $this->getOptions());
 
-    if (!$menu_tree instanceof ExternalMenuTree) {
+    if (!is_array($menu_tree)) {
       return $build;
     }
     $build['#sorted'] = TRUE;
-    $build['#items'] = $menu_tree->getTree();
+    $build['#items'] = $menu_tree;
     $build['#theme'] = 'menu__external_menu';
     $build['#menu_type'] = $menuId;
 
