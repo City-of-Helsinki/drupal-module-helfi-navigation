@@ -23,6 +23,7 @@ services:
   helfi_navigation.menu_updater:
     class: \Drupal\helfi_navigation\MenuUpdater
     arguments:
+      - '@language_manager'
       - '@config.factory'
       - '@helfi_navigation.api_manager'
       - '@helfi_navigation.menu_tree_builder_service'

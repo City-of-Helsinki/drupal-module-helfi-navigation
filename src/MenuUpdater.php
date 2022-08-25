@@ -5,9 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigException;
-use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_navigation\Menu\Menu;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
+use Drupal\language\ConfigurableLanguageManagerInterface;
 
 /**
  * Synchronizes global menu.
@@ -25,7 +26,8 @@ class MenuUpdater {
    *   The menu builder.
    */
   public function __construct(
-    private ConfigFactory $config,
+    private ConfigurableLanguageManagerInterface $languageManager,
+    private ConfigFactoryInterface $config,
     private ApiManager $apiManager,
     private MenuTreeBuilder $menuTreeBuilder,
   ) {
@@ -42,7 +44,16 @@ class MenuUpdater {
       ->menuTreeBuilder
       ->buildMenuTree(Menu::MAIN_MENU, $langcode);
 
-    $siteName = $this->config->get('system.site')->get('name');
+    $siteName = $this->languageManager
+      ->getLanguageConfigOverride($langcode, 'system.site')
+      ->get('name');
+
+    // Fallback to default translation if site name is not translated to
+    // given language.
+    if (!$siteName) {
+      $siteName = $this->config->get('system.site')
+        ->getOriginal('name', FALSE);
+    }
 
     $this->apiManager->updateMainMenu(
       $langcode,
