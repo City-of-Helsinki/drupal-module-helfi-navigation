@@ -4,10 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation;
 
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -15,9 +19,15 @@ use Psr\Log\LoggerInterface;
  */
 final class ApiManager {
 
+  use CacheKeyTrait;
+
   /**
    * Construct an instance.
    *
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   The cache service.
    * @param \GuzzleHttp\ClientInterface $httpClient
    *   The HTTP client.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
@@ -26,10 +36,57 @@ final class ApiManager {
    *   Logger channel.
    */
   public function __construct(
+    private TimeInterface $time,
+    private CacheBackendInterface $cache,
     private ClientInterface $httpClient,
     private EnvironmentResolver $environmentResolver,
     private LoggerInterface $logger,
   ) {
+  }
+
+  /**
+   * Gets the cached data for given menu and language.
+   *
+   * @param string $key
+   *   The  cache key.
+   * @param callable $callback
+   *   The callback to handle requests.
+   *
+   * @return object|null
+   *   The cache or null.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  private function cache(string $key, callable $callback) : ? CacheValue {
+    $exception = new TransferException();
+    $value = ($cache = $this->cache->get($key)) ? $cache->data : NULL;
+
+    // Attempt to re-fetch the data in case cache does not exist or has
+    // expired.
+    if (
+      ($value instanceof CacheValue && $value->hasExpired($this->time->getRequestTime())) ||
+      $value === NULL
+    ) {
+      try {
+        $value = $callback();
+        $this->cache->set($key, $value, tags: $value->tags);
+        return $value;
+      }
+      catch (GuzzleException $e) {
+        // Request callback failed. Catch the exception, so we can still use
+        // stale cache if it exists.
+        $exception = $e;
+      }
+    }
+
+    if ($value instanceof CacheValue) {
+      return $value;
+    }
+    // We should only reach this if:
+    // 1. Cache does not exist ($value is NULL).
+    // 2. API request fails, and we cannot re-populate the cache (caught the
+    // exception).
+    throw $exception;
   }
 
   /**
@@ -48,7 +105,17 @@ final class ApiManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getExternalMenu(string $langcode, string $menuId, array $options = []) : object {
-    return $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $langcode, $options);
+    $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
+
+    return $this
+      ->cache($key, function () use ($menuId, $langcode, $options) : CacheValue {
+        return new CacheValue(
+          $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $langcode, $options),
+          $this->time->getRequestTime(),
+          ['external_menu:%s:%s', $menuId, $langcode],
+        );
+      })
+      ->data;
   }
 
   /**
@@ -65,7 +132,17 @@ final class ApiManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getMainMenu(string $langcode, array $options = []) : object {
-    return $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options);
+    $key = $this->getCacheKey(sprintf('external_menu:main:%s', $langcode), $options);
+
+    return $this
+      ->cache($key, function () use ($langcode, $options) : CacheValue {
+        return new CacheValue(
+          $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options),
+          $this->time->getRequestTime(),
+          ['external_menu:main:%s', $langcode]
+        );
+      })
+      ->data;
   }
 
   /**
@@ -127,7 +204,7 @@ final class ApiManager {
       $response = $this->httpClient->request($method, $url, $options);
       return \GuzzleHttp\json_decode($response->getBody()->getContents());
     }
-    catch (GuzzleException | \InvalidArgumentException $e) {
+    catch (\Exception $e) {
       // Log the error and re-throw the exception.
       $this->logger->error('Request failed with error: ' . $e->getMessage());
       throw $e;
