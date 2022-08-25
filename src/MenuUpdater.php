@@ -18,7 +18,9 @@ class MenuUpdater {
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\Core\Config\ConfigFactory $config
+   * @param \Drupal\language\ConfigurableLanguageManagerInterface $languageManager
+   *   The language override configuration storage.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory.
    * @param \Drupal\helfi_navigation\ApiManager $apiManager
    *   The api manager.
