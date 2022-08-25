@@ -120,6 +120,9 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getExternalMenu
    * @covers ::__construct
    * @covers ::makeRequest
+   * @covers ::cache
+   * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
+   * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
   public function testGetExternalMenu() : void {
     $requests = [];
@@ -141,9 +144,12 @@ class ApiManagerTest extends UnitTestCase {
   /**
    * Tests getMainMenu().
    *
-   * @covers ::getExternalMenu
+   * @covers ::getMainMenu
    * @covers ::__construct
    * @covers ::makeRequest
+   * @covers ::cache
+   * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
+   * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
   public function testGetMainMenu() : void {
     $requests = [];
@@ -164,6 +170,13 @@ class ApiManagerTest extends UnitTestCase {
 
   /**
    * Tests that stale cache will be returned in case request fails.
+   *
+   * @covers ::makeRequest
+   * @covers ::getMainMenu
+   * @covers ::__construct
+   * @covers ::cache
+   * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
+   * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
   public function testStaleCacheOnRequestFailure() : void {
     $requests = [];
@@ -191,6 +204,13 @@ class ApiManagerTest extends UnitTestCase {
 
   /**
    * Tests that stale cache can be updated.
+   *
+   * @covers ::makeRequest
+   * @covers ::getMainMenu
+   * @covers ::__construct
+   * @covers ::cache
+   * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
+   * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
   public function testStaleCacheUpdate() : void {
     $time = time();
@@ -229,6 +249,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::makeRequest
    * @covers ::getExternalMenu
    * @covers ::__construct
+   * @covers ::cache
    */
   public function testRequestLoggingException() : void {
     $this->expectException(GuzzleException::class);
