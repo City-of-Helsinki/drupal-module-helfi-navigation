@@ -57,29 +57,36 @@ final class ApiManager {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  private function cache(string $key, callable $callback) : ? MaybeCache {
-    $exception = new TransferException('Failed to update cache.');
-    $cache = $this->cache->get($key)?->data;
-    $updateCache = $cache === NULL;
-
-    if ($cache instanceof MaybeCache) {
-      $updateCache = $cache->hasExpired($this->time->getRequestTime());
-    }
+  private function cache(string $key, callable $callback) : ? CacheValue {
+    $exception = new TransferException();
+    $value = ($cache = $this->cache->get($key)) ? $cache->data : NULL;
 
     // Attempt to re-fetch the data in case cache does not exist or has
-    // expired, but allow stale cache to be used in case data cannot be
-    // updated.
-    if ($updateCache) {
+    // expired.
+    if (
+      ($value instanceof CacheValue && $value->hasExpired($this->time->getRequestTime())) ||
+      $value === NULL
+    ) {
       try {
-        $maybeCache = $callback();
-        $this->cache->set($key, $maybeCache, tags: $maybeCache->tags);
-        return $maybeCache;
+        $value = $callback();
+        $this->cache->set($key, $value, tags: $value->tags);
+        return $value;
       }
       catch (GuzzleException $e) {
+        // Request callback failed. Catch the exception, so we can still use
+        // stale cache if it exists.
         $exception = $e;
       }
     }
-    return !$cache instanceof MaybeCache ? throw $exception : $cache;
+
+    if ($value instanceof CacheValue) {
+      return $value;
+    }
+    // We should only reach this if:
+    // 1. Cache does not exist ($value is NULL).
+    // 2. API request fails, and we cannot re-populate the cache (caught the
+    // exception).
+    throw $exception;
   }
 
   /**
@@ -101,8 +108,8 @@ final class ApiManager {
     $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
 
     return $this
-      ->cache($key, function () use ($menuId, $langcode, $options) : MaybeCache {
-        return new MaybeCache(
+      ->cache($key, function () use ($menuId, $langcode, $options) : CacheValue {
+        return new CacheValue(
           $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $langcode, $options),
           $this->time->getRequestTime(),
           ['external_menu:%s:%s', $menuId, $langcode],
@@ -128,8 +135,8 @@ final class ApiManager {
     $key = $this->getCacheKey(sprintf('external_menu:main:%s', $langcode), $options);
 
     return $this
-      ->cache($key, function () use ($langcode, $options) : MaybeCache {
-        return new MaybeCache(
+      ->cache($key, function () use ($langcode, $options) : CacheValue {
+        return new CacheValue(
           $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options),
           $this->time->getRequestTime(),
           ['external_menu:main:%s', $langcode]

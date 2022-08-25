@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation;
 
 /**
- * A value object to store optional cache data.
+ * A value object to store cache data.
  */
-final class MaybeCache {
+final class CacheValue {
 
   public const TTL = 180;
 
