@@ -5,6 +5,7 @@ namespace Drupal\Tests\helfi_navigation\Kernel;
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Queue\QueueInterface;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MenuUpdater;
 use Drupal\KernelTests\KernelTestBase;
@@ -124,6 +125,8 @@ class MenuSyncTest extends KernelTestBase {
     $this->config('helfi_navigation.api')->set('key', '123')->save();
 
     $apiManager = $this->createMock(ApiManager::class);
+    $apiManager->method('getActiveEnvironment')
+      ->willReturn($this->container->get('helfi_api_base.environment_resolver')->getEnvironment(Project::ASUMINEN, 'local'));
     $apiManager->expects($this->once())
       ->method('updateMainMenu')
       // Capture arguments passed to syncMenu() so we can test them.

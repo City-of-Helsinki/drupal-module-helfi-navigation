@@ -6,6 +6,7 @@ namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Url;
 use Drupal\helfi_navigation\Menu\Menu;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\language\ConfigurableLanguageManagerInterface;
@@ -56,6 +57,9 @@ class MenuUpdater {
       $siteName = $this->config->get('system.site')
         ->getOriginal('name', FALSE);
     }
+    $instanceUri = Url::fromRoute('<front>', options: [
+      'language' => $this->languageManager->getLanguage($langcode),
+    ])->setAbsolute();
 
     $this->apiManager->updateMainMenu(
       $langcode,
@@ -65,7 +69,7 @@ class MenuUpdater {
         'site_name' => $siteName,
         'menu_tree' => [
           'name' => $siteName,
-          'url' => $this->apiManager->getActiveEnvironment()->getUrl($langcode),
+          'url' => $instanceUri->toString(),
           'external' => FALSE,
           'hasItems' => !(empty($tree)),
           'weight' => 0,
