@@ -94,6 +94,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::updateMainMenu
    * @covers ::__construct
    * @covers ::makeRequest
+   * @covers ::getActiveEnvironment
    */
   public function testUpdateMainMenu() : void {
     $requests = [];
@@ -121,6 +122,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::cache
+   * @covers ::getActiveEnvironment
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -148,6 +150,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::cache
+   * @covers ::getActiveEnvironment
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -175,6 +178,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getMainMenu
    * @covers ::__construct
    * @covers ::cache
+   * @covers ::getActiveEnvironment
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -209,6 +213,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getMainMenu
    * @covers ::__construct
    * @covers ::cache
+   * @covers ::getActiveEnvironment
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -250,6 +255,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getExternalMenu
    * @covers ::__construct
    * @covers ::cache
+   * @covers ::getActiveEnvironment
    */
   public function testRequestLoggingException() : void {
     $this->expectException(GuzzleException::class);
