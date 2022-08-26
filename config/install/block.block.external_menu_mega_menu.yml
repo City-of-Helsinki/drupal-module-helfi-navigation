@@ -5,18 +5,18 @@ dependencies:
     - helfi_navigation
   theme:
     - hdbt_subtheme
-id: external_header_language_links_hdbt_subtheme
+id: external_menu_mega_menu
 theme: hdbt_subtheme
 region: header_branding
 weight: 0
 provider: null
-plugin: 'external_menu_block:header-language-links'
+plugin: 'external_menu_block_main_navigation'
 settings:
-  id: 'external_menu_block:header-language-links'
-  label: 'External - Header language links'
+  id: 'external_menu_block_main_navigation'
+  label: 'External - Mega menu'
   label_display: '0'
   provider: helfi_navigation
   level: 1
-  depth: 1
-  expand_all_items: false
+  depth: 2
+  expand_all_items: true
 visibility: {  }

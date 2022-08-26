@@ -16,65 +16,32 @@ function helfi_navigation_install($is_syncing) : void {
 
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
-  if (!$is_syncing) {
-    $language_manager = \Drupal::languageManager();
-    $theme_handler = \Drupal::service('theme_handler');
-    $config_factory = \Drupal::service('config.factory');
+  if ($is_syncing) {
+    return;
+  }
 
-    // Install block translations as optional configuration translations
-    // cannot be installed by adding the translated configuration in
-    // ./config/optional/language/{langcode}/.
-    $translations = [
-      'block.block.external_footer_top_navigation_hdbt',
-      'block.block.external_footer_top_navigation_hdbt_subtheme',
-      'block.block.external_footer_top_navigation_2_hdbt',
-      'block.block.external_footer_top_navigation_2_hdbt_subtheme',
-    ];
-    $config_location = dirname(__FILE__) . '/config/language/';
+  // Delete old instance specific menu blocks.
+  $old_menu_blocks = [
+    'footertopblock',
+    'footertopnavigation',
+    'footerbottomnavigation',
+    'headertopnavigation',
+    'mobile_navigation',
+  ];
+  $delete = [];
+  $theme_handler = \Drupal::service('theme_handler');
 
-    foreach ($translations as $block_name) {
-      if (!$config_factory->get($block_name)->isNew()) {
-        foreach ($language_manager->getLanguages() as $language) {
-          if ($language->getId() === $language_manager->getDefaultLanguage()->getId()) {
-            continue;
-          }
-
-          $config = $language_manager->getLanguageConfigOverride($language->getId(), $block_name);
-          if (!$config->isNew()) {
-            continue;
-          }
-
-          $filepath = "{$config_location}{$language->getId()}/{$block_name}.yml";
-          if (file_exists($filepath) && $yaml = file_get_contents($filepath)) {
-            $data = Yaml::parse($yaml);
-            $config->setData($data)->save();
-          }
-        }
-      }
+  foreach ($old_menu_blocks as $block) {
+    $delete[] = $block;
+    if ($theme_handler->getDefault() === 'hdbt_subtheme') {
+      $delete[] = 'hdbt_subtheme_' . $block;
     }
+  }
 
-    // Remove old instance specific menu blocks.
-    $old_menu_blocks = [
-      'footertopblock',
-      'footertopnavigation',
-      'footerbottomnavigation',
-      'headertopnavigation',
-      'mobile_navigation',
-    ];
-    $disable = [];
-
-    foreach ($old_menu_blocks as $block) {
-      $disable[] = $block;
-      if ($theme_handler->getDefault() === 'hdbt_subtheme') {
-        $disable[] = 'hdbt_subtheme_' . $block;
-      }
-    }
-
-    /** @var \Drupal\Core\Entity\EntityStorageInterface $block_storage */
-    $block_storage = \Drupal::service('entity_type.manager')->getStorage('block');
-    foreach ($block_storage->loadMultiple($disable) as $block) {
-      $block->disable();
-    }
+  /** @var \Drupal\Core\Entity\EntityStorageInterface $block_storage */
+  $block_storage = \Drupal::service('entity_type.manager')->getStorage('block');
+  foreach ($block_storage->loadMultiple($delete) as $block) {
+    $block->delete();
   }
 }
 
