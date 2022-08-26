@@ -65,6 +65,7 @@ class MenuUpdater {
         'site_name' => $siteName,
         'menu_tree' => [
           'name' => $siteName,
+          'url' => $this->apiManager->getActiveEnvironment()->getUrl($langcode),
           'external' => FALSE,
           'hasItems' => !(empty($tree)),
           'weight' => 0,

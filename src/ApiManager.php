@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
+use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
@@ -158,13 +159,23 @@ class ApiManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function updateMainMenu(string $langcode, string $authorization, array $data) : void {
-    $endpoint = sprintf('/api/v1/global-menu/%s', $this->environmentResolver->getActiveEnvironment()->getId());
+    $endpoint = sprintf('/api/v1/global-menu/%s', $this->getActiveEnvironment()->getId());
     $this->makeRequest('POST', $endpoint, $langcode, [
       'headers' => [
         'Authorization' => $authorization,
       ],
       'json' => $data,
     ]);
+  }
+
+  /**
+   * Gets the currently active environment.
+   *
+   * @return \Drupal\helfi_api_base\Environment\Environment
+   *   The environment.
+   */
+  public function getActiveEnvironment() : Environment {
+    return $this->environmentResolver->getActiveEnvironment();
   }
 
   /**
@@ -185,8 +196,7 @@ class ApiManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   private function makeRequest(string $method, string $endpoint, string $langcode, array $options = []): object {
-    $activeEnvironmentName = $this->environmentResolver
-      ->getActiveEnvironment()
+    $activeEnvironmentName = $this->getActiveEnvironment()
       ->getEnvironmentName();
 
     $baseUrl = $this->environmentResolver
