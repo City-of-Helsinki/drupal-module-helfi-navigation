@@ -19,7 +19,7 @@ class MenuUpdater {
    * Constructs a new instance.
    *
    * @param \Drupal\language\ConfigurableLanguageManagerInterface $languageManager
-   *   The language override configuration storage.
+   *   The language manager.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory.
    * @param \Drupal\helfi_navigation\ApiManager $apiManager
@@ -65,6 +65,7 @@ class MenuUpdater {
         'site_name' => $siteName,
         'menu_tree' => [
           'name' => $siteName,
+          'url' => $this->apiManager->getActiveEnvironment()->getUrl($langcode),
           'external' => FALSE,
           'hasItems' => !(empty($tree)),
           'weight' => 0,
