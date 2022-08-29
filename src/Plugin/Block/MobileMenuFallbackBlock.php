@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation\Plugin\Block;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\menu_link_content\MenuLinkContentInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Provides a fallback mobile navigation menu block.
  *
- * This is used to render the non-javascript version of mobile
+ * This is used to render non-javascript version of mobile
  * navigation.
  *
  * @Block(
@@ -49,6 +50,13 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
   private Request $currentRequest;
 
   /**
+   * The path matcher service.
+   *
+   * @var \Drupal\Core\Path\PathMatcherInterface
+   */
+  private PathMatcherInterface $pathMatcher;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -61,6 +69,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $instance->entityTypeManager = $container->get('entity_type.manager');
     $instance->configFactory = $container->get('config.factory');
     $instance->currentRequest = $container->get('request_stack')->getCurrentRequest();
+    $instance->pathMatcher = $container->get('path.matcher');
     return $instance;
   }
 
@@ -71,40 +80,12 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
    *   Returns the render array.
    */
   public function build() : array {
-    $build = [];
 
-    // Create fallback menu render array.
-    try {
-      $build = $this->buildActiveTrailMenu($this->getOptions());
-      $build['#theme'] = 'menu__external_menu__fallback';
-    }
-    catch (\throwable $e) {
-      $this->logger->error('External fallback menu build failed with error: ' . $e->getMessage());
-    }
-
-    return $build;
-  }
-
-  /**
-   * Build menu tree based on active trail.
-   *
-   * @param array $options
-   *   Options for the menu block.
-   *
-   * @return array
-   *   Render array.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  protected function buildActiveTrailMenu(array $options): array {
+    ['max_depth' => $depth, 'expand_all_items' => $expand] = $this->getOptions();
     // Adjust the menu tree parameters based on the block's configuration.
-    $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters(
-      $options['menu_type']
-    );
-    $depth = $options['max_depth'];
-    if ($options['expand_all_items']) {
+    $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters('main');
+
+    if ($expand) {
       $parameters->expandedParents = [];
     }
 
@@ -134,7 +115,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $parameters->setRoot($menu_root)->setMinDepth(1);
 
     // Load the menu tree with.
-    $tree = $this->menuTree->load($options['menu_type'], $parameters);
+    $tree = $this->menuTree->load('main', $parameters);
     $manipulators = [
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
@@ -143,9 +124,10 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     // Get the grandparent link for the fallback menu.
     $grand_parents = array_slice($active_trail, 2);
     $grand_parent_link_id = reset($grand_parents);
-    $grand_parent_link = (!empty($grand_parent_link_id))
+    $grand_parent_link = !empty($grand_parent_link_id)
       ? $this->loadMenuLinkByDerivativeId($grand_parent_link_id)
       : $this->getSiteFrontPageMenuLink();
+
     if ($grand_parent_link instanceof MenuLinkContentInterface) {
       $grand_parent_link = $this->createRenderArrayFromMenuLinkContent($grand_parent_link);
     }
@@ -153,7 +135,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     // Get the parent link for the fallback menu.
     $parents = array_slice($active_trail, 1);
     $parent_link_id = reset($parents);
-    $parent_link = (!empty($parent_link_id))
+    $parent_link = !empty($parent_link_id)
       ? $this->loadMenuLinkByDerivativeId($parent_link_id)
       : $this->getSiteFrontPageMenuLink();
     if ($parent_link instanceof MenuLinkContentInterface) {
@@ -172,11 +154,10 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
         $menu_link_current_or_parent = $this->createRenderArrayFromMenuLinkContent($this->getActiveMenuLink());
       }
     }
-
-    // If the current menu link is not available, we're most likely browsing
-    // the front page or first level of the menu tree.
-    // Create back and current/parent links accordingly.
     else {
+      // If the current menu link is not available, we're most likely browsing
+      // the front page or first level of the menu tree.
+      // Create back and current/parent links accordingly.
       $menu_link_back = [
         'title' => $this->t('Front page'),
         'url' => Url::fromRoute('<front>')->setAbsolute()->toString(),
@@ -187,6 +168,8 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     // Build a render array and enable proper caching.
     $tree = $this->menuTree->transform($tree, $manipulators);
     $build = $this->menuTree->build($tree);
+
+    $build['#theme'] = 'menu__external_menu__fallback';
     $build['#menu_link_back'] = $menu_link_back;
     $build['#menu_link_current_or_parent'] = $menu_link_current_or_parent;
     $build['#cache'] = [
@@ -198,6 +181,9 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
         'config:system.menu.main',
       ],
     ];
+    if ($this->pathMatcher->isFrontPage()) {
+      $build['#cache']['contexts'][] = 'url.path.is_front';
+    }
 
     return $build;
   }
@@ -267,14 +253,12 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
    *
    * @return \Drupal\Core\Entity\EntityInterface|null
    *   Returns menu link content entity or NULL.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function loadMenuLinkByDerivativeId(int|string $id): ?EntityInterface {
     $menu_link = $this->entityTypeManager
       ->getStorage('menu_link_content')
       ->loadByProperties([
-        'uuid' => $this->convertToUuid($id),
+        'uuid' => str_replace("$id:", '', 'menu_link_content'),
       ]);
 
     return $menu_link ? reset($menu_link) : NULL;
@@ -297,26 +281,12 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
    *   Returns current instance front page menu link array.
    */
   protected function getSiteFrontPageMenuLink(): array {
-    $url = Url::fromRoute('<front>');
-    $path = parse_url($this->currentRequest->getUri(), PHP_URL_PATH);
-
     return [
-      'is_currentPage' => $url->getUri() === $path,
+      'is_currentPage' => $this->pathMatcher->isFrontPage(),
       'attributes' => new Attribute(),
-      'title' => $this->getSiteName(),
-      'url' => $url->toString(),
+      'title' => $this->configFactory->get('system.site')->get('name') ?? $this->t('Front page'),
+      'url' => Url::fromRoute('<front>')->toString(),
     ];
-  }
-
-  /**
-   * Get current site name for the menu.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|string
-   *   Returns site name as string or translated front page text.
-   */
-  protected function getSiteName(): mixed {
-    $site_name = $this->configFactory->get('system.site')->get('name');
-    return !empty($site_name) ? $site_name : $this->t('Front page');
   }
 
   /**
@@ -337,21 +307,6 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       'title' => $link->getTitle(),
       'url' => $link->getUrlObject(),
     ];
-  }
-
-  /**
-   * Convert derivative ID to UUID.
-   *
-   * @param string $derivative_id
-   *   The derivative ID to be converted.
-   * @param string $type
-   *   The optional type, defaults to menu_link_content.
-   *
-   * @return string
-   *   Returns UUID.
-   */
-  protected function convertToUuid(string $derivative_id, string $type = 'menu_link_content'): string {
-    return str_replace("$type:", '', $derivative_id);
   }
 
   /**
