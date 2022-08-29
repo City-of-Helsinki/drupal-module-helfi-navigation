@@ -7,7 +7,7 @@ namespace Drupal\helfi_navigation\Plugin\Block;
 use Drupal\Core\Language\LanguageInterface;
 
 /**
- * Provides an external menu block for global main navigation..
+ * Provides an external menu block for global main navigation.
  *
  * @Block(
  *   id = "external_menu_block_main_navigation",

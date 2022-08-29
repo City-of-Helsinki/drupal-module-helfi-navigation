@@ -7,6 +7,44 @@
 
 declare(strict_types = 1);
 
+use Symfony\Component\Yaml\Yaml;
+
+/**
+ * Implements hook_install().
+ */
+function helfi_navigation_install($is_syncing) : void {
+
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
+
+  // Delete old instance specific menu blocks.
+  $old_menu_blocks = [
+    'footertopblock',
+    'footertopnavigation',
+    'footerbottomnavigation',
+    'headertopnavigation',
+    'mobile_navigation',
+  ];
+  $delete = [];
+  $theme_handler = \Drupal::service('theme_handler');
+
+  foreach ($old_menu_blocks as $block) {
+    $delete[] = $block;
+    if ($theme_handler->getDefault() === 'hdbt_subtheme') {
+      $delete[] = 'hdbt_subtheme_' . $block;
+    }
+  }
+
+  /** @var \Drupal\Core\Entity\EntityStorageInterface $block_storage */
+  $block_storage = \Drupal::service('entity_type.manager')->getStorage('block');
+  foreach ($block_storage->loadMultiple($delete) as $block) {
+    $block->delete();
+  }
+}
+
 /**
  * Implements hook_uninstall().
  */
