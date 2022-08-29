@@ -3,3 +3,5 @@ helfi_navigation.api:
   mapping:
     key:
       type: string
+    langcode:
+      type: string

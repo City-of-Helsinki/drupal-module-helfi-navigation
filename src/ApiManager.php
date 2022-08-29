@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Service class for global navigation related functions.
  */
-final class ApiManager {
+class ApiManager {
 
   use CacheKeyTrait;
 

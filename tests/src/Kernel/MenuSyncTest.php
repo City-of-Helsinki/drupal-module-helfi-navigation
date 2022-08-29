@@ -5,8 +5,10 @@ namespace Drupal\Tests\helfi_navigation\Kernel;
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Queue\QueueInterface;
+use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MenuUpdater;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\language\Entity\ConfigurableLanguage;
 
 /**
  * Tests navigation sync.
@@ -24,6 +26,7 @@ class MenuSyncTest extends KernelTestBase {
     'user',
     'menu_link_content',
     'helfi_api_base',
+    'language',
     'helfi_navigation',
   ];
 
@@ -35,6 +38,11 @@ class MenuSyncTest extends KernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('menu_link_content');
+    $this->installConfig(['language']);
+
+    foreach (['fi', 'sv'] as $langcode) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
   }
 
   /**
@@ -63,6 +71,16 @@ class MenuSyncTest extends KernelTestBase {
   }
 
   /**
+   * Gets the menu updater service.
+   *
+   * @return \Drupal\helfi_navigation\MenuUpdater
+   *   The menu updater service.
+   */
+  private function getMenuUpdater() : MenuUpdater {
+    return $this->container->get('helfi_navigation.menu_updater');
+  }
+
+  /**
    * Make sure undefined language fallbacks to default language.
    */
   public function testLanguageFallback() : void {
@@ -85,6 +103,53 @@ class MenuSyncTest extends KernelTestBase {
 
     _helfi_navigation_queue_item('fi');
     $this->assertEquals(0, $queue->numberOfItems());
+  }
+
+  /**
+   * Tests syncMenu() without api key.
+   */
+  public function testSyncMenuMissingApiKey() : void {
+    $this->expectException(ConfigException::class);
+    $this->getMenuUpdater()->syncMenu('fi');
+  }
+
+  /**
+   * Make sure syncMenu() is called with correct values.
+   *
+   * @dataProvider configTranslationData
+   */
+  public function testConfigTranslation(string $langcode) : void {
+    $siteName = 'Site name ' . $langcode;
+    $this->config('system.site')->set('name', $siteName)->save();
+    $this->config('helfi_navigation.api')->set('key', '123')->save();
+
+    $apiManager = $this->createMock(ApiManager::class);
+    $apiManager->expects($this->once())
+      ->method('updateMainMenu')
+      // Capture arguments passed to syncMenu() so we can test them.
+      ->will($this->returnCallback(function (string $langcode, string $authCode, array $data) use ($siteName) {
+        $this->assertEquals('Basic 123', $authCode);
+        $this->assertEquals($siteName, $data['site_name']);
+        $this->assertEquals($siteName, $data['menu_tree']['name']);
+        $this->assertEquals($langcode, $data['langcode']);
+      }));
+    $this->container->set('helfi_navigation.api_manager', $apiManager);
+
+    $this->getMenuUpdater()->syncMenu($langcode);
+  }
+
+  /**
+   * A data provider for testConfigTranslation().
+   *
+   * @return \string[][]
+   *   The data.
+   */
+  public function configTranslationData() : array {
+    return [
+      ['fi'],
+      ['en'],
+      ['sv'],
+    ];
   }
 
 }
