@@ -7,7 +7,7 @@
 
 declare(strict_types = 1);
 
-use Symfony\Component\Yaml\Yaml;
+use Drupal\block\Entity\Block;
 
 /**
  * Implements hook_install().
@@ -20,6 +20,11 @@ function helfi_navigation_install($is_syncing) : void {
     return;
   }
 
+  $theme_handler = \Drupal::service('theme_handler');
+
+  // Generate global navigation blocks.
+  _helfi_navigation_generate_blocks($theme_handler->getDefault());
+
   // Delete old instance specific menu blocks.
   $old_menu_blocks = [
     'footertopblock',
@@ -29,7 +34,6 @@ function helfi_navigation_install($is_syncing) : void {
     'mobile_navigation',
   ];
   $delete = [];
-  $theme_handler = \Drupal::service('theme_handler');
 
   foreach ($old_menu_blocks as $block) {
     $delete[] = $block;
@@ -42,6 +46,127 @@ function helfi_navigation_install($is_syncing) : void {
   $block_storage = \Drupal::service('entity_type.manager')->getStorage('block');
   foreach ($block_storage->loadMultiple($delete) as $block) {
     $block->delete();
+  }
+}
+
+/**
+ * Generate global navigation blocks.
+ *
+ * @param string $theme
+ *   Current default theme machine name.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function _helfi_navigation_generate_blocks($theme) {
+
+  $blocks = [
+    'external_fallback_menu' => [
+      'plugin' => 'external_menu_block_fallback',
+      'region' => 'header_branding',
+      'settings' => [
+        'label' => 'External - Fallback menu',
+        'expand_all_items' => TRUE,
+        'depth' => 0,
+      ],
+    ],
+    'external_footer_bottom_navigation' => [
+      'plugin' => 'external_menu_block:footer-bottom-navigation',
+      'region' => 'footer_bottom',
+      'settings' => [
+        'label' => 'External - Footer bottom navigation',
+      ],
+    ],
+    'external_footer_top_navigation' => [
+      'plugin' => 'external_menu_block:footer-top-navigation',
+      'region' => 'footer_top',
+      'settings' => [
+        'label' => 'City of Helsinki',
+        'label_display' => 'visible',
+      ],
+      'weight' => 1,
+      'translations' => [
+        'fi' => 'Helsingin kaupunki',
+        'sv' => 'Helsingfors stad',
+      ],
+    ],
+    'external_footer_top_navigation_2' => [
+      'plugin' => 'external_menu_block:footer-top-navigation-2',
+      'region' => 'footer_top',
+      'settings' => [
+        'label' => 'Connect',
+        'label_display' => 'visible',
+      ],
+      'weight' => 2,
+      'translations' => [
+        'fi' => 'Ota yhteyttä',
+        'sv' => 'Ta kontakt',
+      ],
+    ],
+    'external_header_language_links' => [
+      'plugin' => 'external_menu_block:header-language-links',
+      'region' => 'header_branding',
+      'settings' => [
+        'label' => 'External - Header language links',
+      ],
+    ],
+    'external_header_top_navigation' => [
+      'plugin' => 'external_menu_block:header-top-navigation',
+      'region' => 'header_top',
+      'settings' => [
+        'label' => 'External - Header top navigation',
+      ],
+    ],
+    'external_menu_mega_menu' => [
+      'plugin' => 'external_menu_block_main_navigation',
+      'region' => 'header_branding',
+      'settings' => [
+        'label' => 'External - Mega menu',
+        'depth' => 2,
+        'expand_all_items' => TRUE,
+      ],
+    ],
+  ];
+
+  $default_config = [
+    'settings' => [
+      'label_display' => 0,
+      'provider' => 'helfi_navigation',
+      'level' => 1,
+      'depth' => 1,
+      'expand_all_items' => FALSE,
+    ],
+    'status' => TRUE,
+    'provider' => NULL,
+    'theme' => $theme,
+    'visibility' => [],
+    'weight' => 0,
+  ];
+
+  foreach ($blocks as $id => $config) {
+    $block_config = array_replace_recursive($default_config, $config);
+    $block_config['id'] = $id;
+    $block_config['settings']['id'] = $config['plugin'];
+
+    if (array_key_exists('translations', $config)) {
+      $translations = $config['translations'];
+      unset($config['translations']);
+
+      foreach (['fi', 'sv'] as $lang_code) {
+        /** @var \Drupal\language\Config\LanguageConfigOverride $config_translation */
+        $config_translation = \Drupal::languageManager()
+          ->getLanguageConfigOverride($lang_code, "block.block.$id");
+        $config_translation
+          ->setData([
+            'settings' => [
+              'label' => $translations[$lang_code],
+            ],
+          ])
+          ->save();
+      }
+    }
+
+    $block = Block::create($block_config);
+    $block->save();
   }
 }
 
