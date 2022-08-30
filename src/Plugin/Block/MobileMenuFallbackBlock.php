@@ -258,7 +258,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $menu_link = $this->entityTypeManager
       ->getStorage('menu_link_content')
       ->loadByProperties([
-        'uuid' => str_replace("$id:", '', 'menu_link_content'),
+        'uuid' => str_replace("menu_link_content:", '', $id),
       ]);
 
     return $menu_link ? reset($menu_link) : NULL;
