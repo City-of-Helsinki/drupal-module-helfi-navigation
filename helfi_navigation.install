@@ -135,6 +135,7 @@ function _helfi_navigation_generate_blocks($theme) {
       'depth' => 1,
       'expand_all_items' => FALSE,
     ],
+    'langcode' => 'en',
     'status' => TRUE,
     'provider' => NULL,
     'theme' => $theme,
