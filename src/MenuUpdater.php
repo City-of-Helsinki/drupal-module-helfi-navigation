@@ -43,9 +43,11 @@ class MenuUpdater {
     if (!$authKey = $this->config->get('helfi_navigation.api')->get('key')) {
       throw new ConfigException('Missing required "helfi_navigation.api" setting.');
     }
+
+    $site_id = hash('sha1', $this->config->get('system.site')->get('name'));
     $tree = $this
       ->menuTreeBuilder
-      ->buildMenuTree(Menu::MAIN_MENU, $langcode);
+      ->buildMenuTree(Menu::MAIN_MENU, $langcode, $site_id);
 
     $siteName = $this->languageManager
       ->getLanguageConfigOverride($langcode, 'system.site')
@@ -74,6 +76,7 @@ class MenuUpdater {
           'hasItems' => !(empty($tree)),
           'weight' => 0,
           'sub_tree' => $tree,
+          'id' => $site_id,
         ],
       ]
     );
