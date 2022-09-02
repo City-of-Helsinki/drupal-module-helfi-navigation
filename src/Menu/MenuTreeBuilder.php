@@ -40,14 +40,14 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function buildMenuTree(string $menuName, string $langcode): array {
+  public function buildMenuTree(string $menuName, string $langcode, $site_id): array {
     $tree = $this->menuTree->load(
       $menuName,
       (new MenuTreeParameters())
         ->onlyEnabledLinks()
     );
 
-    return $this->transformMenuItems($tree, $langcode);
+    return $this->transformMenuItems($tree, $langcode, $site_id);
   }
 
   /**
@@ -57,6 +57,8 @@ final class MenuTreeBuilder {
    *   Array of menu items.
    * @param string $langcode
    *   Language code as a string.
+   * @param string $site_id
+   *   Unique identifier for the site used as menu id.
    *
    * @return array
    *   Returns an array of transformed menu items.
@@ -64,7 +66,7 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function transformMenuItems(array $menuItems, string $langcode): array {
+  protected function transformMenuItems(array $menuItems, string $langcode, string $site_id = ''): array {
     $items = [];
 
     foreach ($menuItems as $element) {
@@ -83,7 +85,7 @@ final class MenuTreeBuilder {
         continue;
       }
 
-      /** @var \Drupal\Core\Menu\MenuLinkInterface $menuLink */
+      /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menuLink */
       $menuLink = $link->getTranslation($langcode);
 
       // Handle only published menu links.
@@ -91,10 +93,11 @@ final class MenuTreeBuilder {
         continue;
       }
 
+      $parent_id = (empty($menuLink->getParentId()) && !empty($site_id)) ? $site_id : $menuLink->getParentId();
       $item = [
         'id' => $menuLink->getPluginId(),
         'name' => $menuLink->getTitle(),
-        'parentId' => $menuLink->getParentId(),
+        'parentId' => $parent_id,
         'url' => $menuLink->getUrlObject()->setAbsolute()->toString(),
         'external' => $this->domainResolver->isExternal($menuLink->getUrlObject()),
         'hasItems' => FALSE,
@@ -103,7 +106,7 @@ final class MenuTreeBuilder {
 
       if (count($sub_tree) > 0) {
         $item['hasItems'] = TRUE;
-        $item['sub_tree'] = $this->transformMenuItems($sub_tree, $langcode);
+        $item['sub_tree'] = $this->transformMenuItems($sub_tree, $langcode, '');
       }
 
       $items[] = (object) $item;
