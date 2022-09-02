@@ -26,17 +26,12 @@ class MenuUpdater {
    *   The config factory.
    * @param \Drupal\helfi_navigation\ApiManager $apiManager
    *   The api manager.
-   * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
-   *   The menu builder.
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
-   *   The environment resolver.
    */
   public function __construct(
     private ConfigurableLanguageManagerInterface $languageManager,
     private ConfigFactoryInterface $config,
     private ApiManager $apiManager,
     private MenuTreeBuilder $menuTreeBuilder,
-    private EnvironmentResolver $environmentResolver
   ) {
   }
 
@@ -48,7 +43,7 @@ class MenuUpdater {
       throw new ConfigException('Missing required "helfi_navigation.api" setting.');
     }
 
-    $site_id = $this->environmentResolver->getActiveEnvironment()->getId();
+    $site_id = hash('sha1', $this->config->get('system.site')->get('name'));
     $tree = $this
       ->menuTreeBuilder
       ->buildMenuTree(Menu::MAIN_MENU, $langcode, $site_id);
