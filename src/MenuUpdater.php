@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation;
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Url;
+use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_navigation\Menu\Menu;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\language\ConfigurableLanguageManagerInterface;
@@ -27,12 +28,15 @@ class MenuUpdater {
    *   The api manager.
    * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
    *   The menu builder.
+   * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
+   *   The menu builder.
    */
   public function __construct(
     private ConfigurableLanguageManagerInterface $languageManager,
     private ConfigFactoryInterface $config,
     private ApiManager $apiManager,
     private MenuTreeBuilder $menuTreeBuilder,
+    private EnvironmentResolver $environmentResolver
   ) {
   }
 
@@ -43,9 +47,11 @@ class MenuUpdater {
     if (!$authKey = $this->config->get('helfi_navigation.api')->get('key')) {
       throw new ConfigException('Missing required "helfi_navigation.api" setting.');
     }
+
+    $site_id = $this->environmentResolver->getActiveEnvironment()->getId();
     $tree = $this
       ->menuTreeBuilder
-      ->buildMenuTree(Menu::MAIN_MENU, $langcode);
+      ->buildMenuTree(Menu::MAIN_MENU, $langcode, $site_id);
 
     $siteName = $this->languageManager
       ->getLanguageConfigOverride($langcode, 'system.site')
@@ -74,6 +80,7 @@ class MenuUpdater {
           'hasItems' => !(empty($tree)),
           'weight' => 0,
           'sub_tree' => $tree,
+          'id' => $site_id,
         ],
       ]
     );
