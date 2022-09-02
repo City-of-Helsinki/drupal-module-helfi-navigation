@@ -28,8 +28,8 @@ class MenuUpdater {
    *   The api manager.
    * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
    *   The menu builder.
-   * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
-   *   The menu builder.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
+   *   The environment resolver.
    */
   public function __construct(
     private ConfigurableLanguageManagerInterface $languageManager,

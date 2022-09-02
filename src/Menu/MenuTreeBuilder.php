@@ -33,6 +33,8 @@ final class MenuTreeBuilder {
    *   Menu type.
    * @param string $langcode
    *   Language code.
+   * @param string $site_id
+   *   Site id to be used as id in menu.
    *
    * @return array
    *   The resulting tree.
@@ -40,7 +42,7 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function buildMenuTree(string $menuName, string $langcode, $site_id): array {
+  public function buildMenuTree(string $menuName, string $langcode, string $site_id): array {
     $tree = $this->menuTree->load(
       $menuName,
       (new MenuTreeParameters())
