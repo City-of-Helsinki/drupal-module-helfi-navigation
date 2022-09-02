@@ -7,7 +7,6 @@ namespace Drupal\helfi_navigation;
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Url;
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_navigation\Menu\Menu;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\language\ConfigurableLanguageManagerInterface;
@@ -26,6 +25,8 @@ class MenuUpdater {
    *   The config factory.
    * @param \Drupal\helfi_navigation\ApiManager $apiManager
    *   The api manager.
+   * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
+   *   The menu builder.
    */
   public function __construct(
     private ConfigurableLanguageManagerInterface $languageManager,
