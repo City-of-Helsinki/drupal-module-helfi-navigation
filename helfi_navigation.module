@@ -17,6 +17,7 @@ use Drupal\system\MenuInterface;
  */
 function helfi_navigation_theme_suggestions_menu_alter(array &$suggestions, array $variables) : void {
   if ($variables['theme_hook_original'] === 'menu__external_menu') {
+    $suggestions = [];
     if (isset($variables['menu_type'])) {
       $suggestions[] = 'menu__external_menu__' . $variables['menu_type'];
     }

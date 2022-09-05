@@ -165,6 +165,11 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       $menu_link_current_or_parent = $grand_parent_link;
     }
 
+    // Add needed menu fragment to menu back link.
+    if (isset($menu_link_back['url']) && $menu_link_back['url'] instanceof Url) {
+      $menu_link_back['url']->setOption('fragment', 'menu');
+    }
+
     // Build a render array and enable proper caching.
     $tree = $this->menuTree->transform($tree, $manipulators);
     $build = $this->menuTree->build($tree);
