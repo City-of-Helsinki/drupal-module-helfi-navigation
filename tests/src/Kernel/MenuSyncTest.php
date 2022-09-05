@@ -33,7 +33,7 @@ class MenuSyncTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() : void {
+  protected function setUp() : void {
     parent::setUp();
 
     $this->installEntitySchema('user');
@@ -127,8 +127,7 @@ class MenuSyncTest extends KernelTestBase {
     $apiManager->expects($this->once())
       ->method('updateMainMenu')
       // Capture arguments passed to syncMenu() so we can test them.
-      ->will($this->returnCallback(function (string $langcode, string $authCode, array $data) use ($siteName) {
-        $this->assertEquals('Basic 123', $authCode);
+      ->will($this->returnCallback(function (string $langcode, array $data) use ($siteName) {
         $this->assertEquals($siteName, $data['site_name']);
         $this->assertEquals($siteName, $data['menu_tree']['name']);
         $this->assertEquals($langcode, $data['langcode']);

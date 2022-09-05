@@ -93,11 +93,12 @@ function _helfi_navigation_queue_item(string $langcode) : void {
   }
   try {
     $menuUpdater->syncMenu($langcode);
+    \Drupal::messenger()->addMessage(t('Global navigation was synced successfully!'));
   }
-  catch (ConfigException) {
-    // Allow sync to fail silently if no api key is set.
-  }
-  catch (\Exception) {
+  catch (\Exception $e) {
+    \Drupal::messenger()->addWarning(t('Global navigation sync failed: @reason The item will be placed in a queue and will be synced again later.', [
+      '@reason' => $e->getMessage(),
+    ]));
     // Queue item if the synchronization failed.
     $queue = \Drupal::queue('helfi_navigation_menu_queue');
     $queue->createItem($langcode);

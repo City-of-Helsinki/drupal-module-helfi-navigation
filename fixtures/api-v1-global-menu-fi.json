@@ -1,0 +1,267 @@
+{
+  "liikenne": {
+    "project": [
+      {
+        "value": "liikenne"
+      }
+    ],
+    "uuid": [
+      {
+        "value": "7f1497e3-9480-4ba4-b9b8-e1f5db1f7cc6"
+      }
+    ],
+    "langcode": [
+      {
+        "value": "fi"
+      }
+    ],
+    "status": [],
+    "name": [
+      {
+        "value": "Kaupunkiympäristö ja liikenne"
+      }
+    ],
+    "menu_tree": [
+      {
+        "name": "Kaupunkiympäristö ja liikenne",
+        "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne",
+        "external": false,
+        "hasItems": true,
+        "weight": 0,
+        "sub_tree": [
+          {
+            "id": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+            "name": "Pysäköinti",
+            "parentId": "",
+            "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi",
+            "external": false,
+            "hasItems": true,
+            "weight": -50,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                "name": "Pysäköintipaikat, hinnat ja maksutavat",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat",
+                "external": false,
+                "hasItems": true,
+                "weight": -50,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:5c9444ef-c675-4d22-b032-7f516f9926b2",
+                    "name": "Alennus vähäpäästöisille autoille",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat/vahapaastoisten-autojen-pysakointimaksujen-alennus",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  },
+                  {
+                    "id": "menu_link_content:2ad4e334-64e3-44af-8597-e376d984c6d4",
+                    "name": "Mobiilisovellusten hintavertailu",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat/pysakoinnin-mobiilisovellusten-hintavertailu",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -49
+                  },
+                  {
+                    "id": "menu_link_content:93b4a4e4-12a4-4521-b980-521d99ca6df9",
+                    "name": "Autojen säilytyspalvelu – Autohotelli",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat/autojen-sailytyspalvelu-autohotelli",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -48
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:33bde933-d660-4a14-9ee2-a00ef981096c",
+                "name": "Pysäköinninvalvonta",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakoinninvalvonta",
+                "external": false,
+                "hasItems": false,
+                "weight": -49
+              },
+              {
+                "id": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
+                "name": "Ajoneuvojen siirrot",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/ajoneuvojen-siirrot",
+                "external": false,
+                "hasItems": true,
+                "weight": -48,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:6996f328-5f7b-4348-8d4e-6568ad13e4db",
+                    "name": "Ajoneuvon siirto- ja säilytyskustannukset",
+                    "parentId": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/ajoneuvojen-siirrot/ajoneuvon-siirto-ja-sailytyskustannukset",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
+                "name": "Asukaspysäköinti",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/asukaspysakointi",
+                "external": false,
+                "hasItems": true,
+                "weight": -47,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:93768cda-c8e3-4297-8a63-10a4a8b55efd",
+                    "name": "Asukaspysäköintialennus pysäköintihalliin",
+                    "parentId": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/asukaspysakointi/asukaspysakointialennus-pysakointihalliin",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:09ce6849-3cc5-4964-859b-1ab30ab24999",
+                "name": "Yrityspysäköinti",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/yrityspysakointi",
+                "external": false,
+                "hasItems": false,
+                "weight": -46
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+            "name": "Pyöräily",
+            "parentId": "",
+            "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily",
+            "external": false,
+            "hasItems": true,
+            "weight": -44,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:b65dc473-9003-4f17-9529-3403d8c0ab20",
+                "name": "Pyöräreitit",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorareitit",
+                "external": false,
+                "hasItems": false,
+                "weight": -50
+              },
+              {
+                "id": "menu_link_content:f83f426e-d15f-4a82-9b7d-bc3fc95c767a",
+                "name": "Pyörän pysäköinti",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyoran-pysakointi",
+                "external": false,
+                "hasItems": false,
+                "weight": -49
+              },
+              {
+                "id": "menu_link_content:9e675819-1868-4b2b-96a6-eff2b38c0b9a",
+                "name": "Pyöräteiden talvihoito",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorateiden-talvihoito",
+                "external": false,
+                "hasItems": false,
+                "weight": -48
+              },
+              {
+                "id": "menu_link_content:9b92fafc-a710-4331-8553-e0a5b09b1078",
+                "name": "Pyöräteiden rakentaminen",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorateiden-rakentaminen",
+                "external": false,
+                "hasItems": false,
+                "weight": -47
+              },
+              {
+                "id": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
+                "name": "Pyöräilyn edistäminen",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorailyn-edistaminen",
+                "external": false,
+                "hasItems": true,
+                "weight": -46,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:cb01bb31-36a8-499f-8229-b0392afcf867",
+                    "name": "Pyöräilykampanja",
+                    "parentId": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorailyn-edistaminen/pyorailykampanja",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "weight": [
+      {
+        "value": 0
+      }
+    ],
+    "default_langcode": [
+      {
+        "value": false
+      }
+    ],
+    "metatag": {
+      "value": {
+        "canonical_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
+        "title": "| Helsingin kaupunki",
+        "og_site_name": "Helsingin kaupunki",
+        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
+        "twitter_cards_type": "summary_large_image",
+        "twitter_cards_title": "| Helsingin kaupunki",
+        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
+        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
+      }
+    },
+    "content_translation_source": [
+      {
+        "value": "und"
+      }
+    ],
+    "content_translation_outdated": [
+      {
+        "value": false
+      }
+    ],
+    "content_translation_uid": [
+      {
+        "target_id": 1,
+        "target_type": "user",
+        "target_uuid": "de6409aa-c620-4327-90f4-127176f209b2",
+        "url": "/en/user/1"
+      }
+    ],
+    "content_translation_status": [
+      {
+        "value": true
+      }
+    ],
+    "content_translation_created": [
+      {
+        "value": "2022-08-11T07:59:10+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ],
+    "content_translation_changed": [
+      {
+        "value": "2022-08-26T07:08:24+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ]
+  }
+}

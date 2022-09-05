@@ -1,0 +1,131 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": [
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:76b3f466-5887-449d-852f-53d37bef6523",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation",
+        "meta": {
+          "entity_id": "29"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Hel.fi",
+        "url": "https://www.hel.fi/helsinki/fi",
+        "weight": "-50"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:98fdc9bf-40d6-426a-add7-ebb66b039ee9",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation",
+        "meta": {
+          "entity_id": "32"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Työpaikat",
+        "url": "https://www.hel.fi/rekry/fi/",
+        "weight": "-49"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:b2ffe34e-00f4-4bc7-ada9-0cffe3022333",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation",
+        "meta": {
+          "entity_id": "31"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Sosiaalinen media",
+        "url": "https://www.hel.fi/some",
+        "weight": "-48"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:c8ef2b1c-df80-4c49-a798-2b52dfc22e0e",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation",
+        "meta": {
+          "entity_id": "30"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Medialle",
+        "url": "https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/hallinto/viestinta/viestinta/",
+        "weight": "-47"
+      }
+    }
+  ],
+  "links": {
+    "self": {
+      "href": "https://helfi-etusivu.docker.so/fi/jsonapi/menu_items/footer-top-navigation"
+    }
+  }
+}

@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation;
 
-use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_navigation\Menu\Menu;
@@ -40,9 +39,6 @@ class MenuUpdater {
    * Sends main menu tree to frontpage instance.
    */
   public function syncMenu(string $langcode): void {
-    if (!$authKey = $this->config->get('helfi_navigation.api')->get('key')) {
-      throw new ConfigException('Missing required "helfi_navigation.api" setting.');
-    }
     $tree = $this
       ->menuTreeBuilder
       ->buildMenuTree(Menu::MAIN_MENU, $langcode);
@@ -63,7 +59,6 @@ class MenuUpdater {
 
     $this->apiManager->updateMainMenu(
       $langcode,
-      'Basic ' . $authKey,
       [
         'langcode' => $langcode,
         'site_name' => $siteName,

@@ -20,6 +20,7 @@ services:
       - '@http_client'
       - '@helfi_api_base.environment_resolver'
       - '@logger.channel.helfi_navigation'
+      - '@config.factory'
   helfi_navigation.menu_updater:
     class: \Drupal\helfi_navigation\MenuUpdater
     arguments:

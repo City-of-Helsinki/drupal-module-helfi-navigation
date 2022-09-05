@@ -1,0 +1,267 @@
+{
+  "liikenne": {
+    "project": [
+      {
+        "value": "liikenne"
+      }
+    ],
+    "uuid": [
+      {
+        "value": "7f1497e3-9480-4ba4-b9b8-e1f5db1f7cc6"
+      }
+    ],
+    "langcode": [
+      {
+        "value": "en"
+      }
+    ],
+    "status": [],
+    "name": [
+      {
+        "value": "Urban environment and traffic"
+      }
+    ],
+    "menu_tree": [
+      {
+        "name": "Urban environment and traffic",
+        "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic",
+        "external": false,
+        "hasItems": true,
+        "weight": 0,
+        "sub_tree": [
+          {
+            "id": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+            "name": "Parking",
+            "parentId": "",
+            "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking",
+            "external": false,
+            "hasItems": true,
+            "weight": -50,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                "name": "Parking areas, prices and payment methods",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods",
+                "external": false,
+                "hasItems": true,
+                "weight": -50,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:5c9444ef-c675-4d22-b032-7f516f9926b2",
+                    "name": "Discount for low-emission cars",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods/discount-for-low-emission-cars",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  },
+                  {
+                    "id": "menu_link_content:2ad4e334-64e3-44af-8597-e376d984c6d4",
+                    "name": "Price comparison of mobile parking apps",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods/price-comparison-of-mobile-parking-apps",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -49
+                  },
+                  {
+                    "id": "menu_link_content:93b4a4e4-12a4-4521-b980-521d99ca6df9",
+                    "name": "Car storage service – Car Hotel",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods/car-storage-service-car-hotel",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -48
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:33bde933-d660-4a14-9ee2-a00ef981096c",
+                "name": "Parking control",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-control",
+                "external": false,
+                "hasItems": false,
+                "weight": -49
+              },
+              {
+                "id": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
+                "name": "Vehicle removal",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/vehicle-removal",
+                "external": false,
+                "hasItems": true,
+                "weight": -48,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:6996f328-5f7b-4348-8d4e-6568ad13e4db",
+                    "name": "Vehicle removal and storage costs",
+                    "parentId": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/vehicle-removal/vehicle-removal-and-storage-costs",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
+                "name": "Resident parking",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/resident-parking",
+                "external": false,
+                "hasItems": true,
+                "weight": -47,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:93768cda-c8e3-4297-8a63-10a4a8b55efd",
+                    "name": "Resident parking discount for a parking hall",
+                    "parentId": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/resident-parking/resident-parking-discount-for-a-parking-hall",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:09ce6849-3cc5-4964-859b-1ab30ab24999",
+                "name": "Business parking permit",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/business-parking-permit",
+                "external": false,
+                "hasItems": false,
+                "weight": -46
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+            "name": "Cycling",
+            "parentId": "",
+            "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling",
+            "external": false,
+            "hasItems": true,
+            "weight": -44,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:b65dc473-9003-4f17-9529-3403d8c0ab20",
+                "name": "Cycling routes",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/cycling-routes",
+                "external": false,
+                "hasItems": false,
+                "weight": -50
+              },
+              {
+                "id": "menu_link_content:f83f426e-d15f-4a82-9b7d-bc3fc95c767a",
+                "name": "Bicycle parking",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/bicycle-parking",
+                "external": false,
+                "hasItems": false,
+                "weight": -49
+              },
+              {
+                "id": "menu_link_content:9e675819-1868-4b2b-96a6-eff2b38c0b9a",
+                "name": "Winter maintenance of cycle paths",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/winter-maintenance-of-cycle-paths",
+                "external": false,
+                "hasItems": false,
+                "weight": -48
+              },
+              {
+                "id": "menu_link_content:9b92fafc-a710-4331-8553-e0a5b09b1078",
+                "name": "Construction of cycle paths",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/construction-of-cycle-paths",
+                "external": false,
+                "hasItems": false,
+                "weight": -47
+              },
+              {
+                "id": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
+                "name": "Promotion of cycling",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/promotion-of-cycling",
+                "external": false,
+                "hasItems": true,
+                "weight": -46,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:cb01bb31-36a8-499f-8229-b0392afcf867",
+                    "name": "Helsinki as a cycling city",
+                    "parentId": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/promotion-of-cycling/helsinki-as-a-cycling-city",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "weight": [
+      {
+        "value": 0
+      }
+    ],
+    "default_langcode": [
+      {
+        "value": true
+      }
+    ],
+    "metatag": {
+      "value": {
+        "canonical_url": "https://helfi-etusivu.docker.so/en/api/v1/global-menu",
+        "title": "| City of Helsinki",
+        "og_site_name": "City of Helsinki",
+        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
+        "twitter_cards_type": "summary_large_image",
+        "twitter_cards_title": "| City of Helsinki",
+        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/en/api/v1/global-menu",
+        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
+      }
+    },
+    "content_translation_source": [
+      {
+        "value": "und"
+      }
+    ],
+    "content_translation_outdated": [
+      {
+        "value": false
+      }
+    ],
+    "content_translation_uid": [
+      {
+        "target_id": 1,
+        "target_type": "user",
+        "target_uuid": "de6409aa-c620-4327-90f4-127176f209b2",
+        "url": "/en/user/1"
+      }
+    ],
+    "content_translation_status": [
+      {
+        "value": true
+      }
+    ],
+    "content_translation_created": [
+      {
+        "value": "2022-08-11T07:58:54+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ],
+    "content_translation_changed": [
+      {
+        "value": "2022-08-26T07:04:55+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ]
+  }
+}

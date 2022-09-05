@@ -6,10 +6,12 @@ namespace Drupal\helfi_navigation;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
@@ -20,6 +22,13 @@ use Psr\Log\LoggerInterface;
 class ApiManager {
 
   use CacheKeyTrait;
+
+  /**
+   * The authorization token.
+   *
+   * @var null|string
+   */
+  private ?string $authorization;
 
   /**
    * Construct an instance.
@@ -34,6 +43,8 @@ class ApiManager {
    *   EnvironmentResolver helper class.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory.
    */
   public function __construct(
     private TimeInterface $time,
@@ -41,7 +52,9 @@ class ApiManager {
     private ClientInterface $httpClient,
     private EnvironmentResolver $environmentResolver,
     private LoggerInterface $logger,
+    ConfigFactoryInterface $configFactory
   ) {
+    $this->authorization = $configFactory->get('helfi_navigation.api')->get('key');
   }
 
   /**
@@ -104,18 +117,20 @@ class ApiManager {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function getExternalMenu(string $langcode, string $menuId, array $options = []) : object {
+  public function getExternalMenu(
+    string $langcode,
+    string $menuId,
+    array $options = []
+  ) : object {
     $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
 
-    return $this
-      ->cache($key, function () use ($menuId, $langcode, $options) : CacheValue {
-        return new CacheValue(
+    return $this->cache($key, fn() =>
+        new CacheValue(
           $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $langcode, $options),
           $this->time->getRequestTime(),
           ['external_menu:%s:%s', $menuId, $langcode],
-        );
-      })
-      ->data;
+        )
+    )->data;
   }
 
   /**
@@ -134,15 +149,13 @@ class ApiManager {
   public function getMainMenu(string $langcode, array $options = []) : object {
     $key = $this->getCacheKey(sprintf('external_menu:main:%s', $langcode), $options);
 
-    return $this
-      ->cache($key, function () use ($langcode, $options) : CacheValue {
-        return new CacheValue(
-          $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options),
-          $this->time->getRequestTime(),
-          ['external_menu:main:%s', $langcode]
-        );
-      })
-      ->data;
+    return $this->cache($key, fn() =>
+      new CacheValue(
+        $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options),
+        $this->time->getRequestTime(),
+        ['external_menu:main:%s', $langcode]
+      )
+    )->data;
   }
 
   /**
@@ -150,19 +163,14 @@ class ApiManager {
    *
    * @param string $langcode
    *   The langcode.
-   * @param string $authorization
-   *   The authorization header.
    * @param array $data
    *   The JSON data to update.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function updateMainMenu(string $langcode, string $authorization, array $data) : void {
+  public function updateMainMenu(string $langcode, array $data) : void {
     $endpoint = sprintf('/api/v1/global-menu/%s', $this->environmentResolver->getActiveEnvironment()->getId());
     $this->makeRequest('POST', $endpoint, $langcode, [
-      'headers' => [
-        'Authorization' => $authorization,
-      ],
       'json' => $data,
     ]);
   }
@@ -184,7 +192,12 @@ class ApiManager {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  private function makeRequest(string $method, string $endpoint, string $langcode, array $options = []): object {
+  private function makeRequest(
+    string $method,
+    string $endpoint,
+    string $langcode,
+    array $options = []
+  ): object {
     $activeEnvironmentName = $this->environmentResolver
       ->getActiveEnvironment()
       ->getEnvironmentName();
@@ -193,18 +206,45 @@ class ApiManager {
       ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName)
       ->getUrl($langcode);
 
-    $url = sprintf('%s/%s', $baseUrl, ltrim($endpoint, '/'));
+    $url = sprintf('%s/%s?XDEBUG_SESSION_START=1', $baseUrl, ltrim($endpoint, '/'));
 
     // Disable SSL verification in local environment.
     if ($activeEnvironmentName === 'local') {
       $options['verify'] = FALSE;
     }
 
+    if ($this->authorization !== NULL) {
+      $options['headers']['Authorization'] = sprintf('Basic %s', $this->authorization);
+    }
+
     try {
       $response = $this->httpClient->request($method, $url, $options);
-      return \GuzzleHttp\json_decode($response->getBody()->getContents());
+      $data = \GuzzleHttp\json_decode($response->getBody()->getContents());
+
+      return $data instanceof \stdClass ?
+        $data :
+        throw new \InvalidArgumentException('Response is not an object.');
     }
     catch (\Exception $e) {
+      // Serve mock data on local environments if requests fail.
+      if (
+        $method === 'GET' &&
+        $e instanceof ClientException &&
+        $activeEnvironmentName === 'local'
+      ) {
+        $fileName = vsprintf('%s/../fixtures/%s-%s.json', [
+          __DIR__,
+          str_replace('/', '-', ltrim($endpoint, '/')),
+          $langcode,
+        ]);
+
+        if (!file_exists($fileName)) {
+          throw new \InvalidArgumentException(
+            sprintf('[%s]. Attempted to use mock data, but the mock file was not found for "%s" endpoint.', $e->getMessage(), $endpoint)
+          );
+        }
+        return \GuzzleHttp\json_decode(file_get_contents($fileName));
+      }
       // Log the error and re-throw the exception.
       $this->logger->error('Request failed with error: ' . $e->getMessage());
       throw $e;
