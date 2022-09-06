@@ -142,6 +142,7 @@ class ApiManagerTest extends UnitTestCase {
   public function testGetExternalMenu() : void {
     $requests = [];
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+      new Response(200, body: json_encode([])),
       new Response(200, body: json_encode(['key' => 'value'])),
     ]);
     $sut = $this->getSut(
@@ -149,9 +150,13 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       $this->prophesize(LoggerInterface::class)->reveal()
     );
-    $response = $sut->getExternalMenu('fi', 'main');
-    $this->assertInstanceOf(\stdClass::class, $response);
-    $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+
+    // Test empty and non-empty response.
+    for ($i = 0; $i < 2; $i++) {
+      $response = $sut->getExternalMenu('fi', 'main');
+      $this->assertInstanceOf(\stdClass::class, $response);
+      $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+    }
     // Make sure cache is used (request queue should be empty).
     $sut->getExternalMenu('fi', 'main');
   }
@@ -169,6 +174,7 @@ class ApiManagerTest extends UnitTestCase {
   public function testGetMainMenu() : void {
     $requests = [];
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+      new Response(200, body: json_encode([])),
       new Response(200, body: json_encode(['key' => 'value'])),
     ]);
     $sut = $this->getSut(
@@ -176,9 +182,12 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       $this->prophesize(LoggerInterface::class)->reveal()
     );
-    $response = $sut->getMainMenu('fi');
-    $this->assertInstanceOf(\stdClass::class, $response);
-    $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+    // Test empty and non-empty response.
+    for ($i = 0; $i < 2; $i++) {
+      $response = $sut->getMainMenu('fi');
+      $this->assertInstanceOf(\stdClass::class, $response);
+      $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+    }
     // Make sure cache is used (request queue should be empty).
     $sut->getMainMenu('fi');
   }

@@ -221,9 +221,7 @@ class ApiManager {
       $response = $this->httpClient->request($method, $url, $options);
       $data = \GuzzleHttp\json_decode($response->getBody()->getContents());
 
-      return $data instanceof \stdClass ?
-        $data :
-        throw new \InvalidArgumentException('Response is not an object.');
+      return $data instanceof \stdClass ? $data : (object) ['data' => NULL];
     }
     catch (\Exception $e) {
       // Serve mock data on local environments if requests fail.

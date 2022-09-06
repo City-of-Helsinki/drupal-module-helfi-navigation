@@ -32,13 +32,8 @@ class MenuBlockTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * {@inheritdoc}
+   * Make sure menu block can be placed.
    */
-  public function setUp(): void {
-    parent::setUp();
-
-  }
-
   public function testExternalMenuBlock() : void {
     $this->drupalPlaceBlock('external_menu_block_fallback', [
       'label' => 'External menu fallback',
