@@ -1,0 +1,215 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": [
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:1eeb9ae9-88ab-4e38-8ab0-92cd7399bfa8",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation-2",
+        "meta": {
+          "entity_id": "48"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Kaupunkineuvonta – Helsinki-info",
+        "url": "https://neuvonta.hel.fi/",
+        "weight": "-50"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:aeca3670-182d-4cda-a1d1-df752cea5006",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation-2",
+        "meta": {
+          "entity_id": "49"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Hae yhteystietoja ja numeroita",
+        "url": "https://search.hel.fi/",
+        "weight": "-49"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:b9d7a5a5-ead4-4316-aef4-46f468ca839c",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation-2",
+        "meta": {
+          "entity_id": "51"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Anna palautetta",
+        "url": "https://www.hel.fi/kaupunkiymparisto/fi/yhteystiedot/anna+palautetta",
+        "weight": "-48"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:2dcceefe-557c-4b67-ab7a-9d0ffb6899a7",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation-2",
+        "meta": {
+          "entity_id": "54"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Helsingfors-info",
+        "url": "https://www.hel.fi/sv/beslutsfattande-och-forvaltning/ta-kontakt/helsingfors-info",
+        "weight": "-47"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:371773fe-8a10-47de-b587-bdc60b24f30a",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation-2",
+        "meta": {
+          "entity_id": "50"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Ge respons",
+        "url": "https://www.hel.fi/kaupunkiymparisto/sv/kontaktuppgifter-och-respons/respons/",
+        "weight": "-46"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:895c14db-fdbf-4de6-95c5-1b532a28031b",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation-2",
+        "meta": {
+          "entity_id": "53"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Helsinki-info",
+        "url": "https://www.hel.fi/en/decision-making/contact-us/helsinki-info",
+        "weight": "-45"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:40b7052a-7619-4f6d-80d5-387d22fab475",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-top-navigation-2",
+        "meta": {
+          "entity_id": "52"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Feedback",
+        "url": "https://www.hel.fi/kaupunkiymparisto/en/feedback/feedback",
+        "weight": "-44"
+      }
+    }
+  ],
+  "links": {
+    "self": {
+      "href": "https://helfi-etusivu.docker.so/sv/jsonapi/menu_items/footer-top-navigation-2"
+    }
+  }
+}

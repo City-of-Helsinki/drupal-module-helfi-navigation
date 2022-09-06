@@ -6,7 +6,6 @@ namespace Drupal\Tests\helfi_navigation\Functional;
 
 use Drupal\Tests\helfi_api_base\Functional\BrowserTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
-use Drupal\Tests\helfi_api_base\Traits\WebServerTestTrait;
 
 /**
  * Tests menu blocks.
@@ -16,7 +15,6 @@ use Drupal\Tests\helfi_api_base\Traits\WebServerTestTrait;
 class MenuBlockTest extends BrowserTestBase {
 
   use ApiTestTrait;
-  use WebServerTestTrait;
 
   /**
    * {@inheritdoc}

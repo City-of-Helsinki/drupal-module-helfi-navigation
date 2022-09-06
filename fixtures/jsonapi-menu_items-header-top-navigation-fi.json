@@ -12,6 +12,62 @@
   "data": [
     {
       "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:902e7c60-3571-426d-8b77-4659ca2e9514",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "header-top-navigation",
+        "meta": {
+          "entity_id": "37"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Koronavirus",
+        "url": "https://www.hel.fi/helsinki/korona-fi/",
+        "weight": "-50"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:43d5d4d7-2bdd-4df3-bfa0-31e6355a2b57",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "header-top-navigation",
+        "meta": {
+          "entity_id": "40"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Uutiset",
+        "url": "https://www.hel.fi/uutiset/fi",
+        "weight": "-49"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
       "id": "menu_link_content:66505c0c-052a-4f8d-a630-ba97dfd41852",
       "attributes": {
         "description": null,
@@ -35,7 +91,7 @@
         },
         "title": "Anna palautetta",
         "url": "https://www.hel.fi/kaupunkiymparisto/fi/yhteystiedot/anna+palautetta",
-        "weight": "0"
+        "weight": "-48"
       }
     }
   ],

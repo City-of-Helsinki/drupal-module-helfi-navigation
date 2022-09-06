@@ -206,7 +206,7 @@ class ApiManager {
       ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName)
       ->getUrl($langcode);
 
-    $url = sprintf('%s/%s?XDEBUG_SESSION_START=1', $baseUrl, ltrim($endpoint, '/'));
+    $url = sprintf('%s/123%s', $baseUrl, ltrim($endpoint, '/'));
 
     // Disable SSL verification in local environment.
     if ($activeEnvironmentName === 'local') {
@@ -230,6 +230,10 @@ class ApiManager {
         $e instanceof ClientException &&
         $activeEnvironmentName === 'local'
       ) {
+        $this->logger->warning(
+          sprintf('Global menu request failed: %s. Mock data is used instead.', $e->getMessage())
+        );
+
         $fileName = vsprintf('%s/../fixtures/%s-%s.json', [
           __DIR__,
           str_replace('/', '-', ltrim($endpoint, '/')),

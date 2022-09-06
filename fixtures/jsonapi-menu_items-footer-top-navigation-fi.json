@@ -12,34 +12,6 @@
   "data": [
     {
       "type": "menu_link_content--menu_link_content",
-      "id": "menu_link_content:76b3f466-5887-449d-852f-53d37bef6523",
-      "attributes": {
-        "description": null,
-        "enabled": true,
-        "expanded": false,
-        "menu_name": "footer-top-navigation",
-        "meta": {
-          "entity_id": "29"
-        },
-        "options": {
-          "attributes": {
-            "class": []
-          },
-          "external": true
-        },
-        "parent": "",
-        "provider": "menu_link_content",
-        "route": {
-          "name": "",
-          "parameters": []
-        },
-        "title": "Hel.fi",
-        "url": "https://www.hel.fi/helsinki/fi",
-        "weight": "-50"
-      }
-    },
-    {
-      "type": "menu_link_content--menu_link_content",
       "id": "menu_link_content:98fdc9bf-40d6-426a-add7-ebb66b039ee9",
       "attributes": {
         "description": null,

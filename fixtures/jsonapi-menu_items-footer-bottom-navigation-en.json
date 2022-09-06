@@ -12,42 +12,41 @@
   "data": [
     {
       "type": "menu_link_content--menu_link_content",
-      "id": "menu_link_content:64c40732-d8e6-4c45-b735-b5bdb72904ac",
+      "id": "menu_link_content:8b54478c-5d6e-4f56-af3f-f17580937dc7",
       "attributes": {
         "description": null,
         "enabled": true,
         "expanded": false,
-        "menu_name": "footer-top-navigation",
+        "menu_name": "footer-bottom-navigation",
         "meta": {
-          "entity_id": "35"
+          "entity_id": "21"
         },
         "options": {
           "attributes": {
             "class": []
-          },
-          "external": true
+          }
         },
         "parent": "",
         "provider": "menu_link_content",
         "route": {
-          "name": "",
+          "name": "<nolink>",
           "parameters": []
         },
-        "title": "Employment opportunities",
-        "url": "https://www.hel.fi/rekry/en/",
-        "weight": "0"
+        "title": "© City of Helsinki 2022",
+        "url": "",
+        "weight": "-50"
       }
     },
     {
       "type": "menu_link_content--menu_link_content",
-      "id": "menu_link_content:048c2391-b992-470e-86e3-40421e32da00",
+      "id": "menu_link_content:b3a008f1-3bc3-4549-96dd-2e4e63d4b64b",
       "attributes": {
         "description": null,
         "enabled": true,
         "expanded": false,
-        "menu_name": "footer-top-navigation",
+        "menu_name": "footer-bottom-navigation",
         "meta": {
-          "entity_id": "33"
+          "entity_id": "20"
         },
         "options": {
           "attributes": {
@@ -61,21 +60,21 @@
           "name": "",
           "parameters": []
         },
-        "title": "Media contacts",
-        "url": "https://www.hel.fi/helsinki/en/administration/administration/communication/information",
-        "weight": "0"
+        "title": "Accessibility statement",
+        "url": "https://www.hel.fi/accessibility",
+        "weight": "-49"
       }
     },
     {
       "type": "menu_link_content--menu_link_content",
-      "id": "menu_link_content:63333bf8-4936-497d-aef2-fe0316e9488a",
+      "id": "menu_link_content:363e8504-3ee6-4f9f-90f5-b0f847051239",
       "attributes": {
         "description": null,
         "enabled": true,
         "expanded": false,
-        "menu_name": "footer-top-navigation",
+        "menu_name": "footer-bottom-navigation",
         "meta": {
-          "entity_id": "34"
+          "entity_id": "19"
         },
         "options": {
           "attributes": {
@@ -89,15 +88,43 @@
           "name": "",
           "parameters": []
         },
-        "title": "The city on social media",
-        "url": "https://www.hel.fi/some",
-        "weight": "0"
+        "title": "Information requests",
+        "url": "https://www.hel.fi/helsinki/en/administration/administration/information-requests/",
+        "weight": "-48"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:5f2580fb-ecf9-4b84-af22-829415e94ee9",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-bottom-navigation",
+        "meta": {
+          "entity_id": "18"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "About hel.fi",
+        "url": "https://www.hel.fi/about",
+        "weight": "-47"
       }
     }
   ],
   "links": {
     "self": {
-      "href": "https://helfi-etusivu.docker.so/en/jsonapi/menu_items/footer-top-navigation"
+      "href": "https://helfi-etusivu.docker.so/en/jsonapi/menu_items/footer-bottom-navigation"
     }
   }
 }
