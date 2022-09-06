@@ -210,7 +210,7 @@ class ApiManager {
       ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName)
       ->getUrl($langcode);
 
-    $url = sprintf('%s/123%s', $baseUrl, ltrim($endpoint, '/'));
+    $url = sprintf('%s/%s', $baseUrl, ltrim($endpoint, '/'));
 
     // Disable SSL verification in local environment.
     if ($activeEnvironmentName === 'local') {
