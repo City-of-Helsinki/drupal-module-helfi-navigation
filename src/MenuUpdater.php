@@ -39,7 +39,7 @@ class MenuUpdater {
    * Sends main menu tree to frontpage instance.
    */
   public function syncMenu(string $langcode): void {
-    $site_id = hash('sha1', $this->config->get('system.site')->get('name'));
+    $site_id = hash('sha1', $this->config->get('system.site')->get('name') ?? '');
 
     $tree = $this
       ->menuTreeBuilder

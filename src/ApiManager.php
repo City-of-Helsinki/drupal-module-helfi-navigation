@@ -6,6 +6,7 @@ namespace Drupal\helfi_navigation;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
@@ -169,6 +170,9 @@ class ApiManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function updateMainMenu(string $langcode, array $data) : void {
+    if (!$this->authorization) {
+      throw new ConfigException('Missing "helfi_navigation.api" key setting.');
+    }
     $endpoint = sprintf('/api/v1/global-menu/%s', $this->environmentResolver->getActiveEnvironment()->getId());
     $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,

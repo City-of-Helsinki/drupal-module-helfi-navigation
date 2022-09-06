@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
@@ -93,6 +94,9 @@ function _helfi_navigation_queue_item(string $langcode) : void {
   try {
     $menuUpdater->syncMenu($langcode);
     \Drupal::messenger()->addMessage(t('Global navigation was synced successfully!'));
+  }
+  catch (ConfigException) {
+    \Drupal::messenger()->addWarning(t('Global navigation sync failed because API keys are not set.'));
   }
   catch (\Exception $e) {
     \Drupal::messenger()->addWarning(t('Global navigation sync failed: @reason The item will be placed in a queue and will be synced again later.', [
