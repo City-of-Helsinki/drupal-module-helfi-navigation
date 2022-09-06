@@ -6,19 +6,19 @@ helfi_navigation.api:
     langcode:
       type: string
 
-block.settings.external_menu_block:*:
+block.settings.external_menu_block_main_navigation:
   type: block_settings
-  label: 'External menu block'
+  label: 'External mega menu block'
   mapping:
     level:
       type: integer
       label: 'Starting level'
-    expand_all_items:
-      type: boolean
-      label: 'Expand all items'
     depth:
       type: integer
       label: 'Maximum number of levels'
+    expand_all_items:
+      type: boolean
+      label: 'Expand all items'
 
 block.settings.external_menu_block_fallback:
   type: block_settings
@@ -34,3 +34,16 @@ block.settings.external_menu_block_fallback:
       type: integer
       label: 'Maximum number of levels'
 
+block.settings.external_menu_block:*:
+  type: block_settings
+  label: 'External menu block'
+  mapping:
+    level:
+      type: integer
+      label: 'Starting level'
+    expand_all_items:
+      type: boolean
+      label: 'Expand all items'
+    depth:
+      type: integer
+      label: 'Maximum number of levels'
