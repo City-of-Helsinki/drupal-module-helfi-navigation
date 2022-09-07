@@ -6,7 +6,6 @@ namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Url;
-use Drupal\helfi_navigation\Menu\Menu;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 
@@ -37,14 +36,15 @@ class MenuUpdater {
 
   /**
    * Sends main menu tree to frontpage instance.
+   *
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function syncMenu(string $langcode): void {
-    $site_id = hash('sha1', $this->config->get('system.site')->get('name') ?? '');
-
-    $tree = $this
-      ->menuTreeBuilder
-      ->buildMenuTree(Menu::MAIN_MENU, $langcode, $site_id);
-
     $siteName = $this->languageManager
       ->getLanguageConfigOverride($langcode, 'system.site')
       ->get('name');
@@ -59,20 +59,22 @@ class MenuUpdater {
       'language' => $this->languageManager->getLanguage($langcode),
     ])->setAbsolute();
 
+    $tree = $this
+      ->menuTreeBuilder
+      ->buildMenuTree('main', $langcode, (object) [
+        'id' => vsprintf('base:%s', [
+          preg_replace('/[^a-z0-9_]+/', '_', strtolower($siteName)),
+        ]),
+        'name' => $siteName,
+        'url' => $instanceUri->toString(),
+      ]);
+
     $this->apiManager->updateMainMenu(
       $langcode,
       [
         'langcode' => $langcode,
         'site_name' => $siteName,
-        'menu_tree' => [
-          'name' => $siteName,
-          'url' => $instanceUri->toString(),
-          'external' => FALSE,
-          'hasItems' => !(empty($tree)),
-          'weight' => 0,
-          'sub_tree' => $tree,
-          'id' => $site_id,
-        ],
+        'menu_tree' => $tree,
       ]
     );
   }

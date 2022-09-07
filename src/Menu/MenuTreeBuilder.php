@@ -33,8 +33,8 @@ final class MenuTreeBuilder {
    *   Menu type.
    * @param string $langcode
    *   Language code.
-   * @param string $site_id
-   *   Site id to be used as id in menu.
+   * @param object $rootElement
+   *   The root element.
    *
    * @return array
    *   The resulting tree.
@@ -42,14 +42,25 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function buildMenuTree(string $menuName, string $langcode, string $site_id): array {
+  public function buildMenuTree(string $menuName, string $langcode, object $rootElement): array {
+    if (!isset($rootElement->name, $rootElement->url, $rootElement->id)) {
+      throw new \LogicException(
+        'Missing $rootElement->name, $rootElement->url or $rootElement->id property.'
+      );
+    }
     $tree = $this->menuTree->load(
       $menuName,
       (new MenuTreeParameters())
         ->onlyEnabledLinks()
     );
-
-    return $this->transformMenuItems($tree, $langcode, $site_id);
+    return [
+      'id' => $rootElement->id,
+      'name' => $rootElement->name,
+      'url' => $rootElement->url,
+      'external' => FALSE,
+      'weight' => 0,
+      'sub_tree' => $this->transformMenuItems($tree, $langcode, $rootElement->id),
+    ];
   }
 
   /**
@@ -59,8 +70,8 @@ final class MenuTreeBuilder {
    *   Array of menu items.
    * @param string $langcode
    *   Language code as a string.
-   * @param string $site_id
-   *   Unique identifier for the site used as menu id.
+   * @param string|null $rootId
+   *   The root ID or null.
    *
    * @return array
    *   Returns an array of transformed menu items.
@@ -68,12 +79,10 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function transformMenuItems(array $menuItems, string $langcode, string $site_id = ''): array {
+  protected function transformMenuItems(array $menuItems, string $langcode, string $rootId = NULL): array {
     $items = [];
 
     foreach ($menuItems as $element) {
-      $sub_tree = $element->subtree;
-
       /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $link */
       if (!$link = $this->getEntity($element->link)) {
         continue;
@@ -95,26 +104,34 @@ final class MenuTreeBuilder {
         continue;
       }
 
-      $parent_id = (empty($menuLink->getParentId()) && !empty($site_id)) ? $site_id : $menuLink->getParentId();
+      $parentId = $menuLink->getParentId();
+      // The first level link (depth 0) always links to a currently active
+      // instance, meaning second level (depth 1) links have no proper
+      // parent. Use a pre-defined root id to keep the menu structure
+      // consistent.
+      if ($parentId === '') {
+        $parentId = (string) $rootId;
+      }
+
       $item = [
         'id' => $menuLink->getPluginId(),
         'name' => $menuLink->getTitle(),
-        'parentId' => $parent_id,
+        'parentId' => $parentId,
         'url' => $menuLink->getUrlObject()->setAbsolute()->toString(),
         'external' => $this->domainResolver->isExternal($menuLink->getUrlObject()),
         'hasItems' => FALSE,
         'weight' => $menuLink->getWeight(),
       ];
 
-      if (count($sub_tree) > 0) {
+      if (count($element->subtree) > 0) {
         $item['hasItems'] = TRUE;
-        $item['sub_tree'] = $this->transformMenuItems($sub_tree, $langcode, '');
+        $item['sub_tree'] = $this->transformMenuItems($element->subtree, $langcode);
       }
 
       $items[] = (object) $item;
     }
 
-    usort($items, [$this, 'sortMenuItems']);
+    usort($items, fn (object $a, object $b) => $a->weight <=> $b->weight);
     return $items;
   }
 
@@ -124,7 +141,7 @@ final class MenuTreeBuilder {
    * @param \Drupal\Core\Menu\MenuLinkInterface $link
    *   The menu link.
    *
-   * @return bool|\Drupal\Core\Entity\EntityInterface|null
+   * @return \Drupal\Core\Entity\EntityInterface|null
    *   Boolean if menu link has no metadata. NULL if entity not found and
    *   an EntityInterface if found.
    *
@@ -142,24 +159,6 @@ final class MenuTreeBuilder {
     return $this->entityTypeManager
       ->getStorage('menu_link_content')
       ->load($metadata['entity_id']);
-  }
-
-  /**
-   * Sort menu items by weight.
-   *
-   * @param object $item1
-   *   First object.
-   * @param object $item2
-   *   Second object.
-   *
-   * @return int
-   *   Returns sorting order.
-   */
-  private function sortMenuItems(object $item1, object $item2): int {
-    if ($item1->weight == $item2->weight) {
-      return 0;
-    }
-    return $item1->weight < $item2->weight ? -1 : 1;
   }
 
 }
