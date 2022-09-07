@@ -81,6 +81,24 @@ function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $ent
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function helfi_navigation_menu_link_content_insert(MenuLinkContentInterface $entity) : void {
+  if ($entity->getMenuName() === 'main') {
+    _helfi_navigation_queue_item($entity->language()->getId());
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $entity) : void {
+  if ($entity->getMenuName() === 'main') {
+    _helfi_navigation_queue_item($entity->language()->getId());
+  }
+}
+
+/**
  * Create menu update queue item.
  */
 function _helfi_navigation_queue_item(string $langcode) : void {

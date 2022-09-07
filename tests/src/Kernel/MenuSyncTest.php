@@ -9,6 +9,8 @@ use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MenuUpdater;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\system\Entity\Menu;
 
 /**
  * Tests navigation sync.
@@ -38,7 +40,7 @@ class MenuSyncTest extends KernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('menu_link_content');
-    $this->installConfig(['language']);
+    $this->installConfig(['language', 'system']);
 
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
@@ -160,6 +162,35 @@ class MenuSyncTest extends KernelTestBase {
       ['en'],
       ['sv'],
     ];
+  }
+
+  /**
+   * Make sure entity hooks triggers the menu sync.
+   */
+  public function testHooks() : void {
+    $this->config('system.site')->set('name', 'Site name')->save();
+    $this->config('helfi_navigation.api')->set('key', '123')->save();
+
+    $menuUpdater = $this->prophesize(MenuUpdater::class);
+    // Make sure syncMenu is called for:
+    // - menu link update
+    // - menu link insert
+    // - menu link delete
+    // - menu update (will fallback to english langcode).
+    $menuUpdater->syncMenu('fi')->shouldBeCalledTimes(3);
+    $menuUpdater->syncMenu('en')->shouldBeCalledTimes(1);
+    $this->container->set('helfi_navigation.menu_updater', $menuUpdater->reveal());
+
+    $menuLink = MenuLinkContent::create([
+      'menu_name' => 'main',
+      'title' => 'link',
+      'langcode' => 'fi',
+      'link' => ['uri' => 'internal:/test-page'],
+    ]);
+    $menuLink->save();
+    $menuLink->set('title', '123')->save();
+    $menuLink->delete();
+    Menu::load('main')->save();
   }
 
 }
