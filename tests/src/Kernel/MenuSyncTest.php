@@ -9,6 +9,8 @@ use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MenuUpdater;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\system\Entity\Menu;
 
 /**
  * Tests navigation sync.
@@ -33,12 +35,12 @@ class MenuSyncTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() : void {
+  protected function setUp() : void {
     parent::setUp();
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('menu_link_content');
-    $this->installConfig(['language']);
+    $this->installConfig(['language', 'system']);
 
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
@@ -106,9 +108,18 @@ class MenuSyncTest extends KernelTestBase {
   }
 
   /**
+   * Tests syncMenu() without site name.
+   */
+  public function testSyncMenuMissingSiteName() : void {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->getMenuUpdater()->syncMenu('fi');
+  }
+
+  /**
    * Tests syncMenu() without api key.
    */
   public function testSyncMenuMissingApiKey() : void {
+    $this->config('system.site')->set('name', 'Site name')->save();
     $this->expectException(ConfigException::class);
     $this->getMenuUpdater()->syncMenu('fi');
   }
@@ -127,11 +138,12 @@ class MenuSyncTest extends KernelTestBase {
     $apiManager->expects($this->once())
       ->method('updateMainMenu')
       // Capture arguments passed to syncMenu() so we can test them.
-      ->will($this->returnCallback(function (string $langcode, string $authCode, array $data) use ($siteName) {
-        $this->assertEquals('Basic 123', $authCode);
+      ->will($this->returnCallback(function (string $langcode, array $data) use ($siteName) {
         $this->assertEquals($siteName, $data['site_name']);
+        $this->assertEquals('base:site_name_' . $langcode, $data['menu_tree']['id']);
         $this->assertEquals($siteName, $data['menu_tree']['name']);
         $this->assertEquals($langcode, $data['langcode']);
+        $this->assertStringStartsWith('http://', $data['menu_tree']['url']);
       }));
     $this->container->set('helfi_navigation.api_manager', $apiManager);
 
@@ -150,6 +162,35 @@ class MenuSyncTest extends KernelTestBase {
       ['en'],
       ['sv'],
     ];
+  }
+
+  /**
+   * Make sure entity hooks triggers the menu sync.
+   */
+  public function testHooks() : void {
+    $this->config('system.site')->set('name', 'Site name')->save();
+    $this->config('helfi_navigation.api')->set('key', '123')->save();
+
+    $menuUpdater = $this->prophesize(MenuUpdater::class);
+    // Make sure syncMenu is called for:
+    // - menu link update
+    // - menu link insert
+    // - menu link delete
+    // - menu update (will fallback to english langcode).
+    $menuUpdater->syncMenu('fi')->shouldBeCalledTimes(3);
+    $menuUpdater->syncMenu('en')->shouldBeCalledTimes(1);
+    $this->container->set('helfi_navigation.menu_updater', $menuUpdater->reveal());
+
+    $menuLink = MenuLinkContent::create([
+      'menu_name' => 'main',
+      'title' => 'link',
+      'langcode' => 'fi',
+      'link' => ['uri' => 'internal:/test-page'],
+    ]);
+    $menuLink->save();
+    $menuLink->set('title', '123')->save();
+    $menuLink->delete();
+    Menu::load('main')->save();
   }
 
 }

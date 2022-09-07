@@ -6,12 +6,10 @@ namespace Drupal\helfi_navigation;
 
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Menu\MenuActiveTrailInterface;
-use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_navigation\Plugin\Menu\ExternalMenuLink;
-use Psr\Log\LoggerInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -19,7 +17,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * Helper class for external menu tree actions.
  */
-class ExternalMenuTreeFactory {
+final class ExternalMenuTreeFactory {
 
   /**
    * The current request.
@@ -31,29 +29,20 @@ class ExternalMenuTreeFactory {
   /**
    * Constructs a tree instance from supplied JSON.
    *
-   * @param \Psr\Log\LoggerInterface $logger
-   *   Logger channel.
    * @param \Drupal\helfi_api_base\Link\InternalDomainResolver $domainResolver
    *   Internal domain resolver.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   * @param \Drupal\helfi_navigation\ApiManager $apiManager
-   *   Global navigation service.
    * @param \Drupal\Component\Uuid\UuidInterface $uuidService
    *   UUID service.
    * @param \Drupal\Core\Menu\MenuActiveTrailInterface $menuActiveTrail
    *   The active menu trail service.
-   * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuTree
-   *   The active menu trail service.
    */
   public function __construct(
-    protected LoggerInterface $logger,
-    protected InternalDomainResolver $domainResolver,
+    private InternalDomainResolver $domainResolver,
     RequestStack $requestStack,
-    protected ApiManager $apiManager,
-    protected UuidInterface $uuidService,
-    protected MenuActiveTrailInterface $menuActiveTrail,
-    protected MenuLinkTreeInterface $menuTree
+    private UuidInterface $uuidService,
+    private MenuActiveTrailInterface $menuActiveTrail,
   ) {
     $this->currentRequest = $requestStack->getCurrentRequest();
   }

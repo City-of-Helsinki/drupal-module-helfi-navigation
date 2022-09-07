@@ -13,15 +13,17 @@ use Drupal\block\Entity\Block;
  * Implements hook_install().
  */
 function helfi_navigation_install($is_syncing) : void {
-
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if ($is_syncing) {
     return;
   }
-
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
   $theme_handler = \Drupal::service('theme_handler');
 
+  if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+    return;
+  }
   // Generate global navigation blocks.
   _helfi_navigation_generate_blocks($theme_handler->getDefault());
 
@@ -50,16 +52,13 @@ function helfi_navigation_install($is_syncing) : void {
 }
 
 /**
- * Generate global navigation blocks.
+ * Gets the block configuration.
  *
- * @param string $theme
- *   Current default theme machine name.
- *
- * @throws \Drupal\Core\Entity\EntityStorageException
+ * @return array[]
+ *   The block configuration.
  */
-function _helfi_navigation_generate_blocks($theme) {
-
-  $blocks = [
+function _helfi_navigation_get_block_configuration() : array {
+  return [
     'external_fallback_menu' => [
       'plugin' => 'external_menu_block_fallback',
       'region' => 'header_branding',
@@ -126,7 +125,15 @@ function _helfi_navigation_generate_blocks($theme) {
       ],
     ],
   ];
+}
 
+/**
+ * Generate global navigation blocks.
+ *
+ * @param string $theme
+ *   Current default theme machine name.
+ */
+function _helfi_navigation_generate_blocks(string $theme) : void {
   $default_config = [
     'settings' => [
       'label_display' => 0,
@@ -143,7 +150,7 @@ function _helfi_navigation_generate_blocks($theme) {
     'weight' => 0,
   ];
 
-  foreach ($blocks as $id => $config) {
+  foreach (_helfi_navigation_get_block_configuration() as $id => $config) {
     $block_config = array_replace_recursive($default_config, $config);
     $block_config['id'] = $id;
     $block_config['settings']['id'] = $config['plugin'];

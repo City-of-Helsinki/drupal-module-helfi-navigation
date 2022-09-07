@@ -1,0 +1,1128 @@
+{
+  "terveys": {
+    "project": [
+      {
+        "value": "terveys"
+      }
+    ],
+    "uuid": [
+      {
+        "value": "9108a468-9e9e-4f21-a85c-b2116aa22510"
+      }
+    ],
+    "langcode": [
+      {
+        "value": "fi"
+      }
+    ],
+    "status": [
+      {
+        "value": true
+      }
+    ],
+    "name": [
+      {
+        "value": "Sosiaali- ja terveyspalvelut"
+      }
+    ],
+    "menu_tree": [
+      {
+        "name": "Sosiaali- ja terveyspalvelut",
+        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut",
+        "external": false,
+        "hasItems": true,
+        "weight": 0,
+        "sub_tree": [
+          {
+            "id": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+            "name": "Terveydenhoito",
+            "parentId": "",
+            "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito",
+            "external": false,
+            "hasItems": true,
+            "weight": -86,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                "name": "Hammashoito",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/hammashoito",
+                "external": false,
+                "hasItems": true,
+                "weight": -85,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:4a7858e7-90d8-4dd6-acb2-6ea20542bf5a",
+                    "name": "Hammaspäivystys",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/hammashoito/hammaspaivystys",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -92
+                  },
+                  {
+                    "id": "menu_link_content:5faf4e8f-9229-4759-8580-e2c24eaca400",
+                    "name": "Hammastarkastukset",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/hammashoito/hammastarkastukset",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -91
+                  },
+                  {
+                    "id": "menu_link_content:f4c91991-b833-442c-9917-e0f921da00dd",
+                    "name": "Lasten ja nuorten hammashoito",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/hammashoito/lasten-ja-nuorten-hammashoito",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -90
+                  },
+                  {
+                    "id": "menu_link_content:806020c6-ca7a-44ed-96dc-bace7f33121c",
+                    "name": "Oikomishoito",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/hammashoito/oikomishoito",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -89
+                  },
+                  {
+                    "id": "menu_link_content:34b334f5-48b5-4014-943b-16056d6431a2",
+                    "name": "Hammashoitolat",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/hammashoito/hammashoitolat",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -86
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:15fdf705-0e48-40b4-8d5e-63a837689d46",
+                "name": "Terveysasemat",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/terveysasemat",
+                "external": false,
+                "hasItems": false,
+                "weight": -66
+              },
+              {
+                "id": "menu_link_content:c39abc48-e7fe-49a8-bf49-383f0e8d934b",
+                "name": "Kiireellinen hoito ja terveyskeskuspäivystys",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/kiireellinen-hoito-ja-terveyskeskuspaivystys",
+                "external": false,
+                "hasItems": false,
+                "weight": -65
+              },
+              {
+                "id": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                "name": "Mielenterveyspalvelut",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/mielenterveyspalvelut",
+                "external": false,
+                "hasItems": true,
+                "weight": 0,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:592e03fd-5969-4cb1-a62c-99b0a108a2b8",
+                    "name": "Psykiatrian poliklinikka",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/mielenterveyspalvelut/psykiatrian-poliklinikka",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:ca43dac6-2e45-4eef-b5b5-426004d7fa3a",
+                    "name": "Nuorisoasema",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/mielenterveyspalvelut/nuorisoasema",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:21768557-2723-4dff-a1fa-329ffc9a5302",
+                    "name": "Psykiatrinen avohoito",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/mielenterveyspalvelut/psykiatrinen-avohoito",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:e843f967-31f9-403c-bbad-776da1f25bb3",
+                    "name": "Psykiatrinen ympärivuorokautinen sairaalahoito",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/mielenterveyspalvelut/psykiatrinen-ymparivuorokautinen-sairaalahoito",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:6432ff37-fed2-4961-a745-deab0e2c1cf9",
+                    "name": "Mielenterveyspalvelupiste Mieppi",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/mielenterveyspalvelut/mielenterveyspalvelupiste-mieppi",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 2
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:950091dd-207c-44d1-8b3e-3017e3e8bbba",
+                "name": "Päivystys",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/paivystys",
+                "external": false,
+                "hasItems": false,
+                "weight": 0
+              },
+              {
+                "id": "menu_link_content:417f5272-538a-4931-a179-af0a9c8a4ef9",
+                "name": "Kuntoutus ja terapiat",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/kuntoutus-ja-terapiat",
+                "external": false,
+                "hasItems": true,
+                "weight": 0,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:9e4c5ad7-43de-4526-b05c-c56869226657",
+                    "name": "Fysioterapia",
+                    "parentId": "menu_link_content:417f5272-538a-4931-a179-af0a9c8a4ef9",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/kuntoutus-ja-terapiat/fysioterapia",
+                    "external": false,
+                    "hasItems": true,
+                    "weight": 0,
+                    "sub_tree": [
+                      {
+                        "id": "menu_link_content:2597b8d3-5a4f-4637-b881-3336935bc7fa",
+                        "name": "Raskaana olevien fysioterapia",
+                        "parentId": "menu_link_content:9e4c5ad7-43de-4526-b05c-c56869226657",
+                        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/kuntoutus-ja-terapiat/fysioterapia/raskaana-olevien-fysioterapia",
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 0
+                      },
+                      {
+                        "id": "menu_link_content:8bf5a553-9140-42a5-bea9-216f1508f7d3",
+                        "name": "Synnyttäneiden fysioterapia",
+                        "parentId": "menu_link_content:9e4c5ad7-43de-4526-b05c-c56869226657",
+                        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/kuntoutus-ja-terapiat/fysioterapia/synnyttaneiden-fysioterapia",
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 0
+                      },
+                      {
+                        "id": "menu_link_content:4c0b2af3-8219-499c-8ec6-01e624f0a3ae",
+                        "name": "Lasten fysioterapia",
+                        "parentId": "menu_link_content:9e4c5ad7-43de-4526-b05c-c56869226657",
+                        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/kuntoutus-ja-terapiat/fysioterapia/lasten-fysioterapia",
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 0
+                      }
+                    ]
+                  },
+                  {
+                    "id": "menu_link_content:9f5240ce-f7bd-4101-b0e2-17435b94cccd",
+                    "name": "Jalkaterapia",
+                    "parentId": "menu_link_content:417f5272-538a-4931-a179-af0a9c8a4ef9",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/kuntoutus-ja-terapiat/jalkaterapia",
+                    "external": false,
+                    "hasItems": true,
+                    "weight": 0,
+                    "sub_tree": [
+                      {
+                        "id": "menu_link_content:b75aeef1-730d-46c6-a3cb-6559c85c5842",
+                        "name": "Munkkiniemen jalkaterapia",
+                        "parentId": "menu_link_content:9f5240ce-f7bd-4101-b0e2-17435b94cccd",
+                        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/kuntoutus-ja-terapiat/jalkaterapia/munkkiniemen-jalkaterapia",
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 0
+                      }
+                    ]
+                  },
+                  {
+                    "id": "menu_link_content:972522e6-ab01-4e02-8816-c742f9b87bb2",
+                    "name": "Toimintaterapia",
+                    "parentId": "menu_link_content:417f5272-538a-4931-a179-af0a9c8a4ef9",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/kuntoutus-ja-terapiat/toimintaterapia",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:141ff758-60bf-4ea2-a050-b77905ceb176",
+                "name": "Sairaalat ja poliklinikat",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/sairaalat-ja-poliklinikat",
+                "external": false,
+                "hasItems": true,
+                "weight": 0,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:66cca6f8-18a3-467f-b9d7-2f40d993377a",
+                    "name": "Kotisairaala",
+                    "parentId": "menu_link_content:141ff758-60bf-4ea2-a050-b77905ceb176",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/sairaalat-ja-poliklinikat/kotisairaala",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:165f517f-1835-487d-ab56-cb917b474e8b",
+                    "name": "Palliatiivinen poliklinikka",
+                    "parentId": "menu_link_content:141ff758-60bf-4ea2-a050-b77905ceb176",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/sairaalat-ja-poliklinikat/palliatiivinen-poliklinikka",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:35747ce1-679d-4174-b403-5d618ffd08a9",
+                    "name": "Geriatrian poliklinikka",
+                    "parentId": "menu_link_content:141ff758-60bf-4ea2-a050-b77905ceb176",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/terveydenhoito/sairaalat-ja-poliklinikat/geriatrian-poliklinikka",
+                    "external": false,
+                    "hasItems": true,
+                    "weight": 0,
+                    "sub_tree": [
+                      {
+                        "id": "menu_link_content:05f39fa6-0d35-4ac9-ac59-d00b55a17df2",
+                        "name": "Muistikoordinaattori geriatrian poliklinikalla",
+                        "parentId": "menu_link_content:35747ce1-679d-4174-b403-5d618ffd08a9",
+                        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/muistikoordinaattori",
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 0
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+            "name": "Senioripalvelut",
+            "parentId": "",
+            "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut",
+            "external": false,
+            "hasItems": true,
+            "weight": -85,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:398a47d5-e406-45ce-aa6d-bc293781ba81",
+                "name": "Ohjaus ja neuvonta",
+                "parentId": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/ohjaus-ja-neuvonta",
+                "external": false,
+                "hasItems": true,
+                "weight": 0,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:3c5491b1-5790-4c2d-9bce-f6672409ff5e",
+                    "name": "Itsemääräämisoikeus ja puolesta-asiointi",
+                    "parentId": "menu_link_content:398a47d5-e406-45ce-aa6d-bc293781ba81",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/ohjaus-ja-neuvonta/itsemaaraamisoikeus-ja-puolesta-asiointi",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:70092556-a166-43f7-a1a2-da7c45867c24",
+                    "name": "Gerontologinen sosiaalityö",
+                    "parentId": "menu_link_content:398a47d5-e406-45ce-aa6d-bc293781ba81",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/ohjaus-ja-neuvonta/gerontologinen-sosiaalityo",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:6cb9d923-f9aa-4479-9c81-d07c5bece850",
+                    "name": "Huoli-ilmoitus ikääntyneestä",
+                    "parentId": "menu_link_content:398a47d5-e406-45ce-aa6d-bc293781ba81",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/ohjaus-ja-neuvonta/huoli-ilmoitus-ikaantyneesta",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:8e68fe33-2871-4144-9cb4-3cf5621d4530",
+                    "name": "Muistin tutkiminen",
+                    "parentId": "menu_link_content:398a47d5-e406-45ce-aa6d-bc293781ba81",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/ohjaus-ja-neuvonta/muistin-tutkiminen",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:60a98359-ca25-423c-b1fa-43291aa971c0",
+                    "name": "Asiakasohjaus ikääntyneille",
+                    "parentId": "menu_link_content:398a47d5-e406-45ce-aa6d-bc293781ba81",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/ohjaus-ja-neuvonta/asiakasohjaus-ikaantyneille",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:5c88f0b7-524a-47a0-8a27-cbdb2d64af5d",
+                    "name": "Seniori-info",
+                    "parentId": "menu_link_content:398a47d5-e406-45ce-aa6d-bc293781ba81",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/ohjaus-ja-neuvonta/seniori-info",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:90da4775-ad93-4f34-adf7-27a71f8dc3e4",
+                    "name": "Yksityistä kotipalvelua ilman arvonlisäveroa",
+                    "parentId": "menu_link_content:398a47d5-e406-45ce-aa6d-bc293781ba81",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/ohjaus-ja-neuvonta/yksityista-kotipalvelua-ilman-arvonlisaveroa",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 1
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:caf528e7-0c52-436e-98f8-e1881566c08e",
+                "name": "Palvelukeskukset",
+                "parentId": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/palvelukeskukset",
+                "external": false,
+                "hasItems": false,
+                "weight": 1
+              },
+              {
+                "id": "menu_link_content:0f051809-7c81-4418-9c4b-3bdfdb4fa54f",
+                "name": "Kotihoito",
+                "parentId": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/kotihoito",
+                "external": false,
+                "hasItems": true,
+                "weight": 2,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:00534209-df23-4f70-956f-8850299e4718",
+                    "name": "Kotihoito tukee kotona asumista",
+                    "parentId": "menu_link_content:0f051809-7c81-4418-9c4b-3bdfdb4fa54f",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/kotihoito/kotihoito-tukee-kotona-asumista",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 3
+                  },
+                  {
+                    "id": "menu_link_content:eca6d821-08fe-465f-9b30-24df241860e6",
+                    "name": "Tilapäinen kotihoito",
+                    "parentId": "menu_link_content:0f051809-7c81-4418-9c4b-3bdfdb4fa54f",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/kotihoito/tilapainen-eli-lyhytaikainen-kotihoito",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 4
+                  },
+                  {
+                    "id": "menu_link_content:5d08bc40-81e3-428c-8579-edc1a9dc27c2",
+                    "name": "Liikkumissopimus",
+                    "parentId": "menu_link_content:0f051809-7c81-4418-9c4b-3bdfdb4fa54f",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/kotihoito/liikkumissopimus",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 5
+                  },
+                  {
+                    "id": "menu_link_content:dd1c5deb-9e82-4383-b9ad-787c3429a5b3",
+                    "name": "Kuntouttava arviointi",
+                    "parentId": "menu_link_content:0f051809-7c81-4418-9c4b-3bdfdb4fa54f",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/kotihoito/kuntouttava-arviointi",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 6
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                "name": "Omaishoito",
+                "parentId": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito",
+                "external": false,
+                "hasItems": true,
+                "weight": 3,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:a6409bd0-710c-40d2-b509-e6a0f2dbf5af",
+                    "name": "Omaishoidon tuki ikääntyneille ja muistisairaille",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito/omaishoidon-tuki-ikaantyneille-ja-muistisairaille",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 4
+                  },
+                  {
+                    "id": "menu_link_content:c1262c8e-4cfd-4494-8f8f-83ba081e8adc",
+                    "name": "Hoitovaihtoehdot omaishoitajan lakisääteisten vapaapäivien aikana",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito/hoitovaihtoehdot-omaishoitajan-lakisaateisten-vapaapaivien-aikana",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 5
+                  },
+                  {
+                    "id": "menu_link_content:4246dbbc-12ba-4be1-b4a9-e38ccfd3c60f",
+                    "name": "Ikääntyneiden päivätoiminta",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito/ikaantyneiden-paivatoiminta",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 6
+                  },
+                  {
+                    "id": "menu_link_content:3d8b2b3c-1bf1-4712-bb95-6bc32130da41",
+                    "name": "Omaishoidon harkinnanvarainen hoito ja tuki",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito/omaishoidon-harkinnanvarainen-hoito-ja-tuki",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 25
+                  },
+                  {
+                    "id": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
+                    "name": "Omaishoidon toimintakeskukset",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito/omaishoidon-toimintakeskukset",
+                    "external": false,
+                    "hasItems": true,
+                    "weight": 26,
+                    "sub_tree": [
+                      {
+                        "id": "menu_link_content:d88a35cd-b8d0-49f3-98e6-e2394453a6dc",
+                        "name": "Uusien omaishoitajien valmennuskurssit",
+                        "parentId": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
+                        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito/omaishoidon-toimintakeskukset/uusien-omaishoitajien-valmennuskurssit",
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 6
+                      },
+                      {
+                        "id": "menu_link_content:562c9219-1682-4266-8074-28faa7ea3187",
+                        "name": "Omaishoitajasta omaiseksi -valmennus",
+                        "parentId": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
+                        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito/omaishoidon-toimintakeskukset/omaishoitajasta-omaiseksi-valmennus",
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 7
+                      },
+                      {
+                        "id": "menu_link_content:57e48d68-ee69-4cbb-9fee-a6c53a4ee593",
+                        "name": "Sosiaaliohjaus omaishoidon toimintakeskuksessa",
+                        "parentId": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
+                        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito/omaishoidon-toimintakeskukset/sosiaaliohjaus-omaishoidon",
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 8
+                      }
+                    ]
+                  },
+                  {
+                    "id": "menu_link_content:e76d3e63-8589-42e1-b577-1c6774d66e6f",
+                    "name": "Omaishoitajan terveystarkastus",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/omaishoito/omaishoitajan-terveystarkastus",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 27
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:8f31dd15-c91a-435f-af06-144ade69d603",
+                "name": "Hoiva-asuminen",
+                "parentId": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/hoiva-asuminen",
+                "external": false,
+                "hasItems": false,
+                "weight": 4
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+            "name": "Asiakkaan tiedot ja oikeudet",
+            "parentId": "",
+            "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet",
+            "external": false,
+            "hasItems": true,
+            "weight": -84,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:f92e9c8b-db7a-44ce-9100-26b6cb899945",
+                "name": "Asiakastietojen pyytäminen",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/asiakastietojen-pyytaminen",
+                "external": false,
+                "hasItems": false,
+                "weight": -74
+              },
+              {
+                "id": "menu_link_content:3a7ff939-0967-4d3e-80a4-c349f45707e4",
+                "name": "Odotusajat ja asiakaskokemus",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/odotusajat-ja-asiakaskokemus",
+                "external": false,
+                "hasItems": false,
+                "weight": -73
+              },
+              {
+                "id": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
+                "name": "Maksut",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/maksut",
+                "external": false,
+                "hasItems": true,
+                "weight": -72,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:b1396d7f-b88d-40c5-a8ba-88bf0260ec72",
+                    "name": "Maksukatto",
+                    "parentId": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/maksut/maksukatto",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:52ae8328-2d3a-4809-af19-212749d769f6",
+                "name": "Oikeus palveluun omalla kielellä",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/oikeus-palveluun-omalla-kielella",
+                "external": false,
+                "hasItems": false,
+                "weight": -71
+              },
+              {
+                "id": "menu_link_content:ff1b21ea-bd19-4068-9388-03f8acfbcdaf",
+                "name": "Palveluiden laadunvalvonta",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/palveluiden-laadunvalvonta",
+                "external": false,
+                "hasItems": false,
+                "weight": -70
+              },
+              {
+                "id": "menu_link_content:0e28ebd2-bd9b-4514-81c7-074b51a5ddc9",
+                "name": "Palveluseteli",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/palveluseteli",
+                "external": false,
+                "hasItems": false,
+                "weight": -69
+              },
+              {
+                "id": "menu_link_content:ad91e0a9-cea5-4497-acc5-b9341cbcd0bb",
+                "name": "Sosiaali- ja potilasasiamies",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/sosiaali-ja-potilasasiamies",
+                "external": false,
+                "hasItems": false,
+                "weight": -68
+              },
+              {
+                "id": "menu_link_content:235179c2-f9aa-4740-9ed8-a4a9ab5ede0d",
+                "name": "Tyytymättömyys hoitoon tai palveluun",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/tyytymattomyys-hoitoon-tai-palveluun",
+                "external": false,
+                "hasItems": false,
+                "weight": -67
+              },
+              {
+                "id": "menu_link_content:8846838a-b046-49ec-83ae-90d6134a6985",
+                "name": "Valinnanvapaus",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/asiakkaan-tiedot-ja-oikeudet/valinnanvapaus",
+                "external": false,
+                "hasItems": false,
+                "weight": -66
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+            "name": "Töihin meille",
+            "parentId": "",
+            "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/toihin-meille",
+            "external": false,
+            "hasItems": true,
+            "weight": -83,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                "name": "Töissä meillä",
+                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/toihin-meille/toissa-meilla",
+                "external": false,
+                "hasItems": true,
+                "weight": 0,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:0ed5cf05-7371-48bf-8ece-0fdefb6699ff",
+                    "name": "Fysioterapeutti Leila Solakuja",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/leila-solakuja-tyoskentelee-malmin-avofysioterapiassa",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:86c1ecba-2663-4200-9a65-48552098a0e0",
+                    "name": "Perhekuntoutuksen sosiaaliohjaaja Päivi Turkkila",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/sosiaaliohjaaja-paivi-turkkila-tukee-vauvaperheita",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:f7df2e23-7853-4d7a-83e4-8012bb700524",
+                    "name": "Kehitysvammaisten ryhmäkodin ohjaaja Topi Hämäläinen",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/toihin-meille/toissa-meilla/topi-hamalainen-on-ohjaajana-kehitysvammaisten-ryhmakodissa",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:0c66aad2-439b-4f74-836b-844332090cf3",
+                    "name": "Erikoistuva lääkäri Aurora Keskinen",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/aurora-keskinen-erikoistuu-yleislaaketieteeseen-malmin-terveysasemalla",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:3465d1c6-3c3d-475d-9d7d-d489e5b2ae4c",
+                    "name": "Lastensuojelun sosiaalityöntekijä Suvi Kingsley",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/suvi-kingsleyn-tyo-lastensuojelussa-vaatii-herkkyytta",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:677ff7c2-a54e-4caa-ab10-2cfb8a3d9937",
+                    "name": "Perhetyön sosiaaliohjaaja Niina Laitala",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/sosiaaliohjaaja-niina-laitalan-tyo-vahvistaa-perheiden-voimavaroja",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:9fdc410d-90e7-4769-8c6e-c63f21f600ac",
+                    "name": "Seniorikeskuksen vastaava ohjaaja Veera Sillanpää",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/vastaava-ohjaaja-veera-sillanpaa-tuo-hyvinvointia-ikaihmisten-arkeen",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:e229b924-4c0d-4816-84dc-c6675c0eb75b",
+                    "name": "Toiminnansuunnittelija Mika Porvari",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/toiminnansuunnittelija-mika-porvari-kehittaa-sosiaalipalveluja",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:1c713780-e4fe-4958-b59e-d561d6feec8f",
+                    "name": "Terveysaseman vt. ylilääkäri Tomas Lundqvist",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/toihin-meille/toissa-meilla/laakari-tomas-lundqvist-nakee-laaketieteen-koko-kentan",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:00c434d9-2a1a-4ba9-9283-efd9cbd68d29",
+                    "name": "Palveluasumisryhmän hoitaja Leila Kannosto-Kähäri",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/hoitaja-leila-kannosto-kahari-tunnistaa-milloin-asiakkaan-luona-kannattaa-viivahtaa",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:3766a7c2-052f-488e-919b-f1dd148151d5",
+                    "name": "Kotihoidon sairaanhoitaja Emilia Mäntylä",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/sairaanhoitaja-emilia-mantyla-tyoskentelee-kotihoidossa-pienryhmassa",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:a5b9b61c-d985-4705-beab-1128ed99fe2d",
+                "name": "Työsuhde-edut",
+                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/toihin-meille/tyosuhde-edut",
+                "external": false,
+                "hasItems": false,
+                "weight": 1
+              },
+              {
+                "id": "menu_link_content:790f3d14-8878-447d-97c3-67e9f1d9e621",
+                "name": "Opiskelijoille",
+                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/toihin-meille/opiskelijoille",
+                "external": false,
+                "hasItems": false,
+                "weight": 2
+              },
+              {
+                "id": "menu_link_content:06137683-5cc8-4e82-8a0b-408ff79d6c67",
+                "name": "Rekrytoinnin yhteystiedot",
+                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+                "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/toihin-meille/rekrytoinnin-yhteystiedot",
+                "external": false,
+                "hasItems": false,
+                "weight": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "weight": [
+      {
+        "value": -10
+      }
+    ],
+    "default_langcode": [
+      {
+        "value": true
+      }
+    ],
+    "metatag": {
+      "value": {
+        "canonical_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
+        "title": "| Helsingin kaupunki",
+        "og_site_name": "Helsingin kaupunki",
+        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
+        "twitter_cards_type": "summary_large_image",
+        "twitter_cards_title": "| Helsingin kaupunki",
+        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
+        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
+      }
+    },
+    "content_translation_source": [
+      {
+        "value": "und"
+      }
+    ],
+    "content_translation_outdated": [
+      {
+        "value": false
+      }
+    ],
+    "content_translation_uid": [
+      {
+        "target_id": 1,
+        "target_type": "user",
+        "target_uuid": "de6409aa-c620-4327-90f4-127176f209b2",
+        "url": "/en/user/1"
+      }
+    ],
+    "content_translation_created": [
+      {
+        "value": "2022-09-05T06:11:37+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ],
+    "content_translation_changed": [
+      {
+        "value": "2022-09-05T06:47:21+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ]
+  },
+  "liikenne": {
+    "project": [
+      {
+        "value": "liikenne"
+      }
+    ],
+    "uuid": [
+      {
+        "value": "61aa58bd-cedf-440f-9671-16f0bc75684b"
+      }
+    ],
+    "langcode": [
+      {
+        "value": "fi"
+      }
+    ],
+    "status": [
+      {
+        "value": true
+      }
+    ],
+    "name": [
+      {
+        "value": "Kaupunkiympäristö ja liikenne"
+      }
+    ],
+    "menu_tree": [
+      {
+        "name": "Kaupunkiympäristö ja liikenne",
+        "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne",
+        "external": false,
+        "hasItems": true,
+        "weight": 0,
+        "sub_tree": [
+          {
+            "id": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+            "name": "Pysäköinti",
+            "parentId": "",
+            "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi",
+            "external": false,
+            "hasItems": true,
+            "weight": -50,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                "name": "Pysäköintipaikat, hinnat ja maksutavat",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat",
+                "external": false,
+                "hasItems": true,
+                "weight": -50,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:5c9444ef-c675-4d22-b032-7f516f9926b2",
+                    "name": "Alennus vähäpäästöisille autoille",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat/vahapaastoisten-autojen-pysakointimaksujen-alennus",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  },
+                  {
+                    "id": "menu_link_content:2ad4e334-64e3-44af-8597-e376d984c6d4",
+                    "name": "Mobiilisovellusten hintavertailu",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat/pysakoinnin-mobiilisovellusten-hintavertailu",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -49
+                  },
+                  {
+                    "id": "menu_link_content:93b4a4e4-12a4-4521-b980-521d99ca6df9",
+                    "name": "Autojen säilytyspalvelu – Autohotelli",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat/autojen-sailytyspalvelu-autohotelli",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -48
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:33bde933-d660-4a14-9ee2-a00ef981096c",
+                "name": "Pysäköinninvalvonta",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakoinninvalvonta",
+                "external": false,
+                "hasItems": false,
+                "weight": -49
+              },
+              {
+                "id": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
+                "name": "Ajoneuvojen siirrot",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/ajoneuvojen-siirrot",
+                "external": false,
+                "hasItems": true,
+                "weight": -48,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:6996f328-5f7b-4348-8d4e-6568ad13e4db",
+                    "name": "Ajoneuvon siirto- ja säilytyskustannukset",
+                    "parentId": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/ajoneuvojen-siirrot/ajoneuvon-siirto-ja-sailytyskustannukset",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
+                "name": "Asukaspysäköinti",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/asukaspysakointi",
+                "external": false,
+                "hasItems": true,
+                "weight": -47,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:93768cda-c8e3-4297-8a63-10a4a8b55efd",
+                    "name": "Asukaspysäköintialennus pysäköintihalliin",
+                    "parentId": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/asukaspysakointi/asukaspysakointialennus-pysakointihalliin",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:09ce6849-3cc5-4964-859b-1ab30ab24999",
+                "name": "Yrityspysäköinti",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/yrityspysakointi",
+                "external": false,
+                "hasItems": false,
+                "weight": -46
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+            "name": "Pyöräily",
+            "parentId": "",
+            "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily",
+            "external": false,
+            "hasItems": true,
+            "weight": -44,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:b65dc473-9003-4f17-9529-3403d8c0ab20",
+                "name": "Pyöräreitit",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorareitit",
+                "external": false,
+                "hasItems": false,
+                "weight": -50
+              },
+              {
+                "id": "menu_link_content:f83f426e-d15f-4a82-9b7d-bc3fc95c767a",
+                "name": "Pyörän pysäköinti",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyoran-pysakointi",
+                "external": false,
+                "hasItems": false,
+                "weight": -49
+              },
+              {
+                "id": "menu_link_content:9e675819-1868-4b2b-96a6-eff2b38c0b9a",
+                "name": "Pyöräteiden talvihoito",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorateiden-talvihoito",
+                "external": false,
+                "hasItems": false,
+                "weight": -48
+              },
+              {
+                "id": "menu_link_content:9b92fafc-a710-4331-8553-e0a5b09b1078",
+                "name": "Pyöräteiden rakentaminen",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorateiden-rakentaminen",
+                "external": false,
+                "hasItems": false,
+                "weight": -47
+              },
+              {
+                "id": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
+                "name": "Pyöräilyn edistäminen",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorailyn-edistaminen",
+                "external": false,
+                "hasItems": true,
+                "weight": -46,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:cb01bb31-36a8-499f-8229-b0392afcf867",
+                    "name": "Pyöräilykampanja",
+                    "parentId": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorailyn-edistaminen/pyorailykampanja",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "weight": [
+      {
+        "value": -9
+      }
+    ],
+    "default_langcode": [
+      {
+        "value": false
+      }
+    ],
+    "metatag": {
+      "value": {
+        "canonical_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
+        "title": "| Helsingin kaupunki",
+        "og_site_name": "Helsingin kaupunki",
+        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
+        "twitter_cards_type": "summary_large_image",
+        "twitter_cards_title": "| Helsingin kaupunki",
+        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
+        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
+      }
+    },
+    "content_translation_source": [
+      {
+        "value": "und"
+      }
+    ],
+    "content_translation_outdated": [
+      {
+        "value": false
+      }
+    ],
+    "content_translation_uid": [
+      {
+        "target_id": 1,
+        "target_type": "user",
+        "target_uuid": "de6409aa-c620-4327-90f4-127176f209b2",
+        "url": "/en/user/1"
+      }
+    ],
+    "content_translation_created": [
+      {
+        "value": "2022-09-02T08:47:37+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ],
+    "content_translation_changed": [
+      {
+        "value": "2022-09-05T06:47:21+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ]
+  }
+}

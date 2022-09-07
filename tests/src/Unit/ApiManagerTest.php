@@ -70,6 +70,8 @@ class ApiManagerTest extends UnitTestCase {
    *   The http client.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
+   * @param string|null $apiKey
+   *   The api key.
    *
    * @return \Drupal\helfi_navigation\ApiManager
    *   The api manager instance.
@@ -77,7 +79,8 @@ class ApiManagerTest extends UnitTestCase {
   private function getSut(
     TimeInterface $time,
     ClientInterface $client,
-    LoggerInterface $logger
+    LoggerInterface $logger,
+    string $apiKey = NULL
   ) : ApiManager {
     $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
       'helfi_api_base.environment_resolver.settings' => [
@@ -85,7 +88,18 @@ class ApiManagerTest extends UnitTestCase {
         EnvironmentResolver::ENVIRONMENT_NAME_KEY => 'local',
       ],
     ]));
-    return new ApiManager($time, $this->cache, $client, $environmentResolver, $logger);
+    return new ApiManager(
+      $time,
+      $this->cache,
+      $client,
+      $environmentResolver,
+      $logger,
+      $this->getConfigFactoryStub([
+        'helfi_navigation.api' => [
+          'key' => $apiKey,
+        ],
+      ]),
+    );
   }
 
   /**
@@ -103,15 +117,16 @@ class ApiManagerTest extends UnitTestCase {
     $sut = $this->getSut(
       $this->getTimeMock(time())->reveal(),
       $client,
-      $this->prophesize(LoggerInterface::class)->reveal()
+      $this->prophesize(LoggerInterface::class)->reveal(),
+      '123'
     );
-    $sut->updateMainMenu('fi', '123', ['key' => 'value']);
+    $sut->updateMainMenu('fi', ['key' => 'value']);
 
     $this->assertCount(1, $requests);
     // Make sure SSL verification is disabled on local.
     $this->assertFalse($requests[0]['options']['verify']);
     // Make sure Authorization header was set.
-    $this->assertEquals('123', $requests[0]['request']->getHeader('Authorization')[0]);
+    $this->assertEquals('Basic 123', $requests[0]['request']->getHeader('Authorization')[0]);
   }
 
   /**
@@ -127,6 +142,7 @@ class ApiManagerTest extends UnitTestCase {
   public function testGetExternalMenu() : void {
     $requests = [];
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+      new Response(200, body: json_encode([])),
       new Response(200, body: json_encode(['key' => 'value'])),
     ]);
     $sut = $this->getSut(
@@ -134,9 +150,13 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       $this->prophesize(LoggerInterface::class)->reveal()
     );
-    $response = $sut->getExternalMenu('fi', 'main');
-    $this->assertInstanceOf(\stdClass::class, $response);
-    $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+
+    // Test empty and non-empty response.
+    for ($i = 0; $i < 2; $i++) {
+      $response = $sut->getExternalMenu('fi', 'main');
+      $this->assertInstanceOf(\stdClass::class, $response);
+      $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+    }
     // Make sure cache is used (request queue should be empty).
     $sut->getExternalMenu('fi', 'main');
   }
@@ -154,6 +174,7 @@ class ApiManagerTest extends UnitTestCase {
   public function testGetMainMenu() : void {
     $requests = [];
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+      new Response(200, body: json_encode([])),
       new Response(200, body: json_encode(['key' => 'value'])),
     ]);
     $sut = $this->getSut(
@@ -161,9 +182,12 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       $this->prophesize(LoggerInterface::class)->reveal()
     );
-    $response = $sut->getMainMenu('fi');
-    $this->assertInstanceOf(\stdClass::class, $response);
-    $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+    // Test empty and non-empty response.
+    for ($i = 0; $i < 2; $i++) {
+      $response = $sut->getMainMenu('fi');
+      $this->assertInstanceOf(\stdClass::class, $response);
+      $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+    }
     // Make sure cache is used (request queue should be empty).
     $sut->getMainMenu('fi');
   }

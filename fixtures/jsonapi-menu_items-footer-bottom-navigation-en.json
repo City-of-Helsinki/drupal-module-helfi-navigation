@@ -1,0 +1,130 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": [
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:8b54478c-5d6e-4f56-af3f-f17580937dc7",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-bottom-navigation",
+        "meta": {
+          "entity_id": "21"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          }
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "<nolink>",
+          "parameters": []
+        },
+        "title": "© City of Helsinki 2022",
+        "url": "",
+        "weight": "-50"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:b3a008f1-3bc3-4549-96dd-2e4e63d4b64b",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-bottom-navigation",
+        "meta": {
+          "entity_id": "20"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Accessibility statement",
+        "url": "https://www.hel.fi/accessibility",
+        "weight": "-49"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:363e8504-3ee6-4f9f-90f5-b0f847051239",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-bottom-navigation",
+        "meta": {
+          "entity_id": "19"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "Information requests",
+        "url": "https://www.hel.fi/helsinki/en/administration/administration/information-requests/",
+        "weight": "-48"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:5f2580fb-ecf9-4b84-af22-829415e94ee9",
+      "attributes": {
+        "description": null,
+        "enabled": true,
+        "expanded": false,
+        "menu_name": "footer-bottom-navigation",
+        "meta": {
+          "entity_id": "18"
+        },
+        "options": {
+          "attributes": {
+            "class": []
+          },
+          "external": true
+        },
+        "parent": "",
+        "provider": "menu_link_content",
+        "route": {
+          "name": "",
+          "parameters": []
+        },
+        "title": "About hel.fi",
+        "url": "https://www.hel.fi/about",
+        "weight": "-47"
+      }
+    }
+  ],
+  "links": {
+    "self": {
+      "href": "https://helfi-etusivu.docker.so/en/jsonapi/menu_items/footer-bottom-navigation"
+    }
+  }
+}

@@ -1,0 +1,659 @@
+{
+  "terveys": {
+    "project": [
+      {
+        "value": "terveys"
+      }
+    ],
+    "uuid": [
+      {
+        "value": "9108a468-9e9e-4f21-a85c-b2116aa22510"
+      }
+    ],
+    "langcode": [
+      {
+        "value": "en"
+      }
+    ],
+    "status": [
+      {
+        "value": true
+      }
+    ],
+    "name": [
+      {
+        "value": "Health and Social Services"
+      }
+    ],
+    "menu_tree": [
+      {
+        "name": "Health and Social Services",
+        "url": "https://helfi-sote.docker.so/en/health-and-social-services",
+        "external": false,
+        "hasItems": true,
+        "weight": 0,
+        "sub_tree": [
+          {
+            "id": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+            "name": "Health care",
+            "parentId": "",
+            "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care",
+            "external": false,
+            "hasItems": true,
+            "weight": -86,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                "name": "Dental care",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care",
+                "external": false,
+                "hasItems": true,
+                "weight": -85,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:4a7858e7-90d8-4dd6-acb2-6ea20542bf5a",
+                    "name": "Emergency dental care",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/emergency-dental-care",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -92
+                  },
+                  {
+                    "id": "menu_link_content:5faf4e8f-9229-4759-8580-e2c24eaca400",
+                    "name": "Dental check-ups",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/dental-check-ups",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -91
+                  },
+                  {
+                    "id": "menu_link_content:f4c91991-b833-442c-9917-e0f921da00dd",
+                    "name": " Children and young people's dental care",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/children-and-young-peoples-dental-care",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -90
+                  },
+                  {
+                    "id": "menu_link_content:806020c6-ca7a-44ed-96dc-bace7f33121c",
+                    "name": "Orthodontic treatment",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/orthodontic-treatment",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -89
+                  },
+                  {
+                    "id": "menu_link_content:34b334f5-48b5-4014-943b-16056d6431a2",
+                    "name": "Dental clinics",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/dental-clinics",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -86
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:15fdf705-0e48-40b4-8d5e-63a837689d46",
+                "name": "Health stations",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/health-stations",
+                "external": false,
+                "hasItems": false,
+                "weight": -66
+              },
+              {
+                "id": "menu_link_content:c39abc48-e7fe-49a8-bf49-383f0e8d934b",
+                "name": "Urgent and emergency care",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/urgent-and-emergency-care",
+                "external": false,
+                "hasItems": false,
+                "weight": -65
+              },
+              {
+                "id": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                "name": "Mental health services",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/mental-health-services",
+                "external": false,
+                "hasItems": true,
+                "weight": 0,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:592e03fd-5969-4cb1-a62c-99b0a108a2b8",
+                    "name": "Psychiatric outpatient clinic",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/mental-health-services/psychiatric-outpatient-clinic",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:ca43dac6-2e45-4eef-b5b5-426004d7fa3a",
+                    "name": "Youth Station",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/mental-health-services/youth-station",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:21768557-2723-4dff-a1fa-329ffc9a5302",
+                    "name": "Psychiatric outpatient care",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/mental-health-services/psychiatric-outpatient-care",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:e843f967-31f9-403c-bbad-776da1f25bb3",
+                    "name": "Psychiatric round-the-clock hospital care",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/mental-health-services/psychiatric-round-the-clock-hospital-care",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:6432ff37-fed2-4961-a745-deab0e2c1cf9",
+                    "name": "Mental Health Service Unit Mieppi ",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/mental-health-services/mental-health-service-unit-mieppi",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+            "name": "Senior services",
+            "parentId": "",
+            "url": "https://helfi-sote.docker.so/en/health-and-social-services/senior-services",
+            "external": false,
+            "hasItems": true,
+            "weight": -85,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                "name": "Informal care",
+                "parentId": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/senior-services/informal-care",
+                "external": false,
+                "hasItems": true,
+                "weight": 3,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:a6409bd0-710c-40d2-b509-e6a0f2dbf5af",
+                    "name": "Informal care support for the elderly and people with memory disorders",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/senior-services/informal-care/informal-care-support-for-the-elderly-and-people-with-memory",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 4
+                  },
+                  {
+                    "id": "menu_link_content:c1262c8e-4cfd-4494-8f8f-83ba081e8adc",
+                    "name": "Care options during the caregiver's statutory leave days",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/senior-services/informal-care/care-options-during-the-caregivers-statutory-leave-days",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 5
+                  },
+                  {
+                    "id": "menu_link_content:3d8b2b3c-1bf1-4712-bb95-6bc32130da41",
+                    "name": "Discretionary care and support for informal care families",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/senior-services/informal-care/discretionary-care-and-support-for-informal-care-families",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 25
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+            "name": "Data and the rights of the client",
+            "parentId": "",
+            "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client",
+            "external": false,
+            "hasItems": true,
+            "weight": -84,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:f92e9c8b-db7a-44ce-9100-26b6cb899945",
+                "name": "Requesting client data",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/requesting-client-data",
+                "external": false,
+                "hasItems": false,
+                "weight": -74
+              },
+              {
+                "id": "menu_link_content:3a7ff939-0967-4d3e-80a4-c349f45707e4",
+                "name": "Waiting times and customer satisfaction",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/waiting-times-and-customer-satisfaction",
+                "external": false,
+                "hasItems": false,
+                "weight": -73
+              },
+              {
+                "id": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
+                "name": "Fees",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/fees",
+                "external": false,
+                "hasItems": true,
+                "weight": -72,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:b1396d7f-b88d-40c5-a8ba-88bf0260ec72",
+                    "name": "Maximum Payment Limit",
+                    "parentId": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/fees/maximum-payment-limit",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:52ae8328-2d3a-4809-af19-212749d769f6",
+                "name": "Right to receive services in your own language",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/right-to-receive-services-in-your-own-language",
+                "external": false,
+                "hasItems": false,
+                "weight": -71
+              },
+              {
+                "id": "menu_link_content:ff1b21ea-bd19-4068-9388-03f8acfbcdaf",
+                "name": "Quality control of services",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/quality-control-of-services",
+                "external": false,
+                "hasItems": false,
+                "weight": -70
+              },
+              {
+                "id": "menu_link_content:0e28ebd2-bd9b-4514-81c7-074b51a5ddc9",
+                "name": "Service voucher",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/service-voucher",
+                "external": false,
+                "hasItems": false,
+                "weight": -69
+              },
+              {
+                "id": "menu_link_content:ad91e0a9-cea5-4497-acc5-b9341cbcd0bb",
+                "name": "Social and Patient Ombudsman",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/social-and-patient-ombudsman",
+                "external": false,
+                "hasItems": false,
+                "weight": -68
+              },
+              {
+                "id": "menu_link_content:235179c2-f9aa-4740-9ed8-a4a9ab5ede0d",
+                "name": "Dissatisfaction with treatment or service",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/dissatisfaction-with-treatment-or-service",
+                "external": false,
+                "hasItems": false,
+                "weight": -67
+              },
+              {
+                "id": "menu_link_content:8846838a-b046-49ec-83ae-90d6134a6985",
+                "name": "Freedom of choice",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/freedom-of-choice",
+                "external": false,
+                "hasItems": false,
+                "weight": -66
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+            "name": "Join us",
+            "parentId": "",
+            "url": "https://helfi-sote.docker.so/en/health-and-social-services/join-us",
+            "external": false,
+            "hasItems": true,
+            "weight": -83,
+            "sub_tree": []
+          }
+        ]
+      }
+    ],
+    "weight": [
+      {
+        "value": -10
+      }
+    ],
+    "default_langcode": [
+      {
+        "value": false
+      }
+    ],
+    "metatag": {
+      "value": {
+        "canonical_url": "https://helfi-etusivu.docker.so/en/api/v1/global-menu",
+        "title": "| City of Helsinki",
+        "og_site_name": "City of Helsinki",
+        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
+        "twitter_cards_type": "summary_large_image",
+        "twitter_cards_title": "| City of Helsinki",
+        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/en/api/v1/global-menu",
+        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
+      }
+    },
+    "content_translation_source": [
+      {
+        "value": "und"
+      }
+    ],
+    "content_translation_outdated": [
+      {
+        "value": false
+      }
+    ],
+    "content_translation_uid": [
+      {
+        "target_id": 1,
+        "target_type": "user",
+        "target_uuid": "de6409aa-c620-4327-90f4-127176f209b2",
+        "url": "/en/user/1"
+      }
+    ],
+    "content_translation_created": [
+      {
+        "value": "2022-09-05T06:12:33+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ],
+    "content_translation_changed": [
+      {
+        "value": "2022-09-05T06:47:21+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ]
+  },
+  "liikenne": {
+    "project": [
+      {
+        "value": "liikenne"
+      }
+    ],
+    "uuid": [
+      {
+        "value": "61aa58bd-cedf-440f-9671-16f0bc75684b"
+      }
+    ],
+    "langcode": [
+      {
+        "value": "en"
+      }
+    ],
+    "status": [
+      {
+        "value": true
+      }
+    ],
+    "name": [
+      {
+        "value": "Urban environment and traffic"
+      }
+    ],
+    "menu_tree": [
+      {
+        "name": "Urban environment and traffic",
+        "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic",
+        "external": false,
+        "hasItems": true,
+        "weight": 0,
+        "sub_tree": [
+          {
+            "id": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+            "name": "Parking",
+            "parentId": "",
+            "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking",
+            "external": false,
+            "hasItems": true,
+            "weight": -50,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                "name": "Parking areas, prices and payment methods",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods",
+                "external": false,
+                "hasItems": true,
+                "weight": -50,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:5c9444ef-c675-4d22-b032-7f516f9926b2",
+                    "name": "Discount for low-emission cars",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods/discount-for-low-emission-cars",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  },
+                  {
+                    "id": "menu_link_content:2ad4e334-64e3-44af-8597-e376d984c6d4",
+                    "name": "Price comparison of mobile parking apps",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods/price-comparison-of-mobile-parking-apps",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -49
+                  },
+                  {
+                    "id": "menu_link_content:93b4a4e4-12a4-4521-b980-521d99ca6df9",
+                    "name": "Car storage service – Car Hotel",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods/car-storage-service-car-hotel",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -48
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:33bde933-d660-4a14-9ee2-a00ef981096c",
+                "name": "Parking control",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/parking-control",
+                "external": false,
+                "hasItems": false,
+                "weight": -49
+              },
+              {
+                "id": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
+                "name": "Vehicle removal",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/vehicle-removal",
+                "external": false,
+                "hasItems": true,
+                "weight": -48,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:6996f328-5f7b-4348-8d4e-6568ad13e4db",
+                    "name": "Vehicle removal and storage costs",
+                    "parentId": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
+                    "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/vehicle-removal/vehicle-removal-and-storage-costs",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
+                "name": "Resident parking",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/resident-parking",
+                "external": false,
+                "hasItems": true,
+                "weight": -47,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:93768cda-c8e3-4297-8a63-10a4a8b55efd",
+                    "name": "Resident parking discount for a parking hall",
+                    "parentId": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
+                    "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/resident-parking/resident-parking-discount-for-a-parking-hall",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:09ce6849-3cc5-4964-859b-1ab30ab24999",
+                "name": "Business parking permit",
+                "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/parking/business-parking-permit",
+                "external": false,
+                "hasItems": false,
+                "weight": -46
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+            "name": "Cycling",
+            "parentId": "",
+            "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/cycling",
+            "external": false,
+            "hasItems": true,
+            "weight": -44,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:b65dc473-9003-4f17-9529-3403d8c0ab20",
+                "name": "Cycling routes",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/cycling/cycling-routes",
+                "external": false,
+                "hasItems": false,
+                "weight": -50
+              },
+              {
+                "id": "menu_link_content:f83f426e-d15f-4a82-9b7d-bc3fc95c767a",
+                "name": "Bicycle parking",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/cycling/bicycle-parking",
+                "external": false,
+                "hasItems": false,
+                "weight": -49
+              },
+              {
+                "id": "menu_link_content:9e675819-1868-4b2b-96a6-eff2b38c0b9a",
+                "name": "Winter maintenance of cycle paths",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/cycling/winter-maintenance-of-cycle-paths",
+                "external": false,
+                "hasItems": false,
+                "weight": -48
+              },
+              {
+                "id": "menu_link_content:9b92fafc-a710-4331-8553-e0a5b09b1078",
+                "name": "Construction of cycle paths",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/cycling/construction-of-cycle-paths",
+                "external": false,
+                "hasItems": false,
+                "weight": -47
+              },
+              {
+                "id": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
+                "name": "Promotion of cycling",
+                "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
+                "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/cycling/promotion-of-cycling",
+                "external": false,
+                "hasItems": true,
+                "weight": -46,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:cb01bb31-36a8-499f-8229-b0392afcf867",
+                    "name": "Helsinki as a cycling city",
+                    "parentId": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
+                    "url": "https://helfi-proxy.docker.so/en/urban-environment-and-traffic/cycling/promotion-of-cycling/helsinki-as-a-cycling-city",
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -50
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "weight": [
+      {
+        "value": -9
+      }
+    ],
+    "default_langcode": [
+      {
+        "value": true
+      }
+    ],
+    "metatag": {
+      "value": {
+        "canonical_url": "https://helfi-etusivu.docker.so/en/api/v1/global-menu",
+        "title": "| City of Helsinki",
+        "og_site_name": "City of Helsinki",
+        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
+        "twitter_cards_type": "summary_large_image",
+        "twitter_cards_title": "| City of Helsinki",
+        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/en/api/v1/global-menu",
+        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
+      }
+    },
+    "content_translation_source": [
+      {
+        "value": "und"
+      }
+    ],
+    "content_translation_outdated": [
+      {
+        "value": false
+      }
+    ],
+    "content_translation_uid": [
+      {
+        "target_id": 1,
+        "target_type": "user",
+        "target_uuid": "de6409aa-c620-4327-90f4-127176f209b2",
+        "url": "/en/user/1"
+      }
+    ],
+    "content_translation_created": [
+      {
+        "value": "2022-09-02T08:46:59+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ],
+    "content_translation_changed": [
+      {
+        "value": "2022-09-05T06:47:21+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ]
+  }
+}
