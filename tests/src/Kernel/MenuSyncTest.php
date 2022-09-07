@@ -138,8 +138,10 @@ class MenuSyncTest extends KernelTestBase {
       // Capture arguments passed to syncMenu() so we can test them.
       ->will($this->returnCallback(function (string $langcode, array $data) use ($siteName) {
         $this->assertEquals($siteName, $data['site_name']);
+        $this->assertEquals('base:site_name_' . $langcode, $data['menu_tree']['id']);
         $this->assertEquals($siteName, $data['menu_tree']['name']);
         $this->assertEquals($langcode, $data['langcode']);
+        $this->assertStringStartsWith('http://', $data['menu_tree']['url']);
       }));
     $this->container->set('helfi_navigation.api_manager', $apiManager);
 
