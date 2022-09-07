@@ -106,9 +106,18 @@ class MenuSyncTest extends KernelTestBase {
   }
 
   /**
+   * Tests syncMenu() without site name.
+   */
+  public function testSyncMenuMissingSiteName() : void {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->getMenuUpdater()->syncMenu('fi');
+  }
+
+  /**
    * Tests syncMenu() without api key.
    */
   public function testSyncMenuMissingApiKey() : void {
+    $this->config('system.site')->set('name', 'Site name')->save();
     $this->expectException(ConfigException::class);
     $this->getMenuUpdater()->syncMenu('fi');
   }

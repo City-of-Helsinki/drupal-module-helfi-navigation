@@ -55,6 +55,10 @@ class MenuUpdater {
       $siteName = $this->config->get('system.site')
         ->getOriginal('name', FALSE);
     }
+
+    if (!$siteName) {
+      throw new \InvalidArgumentException('Missing "system.site[name]" configuration.');
+    }
     $instanceUri = Url::fromRoute('<front>', options: [
       'language' => $this->languageManager->getLanguage($langcode),
     ])->setAbsolute();
