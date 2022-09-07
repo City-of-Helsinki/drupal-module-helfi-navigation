@@ -6,7 +6,6 @@ namespace Drupal\helfi_navigation\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\helfi_navigation\MenuUpdater;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -19,8 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  cron = {"time" = 15}
  * )
  */
-class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterface {
-  use StringTranslationTrait;
+final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**
    * The menu updater service.
@@ -32,8 +30,8 @@ class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : static {
-    $instance = new static($configuration, $plugin_id, $plugin_definition);
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->menuUpdater = $container->get('helfi_navigation.menu_updater');
     return $instance;
   }
@@ -51,7 +49,12 @@ class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterfa
     if (!is_string($langcode)) {
       return;
     }
-    $this->menuUpdater->syncMenu($langcode);
+    try {
+      $this->menuUpdater->syncMenu($langcode);
+    }
+    catch (\Throwable) {
+      // The failed sync will be logged by ApiManager.
+    }
   }
 
 }

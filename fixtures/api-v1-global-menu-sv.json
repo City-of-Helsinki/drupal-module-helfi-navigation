@@ -444,18 +444,6 @@
         "value": false
       }
     ],
-    "metatag": {
-      "value": {
-        "canonical_url": "https://helfi-etusivu.docker.so/sv/api/v1/global-menu",
-        "title": "| Helsingfors stad",
-        "og_site_name": "Helsingfors stad",
-        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
-        "twitter_cards_type": "summary_large_image",
-        "twitter_cards_title": "| Helsingfors stad",
-        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/sv/api/v1/global-menu",
-        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
-      }
-    },
     "content_translation_source": [
       {
         "value": "und"
@@ -708,18 +696,6 @@
         "value": false
       }
     ],
-    "metatag": {
-      "value": {
-        "canonical_url": "https://helfi-etusivu.docker.so/sv/api/v1/global-menu",
-        "title": "| Helsingfors stad",
-        "og_site_name": "Helsingfors stad",
-        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
-        "twitter_cards_type": "summary_large_image",
-        "twitter_cards_title": "| Helsingfors stad",
-        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/sv/api/v1/global-menu",
-        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
-      }
-    },
     "content_translation_source": [
       {
         "value": "und"

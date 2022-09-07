@@ -818,18 +818,6 @@
         "value": true
       }
     ],
-    "metatag": {
-      "value": {
-        "canonical_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
-        "title": "| Helsingin kaupunki",
-        "og_site_name": "Helsingin kaupunki",
-        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
-        "twitter_cards_type": "summary_large_image",
-        "twitter_cards_title": "| Helsingin kaupunki",
-        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
-        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
-      }
-    },
     "content_translation_source": [
       {
         "value": "und"
@@ -1082,18 +1070,6 @@
         "value": false
       }
     ],
-    "metatag": {
-      "value": {
-        "canonical_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
-        "title": "| Helsingin kaupunki",
-        "og_site_name": "Helsingin kaupunki",
-        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
-        "twitter_cards_type": "summary_large_image",
-        "twitter_cards_title": "| Helsingin kaupunki",
-        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/fi/api/v1/global-menu",
-        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
-      }
-    },
     "content_translation_source": [
       {
         "value": "und"
