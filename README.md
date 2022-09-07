@@ -24,12 +24,15 @@ Supported menus:
 ### Main-navigation syncing
 
 Helfi_navigation-module can push instance specific `main`-navigation to Etusivu.
+
 Etusivu-instance aggregates all instance specific main-navigations to a single `global navigation`.
 Global navigation can be fetched to any instance and rendered using blocks.
 
-- User creates/updates main-navigation's menulink-item (or the main navigation itself).
-- Menu is queued to be synced with queue worker.
-- Cron runs the queue-worker which sends the menu to Etusivu.
+Main navigation is synced when:
+- User creates/updates/deletes main-navigation's menulink-item
+- Makes any changes to main-navigation
+
+If sync fails for any reason the menu is queued and will be synced by a queue worker on next cron run.
 
 - A block extending `ExternalMenuBlock`-class handles
   - Fetching the latest version of the navigation.
