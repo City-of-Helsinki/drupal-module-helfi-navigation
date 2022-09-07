@@ -116,10 +116,6 @@ final class ExternalMenuTreeFactory {
       $items[] = $item;
     }
 
-    usort($items, function ($a, $b) {
-      return $a['original_link']->getWeight() - $b['original_link']->getWeight();
-    });
-
     return $items;
   }
 
