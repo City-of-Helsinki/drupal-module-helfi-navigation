@@ -53,7 +53,7 @@ final class MenuTreeBuilder {
       (new MenuTreeParameters())
         ->onlyEnabledLinks()
     );
-    $this->menuTree->transform($tree, [
+    $tree = $this->menuTree->transform($tree, [
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ]);
     return [
