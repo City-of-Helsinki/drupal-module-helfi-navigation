@@ -53,6 +53,9 @@ final class MenuTreeBuilder {
       (new MenuTreeParameters())
         ->onlyEnabledLinks()
     );
+    $this->menuTree->transform($tree, [
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ]);
     return [
       'id' => $rootElement->id,
       'name' => $rootElement->name,
@@ -131,7 +134,6 @@ final class MenuTreeBuilder {
       $items[] = (object) $item;
     }
 
-    usort($items, fn (object $a, object $b) => $a->weight <=> $b->weight);
     return $items;
   }
 
