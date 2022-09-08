@@ -60,7 +60,7 @@ final class MenuTreeBuilder {
       'id' => $rootElement->id,
       'name' => $rootElement->name,
       'url' => $rootElement->url,
-      'external' => FALSE,
+      'attributes' => new \stdClass(),
       'weight' => 0,
       'sub_tree' => $this->transformMenuItems($tree, $langcode, $rootElement->id),
     ];
@@ -121,10 +121,18 @@ final class MenuTreeBuilder {
         'name' => $menuLink->getTitle(),
         'parentId' => $parentId,
         'url' => $menuLink->getUrlObject()->setAbsolute()->toString(),
-        'external' => $this->domainResolver->isExternal($menuLink->getUrlObject()),
+        'attributes' => new \stdClass(),
         'hasItems' => FALSE,
         'weight' => $menuLink->getWeight(),
       ];
+
+      if ($this->domainResolver->isExternal($menuLink->getUrlObject())) {
+        $item['attributes']->external = TRUE;
+      }
+
+      if ($protocol = $this->domainResolver->getProtocol($menuLink->getUrlObject())) {
+        $item['attributes']->protocol = $protocol;
+      }
 
       if (count($element->subtree) > 0) {
         $item['hasItems'] = TRUE;
