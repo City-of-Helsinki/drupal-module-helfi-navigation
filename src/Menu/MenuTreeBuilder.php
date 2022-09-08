@@ -53,13 +53,16 @@ final class MenuTreeBuilder {
       (new MenuTreeParameters())
         ->onlyEnabledLinks()
     );
+
     $tree = $this->menuTree->transform($tree, [
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ]);
+
     return [
       'id' => $rootElement->id,
       'name' => $rootElement->name,
       'url' => $rootElement->url,
+      'external' => FALSE,
       'attributes' => new \stdClass(),
       'weight' => 0,
       'sub_tree' => $this->transformMenuItems($tree, $langcode, $rootElement->id),
@@ -116,22 +119,25 @@ final class MenuTreeBuilder {
         $parentId = (string) $rootId;
       }
 
+      $isExternal = $this->domainResolver->isExternal($menuLink->getUrlObject());
+
       $item = [
         'id' => $menuLink->getPluginId(),
         'name' => $menuLink->getTitle(),
         'parentId' => $parentId,
         'url' => $menuLink->getUrlObject()->setAbsolute()->toString(),
         'attributes' => new \stdClass(),
+        'external' => $isExternal,
         'hasItems' => FALSE,
         'weight' => $menuLink->getWeight(),
       ];
 
-      if ($this->domainResolver->isExternal($menuLink->getUrlObject())) {
-        $item['attributes']->external = TRUE;
+      if ($isExternal) {
+        $item['attributes']->{"data-external"} = TRUE;
       }
 
       if ($protocol = $this->domainResolver->getProtocol($menuLink->getUrlObject())) {
-        $item['attributes']->protocol = $protocol;
+        $item['attributes']->{"data-protocol"} = $protocol;
       }
 
       if (count($element->subtree) > 0) {
