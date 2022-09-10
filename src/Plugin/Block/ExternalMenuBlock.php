@@ -41,17 +41,12 @@ final class ExternalMenuBlock extends ExternalMenuBlockBase {
    * {@inheritdoc}
    */
   protected function buildMenuTree(): array {
-    try {
-      $json = $this
-        ->apiManager
-        ->getExternalMenu(
-          $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
-          $this->getDerivativeId()
-        );
-    }
-    catch (\Exception $e) {
-      return [];
-    }
+    $json = $this
+      ->apiManager
+      ->getExternalMenu(
+        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
+        $this->getDerivativeId()
+      );
     $menu = [];
     // @todo Support more than one level.
     foreach ($json->data as $item) {

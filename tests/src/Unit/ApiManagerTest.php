@@ -43,12 +43,23 @@ class ApiManagerTest extends UnitTestCase {
   private ?CacheBackendInterface $cache;
 
   /**
+   * The default environment resolver config.
+   *
+   * @var array
+   */
+  private array $environmentResolverConfiguration = [];
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() : void {
     parent::setUp();
 
     $this->cache = new MemoryBackend();
+    $this->environmentResolverConfiguration = [
+      EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
+      EnvironmentResolver::ENVIRONMENT_NAME_KEY => 'local',
+    ];
   }
 
   /**
@@ -100,10 +111,7 @@ class ApiManagerTest extends UnitTestCase {
     }
     if (!$environmentResolver) {
       $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
-        'helfi_api_base.environment_resolver.settings' => [
-          EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
-          EnvironmentResolver::ENVIRONMENT_NAME_KEY => 'local',
-        ],
+        'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
       ]));
     }
     return new ApiManager(
@@ -126,6 +134,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::updateMainMenu
    * @covers ::__construct
    * @covers ::makeRequest
+   * @covers ::getDefaultRequestOptions
    */
   public function testUpdateMainMenu() : void {
     $requests = [];
@@ -152,6 +161,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::cache
+   * @covers ::getDefaultRequestOptions
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -180,6 +190,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::cache
+   * @covers ::getDefaultRequestOptions
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -207,6 +218,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getMainMenu
    * @covers ::__construct
    * @covers ::cache
+   * @covers ::getDefaultRequestOptions
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -240,6 +252,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getMainMenu
    * @covers ::__construct
    * @covers ::cache
+   * @covers ::getDefaultRequestOptions
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -280,6 +293,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getExternalMenu
    * @covers ::__construct
    * @covers ::cache
+   * @covers ::getDefaultRequestOptions
    */
   public function testRequestLoggingException() : void {
     $this->expectException(GuzzleException::class);
@@ -302,6 +316,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getExternalMenu
    * @covers ::__construct
    * @covers ::cache
+   * @covers ::getDefaultRequestOptions
    */
   public function testMockFallbackException() : void {
     $this->expectException(FileNotExistsException::class);
@@ -324,6 +339,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getExternalMenu
    * @covers ::__construct
    * @covers ::cache
+   * @covers ::getDefaultRequestOptions
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
   public function testMockFallback() : void {
@@ -343,6 +359,36 @@ class ApiManagerTest extends UnitTestCase {
     );
     $response = $sut->getExternalMenu('fi', 'footer-bottom-navigation');
     $this->assertInstanceOf(\stdClass::class, $response);
+  }
+
+  /**
+   * Make sure subsequent requests are failed after one failed request.
+   */
+  public function testFastRequestFailure() : void {
+    // Override environment name so we don't fallback to mock responses.
+    $this->environmentResolverConfiguration[EnvironmentResolver::ENVIRONMENT_NAME_KEY] = 'test';
+
+    $client = $this->createMockHttpClient([
+      new ConnectException(
+        'Test',
+        $this->prophesize(RequestInterface::class)->reveal(),
+      ),
+    ]);
+    $sut = $this->getSut($client);
+
+    $attempts = 0;
+    // Make sure only one request is sent if the first request fails.
+    // This should fail to \OutOfBoundsException from guzzle MockHandler
+    // if more than one request is sent.
+    for ($i = 0; $i < 50; $i++) {
+      try {
+        $sut->getExternalMenu('fi', 'footer-bottom-navigation');
+      }
+      catch (ConnectException) {
+        $attempts++;
+      }
+    }
+    $this->assertEquals(50, $attempts);
   }
 
 }

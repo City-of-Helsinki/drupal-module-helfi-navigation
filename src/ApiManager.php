@@ -34,6 +34,13 @@ class ApiManager {
   private ?string $authorization;
 
   /**
+   * The previous exception.
+   *
+   * @var \Exception|null
+   */
+  private ?\Exception $previousException = NULL;
+
+  /**
    * Construct an instance.
    *
    * @param \Drupal\Component\Datetime\TimeInterface $time
@@ -185,6 +192,32 @@ class ApiManager {
   }
 
   /**
+   * Gets the default request options.
+   *
+   * @return array
+   *   The request options.
+   */
+  private function getDefaultRequestOptions(string $environmentName) : array {
+    $options = ['timeout' => 15];
+
+    if ($this->authorization !== NULL) {
+      $options['headers']['Authorization'] = sprintf('Basic %s', $this->authorization);
+    }
+
+    if (drupal_valid_test_ua()) {
+      // Speed up mock tests by using very low request timeout value when
+      // running tests.
+      $options['timeout'] = 1;
+    }
+
+    if ($environmentName === 'local') {
+      // Disable SSL verification in local environment.
+      $options['verify'] = FALSE;
+    }
+    return $options;
+  }
+
+  /**
    * Makes a request based on parameters and returns the response.
    *
    * @param string $method
@@ -217,22 +250,24 @@ class ApiManager {
 
     $url = sprintf('%s/%s', $baseUrl, ltrim($endpoint, '/'));
 
-    // Disable SSL verification in local environment.
-    if ($activeEnvironmentName === 'local') {
-      $options['verify'] = FALSE;
-    }
-
-    if ($this->authorization !== NULL) {
-      $options['headers']['Authorization'] = sprintf('Basic %s', $this->authorization);
-    }
+    $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName));
 
     try {
+      if ($this->previousException instanceof \Exception) {
+        // Fail any further request instantly after one failed request, so we
+        // don't block the rendering process and cause the site to time-out when
+        // Etusivu instance is not reachable.
+        throw $this->previousException;
+      }
       $response = $this->httpClient->request($method, $url, $options);
       $data = \GuzzleHttp\json_decode($response->getBody()->getContents());
 
       return $data instanceof \stdClass ? $data : new \stdClass();
     }
     catch (\Exception $e) {
+      if ($e instanceof GuzzleException) {
+        $this->previousException = $e;
+      }
       // Serve mock data in local environments if requests fail.
       if (
         $method === 'GET' &&
