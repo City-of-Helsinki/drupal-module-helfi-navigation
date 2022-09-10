@@ -33,9 +33,8 @@ final class ExternalMenuBlock extends ExternalMenuBlockBase {
    *   Returns cache key as string.
    */
   protected function getCacheKey(): string {
-    $context = 'ExternalMenuBlock';
     $menu_type = $this->getDerivativeId();
-    return sprintf('%s:%s', $context, $menu_type);
+    return sprintf('external_menu_block:%s', $menu_type);
   }
 
   /**
@@ -50,7 +49,7 @@ final class ExternalMenuBlock extends ExternalMenuBlockBase {
           $this->getDerivativeId()
         );
     }
-    catch (\Exception) {
+    catch (\Exception $e) {
       return [];
     }
     $menu = [];

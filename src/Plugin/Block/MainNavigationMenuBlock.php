@@ -43,7 +43,7 @@ final class MainNavigationMenuBlock extends ExternalMenuBlockBase {
 
       return $menu;
     }
-    catch (\Exception $e) {
+    catch (\Exception) {
     }
     return [];
   }
