@@ -296,6 +296,10 @@ class ApiManagerTest extends UnitTestCase {
 
   /**
    * Tests that file not found exception is thrown when no mock file exists.
+   *
+   * @covers ::makeRequest
+   * @covers ::getExternalMenu
+   * @covers ::__construct
    */
   public function testMockFallbackException() : void {
     $this->expectException(FileNotExistsException::class);
@@ -313,6 +317,10 @@ class ApiManagerTest extends UnitTestCase {
 
   /**
    * Tests that mock file used on local environment when GET request fails.
+   *
+   * @covers ::makeRequest
+   * @covers ::getExternalMenu
+   * @covers ::__construct
    */
   public function testMockFallback() : void {
     // Use logger to verify that mock file is actually used.
