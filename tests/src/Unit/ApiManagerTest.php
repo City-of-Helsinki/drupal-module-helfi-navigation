@@ -17,6 +17,7 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
@@ -331,10 +332,9 @@ class ApiManagerTest extends UnitTestCase {
     $logger->warning(Argument::containingString('Mock data is used instead.'))
       ->shouldBeCalled();
     $client = $this->createMockHttpClient([
-      new ClientException(
+      new ConnectException(
         'Test',
         $this->prophesize(RequestInterface::class)->reveal(),
-        $this->prophesize(ResponseInterface::class)->reveal(),
       ),
     ]);
     $sut = $this->getSut(
