@@ -300,6 +300,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::makeRequest
    * @covers ::getExternalMenu
    * @covers ::__construct
+   * @covers ::cache
    */
   public function testMockFallbackException() : void {
     $this->expectException(FileNotExistsException::class);
@@ -321,6 +322,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::makeRequest
    * @covers ::getExternalMenu
    * @covers ::__construct
+   * @covers ::cache
+   * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
   public function testMockFallback() : void {
     // Use logger to verify that mock file is actually used.
