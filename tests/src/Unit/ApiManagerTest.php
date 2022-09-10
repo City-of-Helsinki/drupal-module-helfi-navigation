@@ -363,6 +363,12 @@ class ApiManagerTest extends UnitTestCase {
 
   /**
    * Make sure subsequent requests are failed after one failed request.
+   *
+   * @covers ::makeRequest
+   * @covers ::getExternalMenu
+   * @covers ::__construct
+   * @covers ::cache
+   * @covers ::getDefaultRequestOptions
    */
   public function testFastRequestFailure() : void {
     // Override environment name so we don't fallback to mock responses.
