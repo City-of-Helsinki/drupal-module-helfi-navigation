@@ -14,6 +14,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
@@ -235,7 +236,7 @@ class ApiManager {
       // Serve mock data in local environments if requests fail.
       if (
         $method === 'GET' &&
-        $e instanceof ClientException &&
+        ($e instanceof ClientException || $e instanceof ConnectException) &&
         $activeEnvironmentName === 'local'
       ) {
         $this->logger->warning(
