@@ -44,7 +44,7 @@ class MenuUpdater {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function syncMenu(string $langcode): void {
+  public function syncMenu(string $langcode): bool {
     $siteName = $this->languageManager
       ->getLanguageConfigOverride($langcode, 'system.site')
       ->get('name');
@@ -73,7 +73,7 @@ class MenuUpdater {
         'url' => $instanceUri->toString(),
       ]);
 
-    $this->apiManager->updateMainMenu(
+    $response = $this->apiManager->updateMainMenu(
       $langcode,
       [
         'langcode' => $langcode,
@@ -81,6 +81,10 @@ class MenuUpdater {
         'menu_tree' => $tree,
       ]
     );
+    if (!isset($response->status)) {
+      throw new \InvalidArgumentException('Failed to parse entity published state.');
+    }
+    return reset($response->status)->value;
   }
 
 }

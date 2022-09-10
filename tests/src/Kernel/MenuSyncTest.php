@@ -83,6 +83,19 @@ class MenuSyncTest extends KernelTestBase {
   }
 
   /**
+   * Populates the required configuration.
+   *
+   * @param string $siteName
+   *   The site name.
+   * @param string $apiKey
+   *   The api key.
+   */
+  private function populateConfiguration(string $siteName, string $apiKey = '123') : void {
+    $this->config('system.site')->set('name', $siteName)->save();
+    $this->config('helfi_navigation.api')->set('key', $apiKey)->save();
+  }
+
+  /**
    * Make sure undefined language fallbacks to default language.
    */
   public function testLanguageFallback() : void {
@@ -131,8 +144,7 @@ class MenuSyncTest extends KernelTestBase {
    */
   public function testConfigTranslation(string $langcode) : void {
     $siteName = 'Site name ' . $langcode;
-    $this->config('system.site')->set('name', $siteName)->save();
-    $this->config('helfi_navigation.api')->set('key', '123')->save();
+    $this->populateConfiguration($siteName);
 
     $apiManager = $this->createMock(ApiManager::class);
     $apiManager->expects($this->once())
@@ -144,6 +156,12 @@ class MenuSyncTest extends KernelTestBase {
         $this->assertEquals($siteName, $data['menu_tree']['name']);
         $this->assertEquals($langcode, $data['langcode']);
         $this->assertStringStartsWith('http://', $data['menu_tree']['url']);
+
+        return (object) [
+          'status' => [
+            (object) ['value' => TRUE],
+          ],
+        ];
       }));
     $this->container->set('helfi_navigation.api_manager', $apiManager);
 
@@ -162,6 +180,22 @@ class MenuSyncTest extends KernelTestBase {
       ['en'],
       ['sv'],
     ];
+  }
+
+  /**
+   * Tests entity status when API returns an empty response.
+   */
+  public function testEmptyStatus() : void {
+    $this->populateConfiguration('Test');
+    $apiManager = $this->createMock(ApiManager::class);
+    $apiManager->expects($this->once())
+      ->method('updateMainMenu')
+      ->willReturn(new \stdClass());
+    $this->container->set('helfi_navigation.api_manager', $apiManager);
+
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Failed to parse entity published state.');
+    $this->getMenuUpdater()->syncMenu('fi');
   }
 
   /**

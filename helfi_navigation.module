@@ -110,8 +110,14 @@ function _helfi_navigation_queue_item(string $langcode) : void {
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
   }
   try {
-    $menuUpdater->syncMenu($langcode);
-    \Drupal::messenger()->addMessage(t('Global navigation was synced successfully!'));
+    $status = $menuUpdater->syncMenu($langcode);
+
+    if (!$status) {
+      \Drupal::messenger()->addWarning(t("Global navigation was synced successfully, but won't be visible until published manually."));
+    }
+    else {
+      \Drupal::messenger()->addMessage(t('Global navigation was synced successfully!'));
+    }
   }
   catch (ConfigException) {
     \Drupal::messenger()->addWarning(t('Global navigation sync failed because API keys are not set.'));

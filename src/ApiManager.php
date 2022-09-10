@@ -8,8 +8,9 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\File\Exception\FileNotExistsException;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
@@ -40,7 +41,7 @@ class ApiManager {
    *   The cache service.
    * @param \GuzzleHttp\ClientInterface $httpClient
    *   The HTTP client.
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
    *   EnvironmentResolver helper class.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
@@ -51,7 +52,7 @@ class ApiManager {
     private TimeInterface $time,
     private CacheBackendInterface $cache,
     private ClientInterface $httpClient,
-    private EnvironmentResolver $environmentResolver,
+    private EnvironmentResolverInterface $environmentResolver,
     private LoggerInterface $logger,
     ConfigFactoryInterface $configFactory
   ) {
@@ -131,7 +132,7 @@ class ApiManager {
           $this->time->getRequestTime(),
           ['external_menu:%s:%s', $menuId, $langcode],
         )
-    )->data;
+    )->value;
   }
 
   /**
@@ -142,7 +143,7 @@ class ApiManager {
    * @param array $options
    *   The request options.
    *
-   * @return object
+   * @return \Drupal\helfi_navigation\CacheValue
    *   The JSON object representing main menu.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
@@ -156,7 +157,7 @@ class ApiManager {
         $this->time->getRequestTime(),
         ['external_menu:main:%s', $langcode]
       )
-    )->data;
+    )->value;
   }
 
   /**
@@ -167,14 +168,17 @@ class ApiManager {
    * @param array $data
    *   The JSON data to update.
    *
+   * @return object
+   *   The JSON object.
+   *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function updateMainMenu(string $langcode, array $data) : void {
+  public function updateMainMenu(string $langcode, array $data) : object {
     if (!$this->authorization) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
     $endpoint = sprintf('/api/v1/global-menu/%s', $this->environmentResolver->getActiveEnvironment()->getId());
-    $this->makeRequest('POST', $endpoint, $langcode, [
+    return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
     ]);
   }
@@ -225,10 +229,10 @@ class ApiManager {
       $response = $this->httpClient->request($method, $url, $options);
       $data = \GuzzleHttp\json_decode($response->getBody()->getContents());
 
-      return $data instanceof \stdClass ? $data : (object) ['data' => NULL];
+      return $data instanceof \stdClass ? $data : new \stdClass();
     }
     catch (\Exception $e) {
-      // Serve mock data on local environments if requests fail.
+      // Serve mock data in local environments if requests fail.
       if (
         $method === 'GET' &&
         $e instanceof ClientException &&
@@ -245,7 +249,7 @@ class ApiManager {
         ]);
 
         if (!file_exists($fileName)) {
-          throw new \InvalidArgumentException(
+          throw new FileNotExistsException(
             sprintf('[%s]. Attempted to use mock data, but the mock file was not found for "%s" endpoint.', $e->getMessage(), $endpoint)
           );
         }

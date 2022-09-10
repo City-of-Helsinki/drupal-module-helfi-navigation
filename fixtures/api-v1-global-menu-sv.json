@@ -1,480 +1,4 @@
 {
-  "terveys": {
-    "project": [
-      {
-        "value": "terveys"
-      }
-    ],
-    "uuid": [
-      {
-        "value": "9108a468-9e9e-4f21-a85c-b2116aa22510"
-      }
-    ],
-    "langcode": [
-      {
-        "value": "sv"
-      }
-    ],
-    "status": [
-      {
-        "value": true
-      }
-    ],
-    "name": [
-      {
-        "value": "Social- och hälsovårdstjänster"
-      }
-    ],
-    "menu_tree": [
-      {
-        "name": "Social- och hälsovårdstjänster",
-        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster",
-        "external": false,
-        "hasItems": true,
-        "weight": 0,
-        "sub_tree": [
-          {
-            "id": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
-            "name": "Hälsovård",
-            "parentId": "",
-            "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard",
-            "external": false,
-            "hasItems": true,
-            "weight": -86,
-            "sub_tree": [
-              {
-                "id": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                "name": "Tandvård",
-                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard",
-                "external": false,
-                "hasItems": true,
-                "weight": -85,
-                "sub_tree": [
-                  {
-                    "id": "menu_link_content:4a7858e7-90d8-4dd6-acb2-6ea20542bf5a",
-                    "name": "Tandvårdsjour",
-                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandvardsjour",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": -92
-                  },
-                  {
-                    "id": "menu_link_content:5faf4e8f-9229-4759-8580-e2c24eaca400",
-                    "name": "Tandundersökningar",
-                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandundersokningar",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": -91
-                  },
-                  {
-                    "id": "menu_link_content:f4c91991-b833-442c-9917-e0f921da00dd",
-                    "name": "Tandvård för barn och ungdomar",
-                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandvard-for-barn-och-ungdomar",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": -90
-                  },
-                  {
-                    "id": "menu_link_content:806020c6-ca7a-44ed-96dc-bace7f33121c",
-                    "name": "Tandreglering",
-                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandreglering",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": -89
-                  },
-                  {
-                    "id": "menu_link_content:34b334f5-48b5-4014-943b-16056d6431a2",
-                    "name": "Tandkliniker",
-                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandkliniker",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": -86
-                  }
-                ]
-              },
-              {
-                "id": "menu_link_content:15fdf705-0e48-40b4-8d5e-63a837689d46",
-                "name": "Hälsostationer",
-                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/halsostationer",
-                "external": false,
-                "hasItems": false,
-                "weight": -66
-              },
-              {
-                "id": "menu_link_content:c39abc48-e7fe-49a8-bf49-383f0e8d934b",
-                "name": "Brådskande vård och hälsocentralsjour",
-                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/bradskande-vard-och-halsocentralsjour",
-                "external": false,
-                "hasItems": false,
-                "weight": -65
-              },
-              {
-                "id": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
-                "name": "Mentalvård",
-                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard",
-                "external": false,
-                "hasItems": true,
-                "weight": 0,
-                "sub_tree": [
-                  {
-                    "id": "menu_link_content:592e03fd-5969-4cb1-a62c-99b0a108a2b8",
-                    "name": "Psykiatriska polikliniker",
-                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/psykiatriska-polikliniker",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  },
-                  {
-                    "id": "menu_link_content:ca43dac6-2e45-4eef-b5b5-426004d7fa3a",
-                    "name": "Ungdomsstation",
-                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/ungdomsstation",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  },
-                  {
-                    "id": "menu_link_content:21768557-2723-4dff-a1fa-329ffc9a5302",
-                    "name": "Psykiatrisk öppenvård",
-                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/psykiatrisk-oppenvard",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  },
-                  {
-                    "id": "menu_link_content:e843f967-31f9-403c-bbad-776da1f25bb3",
-                    "name": "Psykiatrisk dygnetruntvård på sjukhus",
-                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/psykiatrisk-dygnetruntvard-pa-sjukhus",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  },
-                  {
-                    "id": "menu_link_content:6432ff37-fed2-4961-a745-deab0e2c1cf9",
-                    "name": "Servicestället för psykisk ohälsa Mieppi",
-                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/servicestallet-for-psykisk-ohalsa-mieppi",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 2
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
-            "name": "Seniortjänster",
-            "parentId": "",
-            "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster",
-            "external": false,
-            "hasItems": true,
-            "weight": -85,
-            "sub_tree": [
-              {
-                "id": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
-                "name": "Närståendevård",
-                "parentId": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard",
-                "external": false,
-                "hasItems": true,
-                "weight": 3,
-                "sub_tree": [
-                  {
-                    "id": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
-                    "name": "Verksamhetscentren för närståendevård",
-                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard/verksamhetscentren-for-narstaendevard",
-                    "external": false,
-                    "hasItems": true,
-                    "weight": 26,
-                    "sub_tree": [
-                      {
-                        "id": "menu_link_content:d88a35cd-b8d0-49f3-98e6-e2394453a6dc",
-                        "name": "Träningskurser för nya närståendevårdare",
-                        "parentId": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
-                        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard/verksamhetscentren-for-narstaendevard/traningskurser-for-nya",
-                        "external": false,
-                        "hasItems": false,
-                        "weight": 6
-                      },
-                      {
-                        "id": "menu_link_content:562c9219-1682-4266-8074-28faa7ea3187",
-                        "name": "Från närståendevårdare till närstående",
-                        "parentId": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
-                        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard/verksamhetscentren-for-narstaendevard/traning-fran-narstaendevardare",
-                        "external": false,
-                        "hasItems": false,
-                        "weight": 7
-                      },
-                      {
-                        "id": "menu_link_content:57e48d68-ee69-4cbb-9fee-a6c53a4ee593",
-                        "name": "Socialhandledning vid verksamhetscentret för närståendevård",
-                        "parentId": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
-                        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard/verksamhetscentren-for-narstaendevard/socialhandledning-vid",
-                        "external": false,
-                        "hasItems": false,
-                        "weight": 8
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-            "name": "Kundens uppgifter och rättigheter",
-            "parentId": "",
-            "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter",
-            "external": false,
-            "hasItems": true,
-            "weight": -84,
-            "sub_tree": [
-              {
-                "id": "menu_link_content:f92e9c8b-db7a-44ce-9100-26b6cb899945",
-                "name": "Begäran om klientuppgifter",
-                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/begaran-om-klientuppgifter",
-                "external": false,
-                "hasItems": false,
-                "weight": -74
-              },
-              {
-                "id": "menu_link_content:3a7ff939-0967-4d3e-80a4-c349f45707e4",
-                "name": "Väntetider och kundupplevelsen",
-                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/vantetider-och-kundupplevelsen",
-                "external": false,
-                "hasItems": false,
-                "weight": -73
-              },
-              {
-                "id": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
-                "name": "Avgifter",
-                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/avgifter",
-                "external": false,
-                "hasItems": true,
-                "weight": -72,
-                "sub_tree": [
-                  {
-                    "id": "menu_link_content:b1396d7f-b88d-40c5-a8ba-88bf0260ec72",
-                    "name": "Avgiftstak",
-                    "parentId": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/avgifter/avgiftstak",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  }
-                ]
-              },
-              {
-                "id": "menu_link_content:52ae8328-2d3a-4809-af19-212749d769f6",
-                "name": "Rätt till service på ditt eget språk",
-                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/ratt-till-service-pa-ditt-eget-sprak",
-                "external": false,
-                "hasItems": false,
-                "weight": -71
-              },
-              {
-                "id": "menu_link_content:ff1b21ea-bd19-4068-9388-03f8acfbcdaf",
-                "name": "Kvalitetskontroll av tjänster",
-                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/kvalitetskontroll-av-tjanster",
-                "external": false,
-                "hasItems": false,
-                "weight": -70
-              },
-              {
-                "id": "menu_link_content:0e28ebd2-bd9b-4514-81c7-074b51a5ddc9",
-                "name": "Servicesedel",
-                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/servicesedel",
-                "external": false,
-                "hasItems": false,
-                "weight": -69
-              },
-              {
-                "id": "menu_link_content:ad91e0a9-cea5-4497-acc5-b9341cbcd0bb",
-                "name": "Social- och patientombudsmannen",
-                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/social-och-patientombudsmannen",
-                "external": false,
-                "hasItems": false,
-                "weight": -68
-              },
-              {
-                "id": "menu_link_content:235179c2-f9aa-4740-9ed8-a4a9ab5ede0d",
-                "name": "Missnöje med vård eller service",
-                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/missnoje-med-vard-eller-service",
-                "external": false,
-                "hasItems": false,
-                "weight": -67
-              },
-              {
-                "id": "menu_link_content:8846838a-b046-49ec-83ae-90d6134a6985",
-                "name": "Valfrihet",
-                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/valfrihet",
-                "external": false,
-                "hasItems": false,
-                "weight": -66
-              }
-            ]
-          },
-          {
-            "id": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
-            "name": "Kom och jobba hos oss",
-            "parentId": "",
-            "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss",
-            "external": false,
-            "hasItems": true,
-            "weight": -83,
-            "sub_tree": [
-              {
-                "id": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
-                "name": "Jobba hos oss",
-                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss",
-                "external": false,
-                "hasItems": true,
-                "weight": 0,
-                "sub_tree": [
-                  {
-                    "id": "menu_link_content:08dbf030-578e-4f9b-8422-00409160e47c",
-                    "name": "Socialarbetare Pia-Maria Grönqvist jobbar som chef för Tölö Seniorcenter",
-                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/socialarbetare-pia-maria-gronqvist-jobbar-som-chef-for-tolo-seniorcenter",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  },
-                  {
-                    "id": "menu_link_content:1e6baa0f-da31-44b3-8ecb-302510e7f69f",
-                    "name": "Socionom Lisa Sirén har tid att tala med kunder",
-                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss/socionom-lisa-siren-har-tid-att-tala-med-kunder",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  },
-                  {
-                    "id": "menu_link_content:53029e50-c9b0-4a83-906e-ffdf73d4d49e",
-                    "name": "Hälsovårdare Ellen Lillkaas jobbar med familjerna",
-                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss/halsovardare-ellen-lillkaas-jobbar-med-familjerna",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  },
-                  {
-                    "id": "menu_link_content:39a0b78e-010e-4d91-be79-e71e9f8ef658",
-                    "name": "Socialhandledare Alexandra Erlund stöder småbarnfamiljer",
-                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss/socialhandledare-alexandra-erlund-stoder-smabarnfamiljer",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  },
-                  {
-                    "id": "menu_link_content:12098627-4294-4d11-ae77-3822d04b5948",
-                    "name": "Ulrika Rehn berättar om socialarbetarens vardag",
-                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
-                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss/ulrika-rehn-berattar-om-socialarbetarens-vardag",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": 0
-                  }
-                ]
-              },
-              {
-                "id": "menu_link_content:a5b9b61c-d985-4705-beab-1128ed99fe2d",
-                "name": "Anställningsförmåner",
-                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/anstallningsformaner",
-                "external": false,
-                "hasItems": false,
-                "weight": 1
-              },
-              {
-                "id": "menu_link_content:790f3d14-8878-447d-97c3-67e9f1d9e621",
-                "name": "För studerande och praktikanter",
-                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/for-studerande-och-praktikanter",
-                "external": false,
-                "hasItems": false,
-                "weight": 2
-              },
-              {
-                "id": "menu_link_content:06137683-5cc8-4e82-8a0b-408ff79d6c67",
-                "name": "Kontaktuppgifter till rekryteringen",
-                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
-                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/kontaktuppgifter-till-rekryteringen",
-                "external": false,
-                "hasItems": false,
-                "weight": 3
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "weight": [
-      {
-        "value": -10
-      }
-    ],
-    "default_langcode": [
-      {
-        "value": false
-      }
-    ],
-    "content_translation_source": [
-      {
-        "value": "und"
-      }
-    ],
-    "content_translation_outdated": [
-      {
-        "value": false
-      }
-    ],
-    "content_translation_uid": [
-      {
-        "target_id": 1,
-        "target_type": "user",
-        "target_uuid": "de6409aa-c620-4327-90f4-127176f209b2",
-        "url": "/en/user/1"
-      }
-    ],
-    "content_translation_created": [
-      {
-        "value": "2022-09-05T06:12:11+00:00",
-        "format": "Y-m-d\\TH:i:sP"
-      }
-    ],
-    "content_translation_changed": [
-      {
-        "value": "2022-09-05T06:47:21+00:00",
-        "format": "Y-m-d\\TH:i:sP"
-      }
-    ]
-  },
   "liikenne": {
     "project": [
       {
@@ -483,7 +7,7 @@
     ],
     "uuid": [
       {
-        "value": "61aa58bd-cedf-440f-9671-16f0bc75684b"
+        "value": "18b403a4-dfda-4301-b0da-1c81777aed2a"
       }
     ],
     "langcode": [
@@ -503,17 +27,19 @@
     ],
     "menu_tree": [
       {
+        "id": "base:stadsmilj_ock_trafik",
         "name": "Stadsmiljö ock trafik",
-        "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik",
+        "url": "https://helfi-kymp.docker.so/sv/stadsmiljo-och-trafik",
         "external": false,
-        "hasItems": true,
+        "attributes": [],
         "weight": 0,
         "sub_tree": [
           {
             "id": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
             "name": "Parkering",
-            "parentId": "",
-            "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering",
+            "parentId": "base:stadsmilj_ock_trafik",
+            "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi",
+            "attributes": [],
             "external": false,
             "hasItems": true,
             "weight": -50,
@@ -522,7 +48,8 @@
                 "id": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
                 "name": "Parkeringsplatser, avgifter och betalningssätt",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/parkeringsplatser-avgifter-och-betalningssatt",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat",
+                "attributes": [],
                 "external": false,
                 "hasItems": true,
                 "weight": -50,
@@ -531,28 +58,34 @@
                     "id": "menu_link_content:5c9444ef-c675-4d22-b032-7f516f9926b2",
                     "name": "Rabatt för lågemission bilar",
                     "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
-                    "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/parkeringsplatser-avgifter-och-betalningssatt/rabatt-for-lagemission-bilar",
-                    "external": false,
+                    "url": "tel:+3581234",
+                    "attributes": {
+                      "data-external": true,
+                      "data-protocol": "tel"
+                    },
+                    "external": true,
                     "hasItems": false,
-                    "weight": -50
-                  },
-                  {
-                    "id": "menu_link_content:2ad4e334-64e3-44af-8597-e376d984c6d4",
-                    "name": "Prisjämförelse av mobilappar för parkering",
-                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
-                    "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/parkeringsplatser-avgifter-och-betalningssatt/prisjamforelse-av-mobilappar-for-parkering",
-                    "external": false,
-                    "hasItems": false,
-                    "weight": -49
+                    "weight": 0
                   },
                   {
                     "id": "menu_link_content:93b4a4e4-12a4-4521-b980-521d99ca6df9",
                     "name": "Förvaringstjänst för bilar – Bilhotell ",
                     "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
-                    "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/parkeringsplatser-avgifter-och-betalningssatt/forvaringstjanst-for-bilar-bilhotell",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat/autojen-sailytyspalvelu-autohotelli",
+                    "attributes": [],
                     "external": false,
                     "hasItems": false,
-                    "weight": -48
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:2ad4e334-64e3-44af-8597-e376d984c6d4",
+                    "name": "Prisjämförelse av mobilappar för parkering",
+                    "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakointipaikat-hinnat-ja-maksutavat/pysakoinnin-mobiilisovellusten-hintavertailu",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
                   }
                 ]
               },
@@ -560,7 +93,8 @@
                 "id": "menu_link_content:33bde933-d660-4a14-9ee2-a00ef981096c",
                 "name": "Parkeringsövervakning",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/parkeringsovervakning",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/pysakoinninvalvonta",
+                "attributes": [],
                 "external": false,
                 "hasItems": false,
                 "weight": -49
@@ -569,7 +103,8 @@
                 "id": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
                 "name": "Förflyttning av fordon",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/forflyttning-av-fordon",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/ajoneuvojen-siirrot",
+                "attributes": [],
                 "external": false,
                 "hasItems": true,
                 "weight": -48,
@@ -578,7 +113,8 @@
                     "id": "menu_link_content:6996f328-5f7b-4348-8d4e-6568ad13e4db",
                     "name": "Kostnader för flyttning och förvaring av fordon",
                     "parentId": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
-                    "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/forflyttning-av-fordon/kostnader-for-flyttning-och-forvaring-av-fordon",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/ajoneuvojen-siirrot/ajoneuvon-siirto-ja-sailytyskustannukset",
+                    "attributes": [],
                     "external": false,
                     "hasItems": false,
                     "weight": -50
@@ -589,7 +125,8 @@
                 "id": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
                 "name": "Boendeparkering",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/boendeparkering",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/asukaspysakointi",
+                "attributes": [],
                 "external": false,
                 "hasItems": true,
                 "weight": -47,
@@ -598,7 +135,8 @@
                     "id": "menu_link_content:93768cda-c8e3-4297-8a63-10a4a8b55efd",
                     "name": "Rabatt på boendeparkering i parkeringshus",
                     "parentId": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
-                    "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/boendeparkering/rabatt-pa-boendeparkering-i-parkeringshus",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/asukaspysakointi/asukaspysakointialennus-pysakointihalliin",
+                    "attributes": [],
                     "external": false,
                     "hasItems": false,
                     "weight": -50
@@ -609,7 +147,8 @@
                 "id": "menu_link_content:09ce6849-3cc5-4964-859b-1ab30ab24999",
                 "name": "Företagsparkering",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/parkering/foretagsparkering",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pysakointi/yrityspysakointi",
+                "attributes": [],
                 "external": false,
                 "hasItems": false,
                 "weight": -46
@@ -619,8 +158,9 @@
           {
             "id": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
             "name": "Cykling",
-            "parentId": "",
-            "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/cykling",
+            "parentId": "base:stadsmilj_ock_trafik",
+            "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily",
+            "attributes": [],
             "external": false,
             "hasItems": true,
             "weight": -44,
@@ -629,7 +169,8 @@
                 "id": "menu_link_content:b65dc473-9003-4f17-9529-3403d8c0ab20",
                 "name": "Cykelleder",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/cykling/cykelleder",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorareitit",
+                "attributes": [],
                 "external": false,
                 "hasItems": false,
                 "weight": -50
@@ -638,7 +179,8 @@
                 "id": "menu_link_content:f83f426e-d15f-4a82-9b7d-bc3fc95c767a",
                 "name": "Cykelparkering",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/cykling/cykelparkering",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyoran-pysakointi",
+                "attributes": [],
                 "external": false,
                 "hasItems": false,
                 "weight": -49
@@ -647,7 +189,8 @@
                 "id": "menu_link_content:9e675819-1868-4b2b-96a6-eff2b38c0b9a",
                 "name": "Vinterunderhåll av cykelvägar",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/cykling/vinterunderhall-av-cykelvagar",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorateiden-talvihoito",
+                "attributes": [],
                 "external": false,
                 "hasItems": false,
                 "weight": -48
@@ -656,7 +199,8 @@
                 "id": "menu_link_content:9b92fafc-a710-4331-8553-e0a5b09b1078",
                 "name": "Byggande av cykelvägar",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/cykling/byggande-av-cykelvagar",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorateiden-rakentaminen",
+                "attributes": [],
                 "external": false,
                 "hasItems": false,
                 "weight": -47
@@ -665,7 +209,8 @@
                 "id": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
                 "name": "Främjande av cykling",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/cykling/framjande-av-cykling",
+                "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorailyn-edistaminen",
+                "attributes": [],
                 "external": false,
                 "hasItems": true,
                 "weight": -46,
@@ -674,7 +219,8 @@
                     "id": "menu_link_content:cb01bb31-36a8-499f-8229-b0392afcf867",
                     "name": "Helsingfors som cykelstad",
                     "parentId": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
-                    "url": "https://helfi-proxy.docker.so/sv/stadsmiljo-och-trafik/cykling/framjande-av-cykling/helsingfors-som-cykelstad",
+                    "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/pyoraily/pyorailyn-edistaminen/pyorailykampanja",
+                    "attributes": [],
                     "external": false,
                     "hasItems": false,
                     "weight": -50
@@ -688,7 +234,7 @@
     ],
     "weight": [
       {
-        "value": -9
+        "value": 0
       }
     ],
     "default_langcode": [
@@ -696,6 +242,18 @@
         "value": false
       }
     ],
+    "metatag": {
+      "value": {
+        "canonical_url": "https://helfi-etusivu.docker.so/sv/api/v1/global-menu",
+        "title": "| Helsingfors stad",
+        "og_site_name": "Helsingfors stad",
+        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
+        "twitter_cards_type": "summary_large_image",
+        "twitter_cards_title": "| Helsingfors stad",
+        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/sv/api/v1/global-menu",
+        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
+      }
+    },
     "content_translation_source": [
       {
         "value": "und"
@@ -716,13 +274,544 @@
     ],
     "content_translation_created": [
       {
-        "value": "2022-09-02T08:47:42+00:00",
+        "value": "2022-09-09T03:55:44+00:00",
         "format": "Y-m-d\\TH:i:sP"
       }
     ],
     "content_translation_changed": [
       {
-        "value": "2022-09-05T06:47:21+00:00",
+        "value": "2022-09-10T05:22:47+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ]
+  },
+  "terveys": {
+    "project": [
+      {
+        "value": "terveys"
+      }
+    ],
+    "uuid": [
+      {
+        "value": "3fd92b84-6b9c-4970-934e-6b4468b618c0"
+      }
+    ],
+    "langcode": [
+      {
+        "value": "sv"
+      }
+    ],
+    "status": [
+      {
+        "value": true
+      }
+    ],
+    "name": [
+      {
+        "value": "Social- och hälsovårdstjänster"
+      }
+    ],
+    "menu_tree": [
+      {
+        "id": "base:social_och_h_lsov_rdstj_nster",
+        "name": "Social- och hälsovårdstjänster",
+        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster",
+        "external": false,
+        "attributes": [],
+        "weight": 0,
+        "sub_tree": [
+          {
+            "id": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+            "name": "Hälsovård",
+            "parentId": "base:social_och_h_lsov_rdstj_nster",
+            "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard",
+            "attributes": [],
+            "external": false,
+            "hasItems": true,
+            "weight": -86,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                "name": "Tandvård",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard",
+                "attributes": [],
+                "external": false,
+                "hasItems": true,
+                "weight": -85,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:4a7858e7-90d8-4dd6-acb2-6ea20542bf5a",
+                    "name": "Tandvårdsjour",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandvardsjour",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -92
+                  },
+                  {
+                    "id": "menu_link_content:5faf4e8f-9229-4759-8580-e2c24eaca400",
+                    "name": "Tandundersökningar",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandundersokningar",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -91
+                  },
+                  {
+                    "id": "menu_link_content:f4c91991-b833-442c-9917-e0f921da00dd",
+                    "name": "Tandvård för barn och ungdomar",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandvard-for-barn-och-ungdomar",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -90
+                  },
+                  {
+                    "id": "menu_link_content:806020c6-ca7a-44ed-96dc-bace7f33121c",
+                    "name": "Tandreglering",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandreglering",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -89
+                  },
+                  {
+                    "id": "menu_link_content:34b334f5-48b5-4014-943b-16056d6431a2",
+                    "name": "Tandkliniker",
+                    "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/tandvard/tandkliniker",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": -86
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:15fdf705-0e48-40b4-8d5e-63a837689d46",
+                "name": "Hälsostationer",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/halsostationer",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -66
+              },
+              {
+                "id": "menu_link_content:c39abc48-e7fe-49a8-bf49-383f0e8d934b",
+                "name": "Brådskande vård och hälsocentralsjour",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/bradskande-vard-och-halsocentralsjour",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -65
+              },
+              {
+                "id": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                "name": "Mentalvård",
+                "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard",
+                "attributes": [],
+                "external": false,
+                "hasItems": true,
+                "weight": 0,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:e843f967-31f9-403c-bbad-776da1f25bb3",
+                    "name": "Psykiatrisk dygnetruntvård på sjukhus",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/psykiatrisk-dygnetruntvard-pa-sjukhus",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:21768557-2723-4dff-a1fa-329ffc9a5302",
+                    "name": "Psykiatrisk öppenvård",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/psykiatrisk-oppenvard",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:592e03fd-5969-4cb1-a62c-99b0a108a2b8",
+                    "name": "Psykiatriska polikliniker",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/psykiatriska-polikliniker",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:ca43dac6-2e45-4eef-b5b5-426004d7fa3a",
+                    "name": "Ungdomsstation",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/ungdomsstation",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:6432ff37-fed2-4961-a745-deab0e2c1cf9",
+                    "name": "Servicestället för psykisk ohälsa Mieppi",
+                    "parentId": "menu_link_content:31137272-c601-45f8-b2ff-05936bfbc11f",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/halsovard/mentalvard/servicestallet-for-psykisk-ohalsa-mieppi",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 2
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+            "name": "Seniortjänster",
+            "parentId": "base:social_och_h_lsov_rdstj_nster",
+            "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster",
+            "attributes": [],
+            "external": false,
+            "hasItems": true,
+            "weight": -85,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                "name": "Närståendevård",
+                "parentId": "menu_link_content:09df70f6-1a18-4628-a56c-5985c1e3a7a8",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard",
+                "attributes": [],
+                "external": false,
+                "hasItems": true,
+                "weight": 3,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
+                    "name": "Verksamhetscentren för närståendevård",
+                    "parentId": "menu_link_content:c3340925-bffa-4efc-affa-19dc8d555cac",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard/verksamhetscentren-for-narstaendevard",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": true,
+                    "weight": 26,
+                    "sub_tree": [
+                      {
+                        "id": "menu_link_content:d88a35cd-b8d0-49f3-98e6-e2394453a6dc",
+                        "name": "Träningskurser för nya närståendevårdare",
+                        "parentId": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
+                        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard/verksamhetscentren-for-narstaendevard/traningskurser-for-nya",
+                        "attributes": [],
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 6
+                      },
+                      {
+                        "id": "menu_link_content:562c9219-1682-4266-8074-28faa7ea3187",
+                        "name": "Från närståendevårdare till närstående",
+                        "parentId": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
+                        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard/verksamhetscentren-for-narstaendevard/traning-fran-narstaendevardare",
+                        "attributes": [],
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 7
+                      },
+                      {
+                        "id": "menu_link_content:57e48d68-ee69-4cbb-9fee-a6c53a4ee593",
+                        "name": "Socialhandledning vid verksamhetscentret för närståendevård",
+                        "parentId": "menu_link_content:b923c32c-0f06-4ab2-9ae0-f9270fdcfb65",
+                        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/seniortjanster/narstaendevard/verksamhetscentren-for-narstaendevard/socialhandledning-vid",
+                        "attributes": [],
+                        "external": false,
+                        "hasItems": false,
+                        "weight": 8
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+            "name": "Kundens uppgifter och rättigheter",
+            "parentId": "base:social_och_h_lsov_rdstj_nster",
+            "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter",
+            "attributes": [],
+            "external": false,
+            "hasItems": true,
+            "weight": -84,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:f92e9c8b-db7a-44ce-9100-26b6cb899945",
+                "name": "Begäran om klientuppgifter",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/begaran-om-klientuppgifter",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -74
+              },
+              {
+                "id": "menu_link_content:3a7ff939-0967-4d3e-80a4-c349f45707e4",
+                "name": "Väntetider och kundupplevelsen",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/vantetider-och-kundupplevelsen",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -73
+              },
+              {
+                "id": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
+                "name": "Avgifter",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/avgifter",
+                "attributes": [],
+                "external": false,
+                "hasItems": true,
+                "weight": -72,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:b1396d7f-b88d-40c5-a8ba-88bf0260ec72",
+                    "name": "Avgiftstak",
+                    "parentId": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/avgifter/avgiftstak",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:52ae8328-2d3a-4809-af19-212749d769f6",
+                "name": "Rätt till service på ditt eget språk",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/ratt-till-service-pa-ditt-eget-sprak",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -71
+              },
+              {
+                "id": "menu_link_content:ff1b21ea-bd19-4068-9388-03f8acfbcdaf",
+                "name": "Kvalitetskontroll av tjänster",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/kvalitetskontroll-av-tjanster",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -70
+              },
+              {
+                "id": "menu_link_content:0e28ebd2-bd9b-4514-81c7-074b51a5ddc9",
+                "name": "Servicesedel",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/servicesedel",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -69
+              },
+              {
+                "id": "menu_link_content:ad91e0a9-cea5-4497-acc5-b9341cbcd0bb",
+                "name": "Social- och patientombudsmannen",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/social-och-patientombudsmannen",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -68
+              },
+              {
+                "id": "menu_link_content:235179c2-f9aa-4740-9ed8-a4a9ab5ede0d",
+                "name": "Missnöje med vård eller service",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/missnoje-med-vard-eller-service",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -67
+              },
+              {
+                "id": "menu_link_content:8846838a-b046-49ec-83ae-90d6134a6985",
+                "name": "Valfrihet",
+                "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kundens-uppgifter-och-rattigheter/valfrihet",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": -66
+              }
+            ]
+          },
+          {
+            "id": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+            "name": "Kom och jobba hos oss",
+            "parentId": "base:social_och_h_lsov_rdstj_nster",
+            "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss",
+            "attributes": [],
+            "external": false,
+            "hasItems": true,
+            "weight": -83,
+            "sub_tree": [
+              {
+                "id": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                "name": "Jobba hos oss",
+                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss",
+                "attributes": [],
+                "external": false,
+                "hasItems": true,
+                "weight": 0,
+                "sub_tree": [
+                  {
+                    "id": "menu_link_content:53029e50-c9b0-4a83-906e-ffdf73d4d49e",
+                    "name": "Hälsovårdare Ellen Lillkaas jobbar med familjerna",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss/halsovardare-ellen-lillkaas-jobbar-med-familjerna",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:08dbf030-578e-4f9b-8422-00409160e47c",
+                    "name": "Socialarbetare Pia-Maria Grönqvist jobbar som chef för Tölö Seniorcenter",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/socialarbetare-pia-maria-gronqvist-jobbar-som-chef-for-tolo-seniorcenter",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:39a0b78e-010e-4d91-be79-e71e9f8ef658",
+                    "name": "Socialhandledare Alexandra Erlund stöder småbarnfamiljer",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss/socialhandledare-alexandra-erlund-stoder-smabarnfamiljer",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:1e6baa0f-da31-44b3-8ecb-302510e7f69f",
+                    "name": "Socionom Lisa Sirén har tid att tala med kunder",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss/socionom-lisa-siren-har-tid-att-tala-med-kunder",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  },
+                  {
+                    "id": "menu_link_content:12098627-4294-4d11-ae77-3822d04b5948",
+                    "name": "Ulrika Rehn berättar om socialarbetarens vardag",
+                    "parentId": "menu_link_content:9dbe5cf3-283e-4fe8-bec7-24128a06dcf5",
+                    "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/jobba-hos-oss/ulrika-rehn-berattar-om-socialarbetarens-vardag",
+                    "attributes": [],
+                    "external": false,
+                    "hasItems": false,
+                    "weight": 0
+                  }
+                ]
+              },
+              {
+                "id": "menu_link_content:a5b9b61c-d985-4705-beab-1128ed99fe2d",
+                "name": "Anställningsförmåner",
+                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/anstallningsformaner",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": 1
+              },
+              {
+                "id": "menu_link_content:790f3d14-8878-447d-97c3-67e9f1d9e621",
+                "name": "För studerande och praktikanter",
+                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/for-studerande-och-praktikanter",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": 2
+              },
+              {
+                "id": "menu_link_content:06137683-5cc8-4e82-8a0b-408ff79d6c67",
+                "name": "Kontaktuppgifter till rekryteringen",
+                "parentId": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
+                "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/kom-och-jobba-hos-oss/kontaktuppgifter-till-rekryteringen",
+                "attributes": [],
+                "external": false,
+                "hasItems": false,
+                "weight": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "weight": [
+      {
+        "value": 0
+      }
+    ],
+    "default_langcode": [
+      {
+        "value": false
+      }
+    ],
+    "metatag": {
+      "value": {
+        "canonical_url": "https://helfi-etusivu.docker.so/sv/api/v1/global-menu",
+        "title": "| Helsingfors stad",
+        "og_site_name": "Helsingfors stad",
+        "og_image_0": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png",
+        "twitter_cards_type": "summary_large_image",
+        "twitter_cards_title": "| Helsingfors stad",
+        "twitter_cards_page_url": "https://helfi-etusivu.docker.so/sv/api/v1/global-menu",
+        "twitter_cards_image": "https://helfi-etusivu.docker.so/themes/contrib/hdbt/src/images/og-global.png"
+      }
+    },
+    "content_translation_source": [
+      {
+        "value": "und"
+      }
+    ],
+    "content_translation_outdated": [
+      {
+        "value": false
+      }
+    ],
+    "content_translation_uid": [
+      {
+        "target_id": 1,
+        "target_type": "user",
+        "target_uuid": "de6409aa-c620-4327-90f4-127176f209b2",
+        "url": "/en/user/1"
+      }
+    ],
+    "content_translation_created": [
+      {
+        "value": "2022-09-09T04:40:28+00:00",
+        "format": "Y-m-d\\TH:i:sP"
+      }
+    ],
+    "content_translation_changed": [
+      {
+        "value": "2022-09-10T05:22:47+00:00",
         "format": "Y-m-d\\TH:i:sP"
       }
     ]
