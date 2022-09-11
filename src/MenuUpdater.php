@@ -73,7 +73,7 @@ class MenuUpdater {
         'url' => $instanceUri->toString(),
       ]);
 
-    $response = $this->apiManager->updateMainMenu(
+    $response = $this->apiManager->update(
       $langcode,
       [
         'langcode' => $langcode,

@@ -47,7 +47,7 @@ class MenuBlockTest extends BrowserTestBase {
     _helfi_navigation_generate_blocks('stark', 'content', TRUE);
 
     // Verify that:
-    // 1. mega menu has at least two levels of links.
+    // 1. Mega menu has only two levels of links.
     // 2. Block label is translated when a translation is provided.
     // 3. Link are translated.
     // These blocks and their content will be generated from fixtures/*.json
@@ -135,6 +135,12 @@ class MenuBlockTest extends BrowserTestBase {
           $this->assertSession()->linkExistsExact($link);
         }
       }
+      // Make sure mega menu has only two levels of links since it's configured
+      // to only show up to two levels.
+      $elements = $this->getSession()->getPage()->findAll('css', '#block-external-menu-mega-menu ul ul');
+      $this->assertTrue(count($elements) > 1);
+      $elements = $this->getSession()->getPage()->findAll('css', '#block-external-menu-mega-menu ul ul ul');
+      $this->assertCount(0, $elements);
     }
   }
 

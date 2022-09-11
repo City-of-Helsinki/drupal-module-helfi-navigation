@@ -131,7 +131,7 @@ class ApiManagerTest extends UnitTestCase {
   /**
    * Tests updateMainMenu().
    *
-   * @covers ::updateMainMenu
+   * @covers ::update
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::getDefaultRequestOptions
@@ -145,7 +145,7 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       apiKey: '123'
     );
-    $sut->updateMainMenu('fi', ['key' => 'value']);
+    $sut->update('fi', ['key' => 'value']);
 
     $this->assertCount(1, $requests);
     // Make sure SSL verification is disabled on local.
@@ -157,7 +157,7 @@ class ApiManagerTest extends UnitTestCase {
   /**
    * Tests getExternalMenu().
    *
-   * @covers ::getExternalMenu
+   * @covers ::get
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::cache
@@ -175,18 +175,18 @@ class ApiManagerTest extends UnitTestCase {
 
     // Test empty and non-empty response.
     for ($i = 0; $i < 2; $i++) {
-      $response = $sut->getExternalMenu('fi', 'main');
+      $response = $sut->get('fi', 'main');
       $this->assertInstanceOf(\stdClass::class, $response);
       $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
     }
     // Make sure cache is used (request queue should be empty).
-    $sut->getExternalMenu('fi', 'main');
+    $sut->get('fi', 'main');
   }
 
   /**
-   * Tests getMainMenu().
+   * Tests main menu.
    *
-   * @covers ::getMainMenu
+   * @covers ::get
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::cache
@@ -203,19 +203,19 @@ class ApiManagerTest extends UnitTestCase {
     $sut = $this->getSut($client);
     // Test empty and non-empty response.
     for ($i = 0; $i < 2; $i++) {
-      $response = $sut->getMainMenu('fi');
+      $response = $sut->get('fi', 'main');
       $this->assertInstanceOf(\stdClass::class, $response);
       $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
     }
     // Make sure cache is used (request queue should be empty).
-    $sut->getMainMenu('fi');
+    $sut->get('fi', 'main');
   }
 
   /**
    * Tests that stale cache will be returned in case request fails.
    *
    * @covers ::makeRequest
-   * @covers ::getMainMenu
+   * @covers ::get
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
@@ -241,7 +241,7 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       $this->getTimeMock($time)->reveal(),
     );
-    $response = $sut->getMainMenu('fi');
+    $response = $sut->get('fi', 'main');
     $this->assertInstanceOf(\stdClass::class, $response);
   }
 
@@ -249,7 +249,7 @@ class ApiManagerTest extends UnitTestCase {
    * Tests that stale cache can be updated.
    *
    * @covers ::makeRequest
-   * @covers ::getMainMenu
+   * @covers ::get
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
@@ -276,13 +276,13 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       $this->getTimeMock($time)->reveal(),
     );
-    $response = $sut->getMainMenu('en');
+    $response = $sut->get('en', 'main');
     $this->assertInstanceOf(\stdClass::class, $response);
     // Make sure cache was updated.
     $this->assertEquals('value', $response->value);
     // Re-fetch the data to make sure we still get updated data and make sure
     // no further HTTP requests are made.
-    $response = $sut->getMainMenu('en');
+    $response = $sut->get('en', 'main');
     $this->assertEquals('value', $response->value);
   }
 
@@ -290,7 +290,7 @@ class ApiManagerTest extends UnitTestCase {
    * Make sure we log the exception and then re-throw the same exception.
    *
    * @covers ::makeRequest
-   * @covers ::getExternalMenu
+   * @covers ::get
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
@@ -306,14 +306,14 @@ class ApiManagerTest extends UnitTestCase {
       ->shouldBeCalled();
 
     $sut = $this->getSut($client, logger: $logger->reveal());
-    $sut->getExternalMenu('fi', 'footer');
+    $sut->get('fi', 'footer');
   }
 
   /**
    * Tests that file not found exception is thrown when no mock file exists.
    *
    * @covers ::makeRequest
-   * @covers ::getExternalMenu
+   * @covers ::get
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
@@ -329,14 +329,14 @@ class ApiManagerTest extends UnitTestCase {
     ]);
     $sut = $this->getSut($client);
     // Test with non-existent menu to make sure no mock file exist.
-    $sut->getExternalMenu('fi', 'footer');
+    $sut->get('fi', 'footer');
   }
 
   /**
    * Tests that mock file used on local environment when GET request fails.
    *
    * @covers ::makeRequest
-   * @covers ::getExternalMenu
+   * @covers ::get
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
@@ -357,7 +357,7 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       logger: $logger->reveal(),
     );
-    $response = $sut->getExternalMenu('fi', 'footer-bottom-navigation');
+    $response = $sut->get('fi', 'footer-bottom-navigation');
     $this->assertInstanceOf(\stdClass::class, $response);
   }
 
@@ -365,7 +365,7 @@ class ApiManagerTest extends UnitTestCase {
    * Make sure subsequent requests are failed after one failed request.
    *
    * @covers ::makeRequest
-   * @covers ::getExternalMenu
+   * @covers ::get
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
@@ -388,7 +388,7 @@ class ApiManagerTest extends UnitTestCase {
     // if more than one request is sent.
     for ($i = 0; $i < 50; $i++) {
       try {
-        $sut->getExternalMenu('fi', 'footer-bottom-navigation');
+        $sut->get('fi', 'footer-bottom-navigation');
       }
       catch (ConnectException) {
         $attempts++;
@@ -401,7 +401,7 @@ class ApiManagerTest extends UnitTestCase {
    * Make sure cache can be bypassed when configured so.
    *
    * @covers ::makeRequest
-   * @covers ::getMainMenu
+   * @covers ::get
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
@@ -420,20 +420,20 @@ class ApiManagerTest extends UnitTestCase {
     );
     // Make sure cache is used for all requests.
     for ($i = 0; $i < 3; $i++) {
-      $response = $sut->getMainMenu('en');
+      $response = $sut->get('en', 'main');
       $this->assertEquals(1, $response->value);
     }
-    // Make sure cache is bypassed when configured so.
-    $response = $sut->withBypassCache()->getMainMenu('en');
+    // Make sure cache is bypassed when configured so and the cached content
+    // is updated.
+    $response = $sut->withBypassCache()->get('en', 'main');
     $this->assertEquals(2, $response->value);
 
-    // Bypassing the cache creates a clone of ApiManager instance to ensure
-    // cache is only bypassed when explicitly told so, and should default to
-    // false.
-    // We defined only two responses, so this should fail to OutOfboundException
+    // withBypassCache() method creates a clone of ApiManager instance to ensure
+    // cache is only bypassed when explicitly told so.
+    // We defined only two responses, so this should fail to OutOfBoundException
     // if cache was bypassed here.
     for ($i = 0; $i < 3; $i++) {
-      $response = $sut->getMainMenu('en');
+      $response = $sut->get('en', 'main');
       $this->assertEquals(2, $response->value);
     }
   }

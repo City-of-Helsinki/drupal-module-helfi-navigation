@@ -43,4 +43,17 @@ abstract class KernelTestBase extends CoreKernelTestBase {
     $this->setupLanguages();
   }
 
+  /**
+   * Populates the required configuration.
+   *
+   * @param string $siteName
+   *   The site name.
+   * @param string $apiKey
+   *   The api key.
+   */
+  protected function populateConfiguration(string $siteName = NULL, string $apiKey = '123') : void {
+    $this->config('system.site')->set('name', $siteName)->save();
+    $this->config('helfi_navigation.api')->set('key', $apiKey)->save();
+  }
+
 }

@@ -147,44 +147,24 @@ class ApiManager {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function getExternalMenu(
+  public function get(
     string $langcode,
     string $menuId,
     array $options = []
   ) : object {
+
+    $endpoint = match ($menuId) {
+      'main' => '/api/v1/global-menu',
+      default => '/jsonapi/menu_items/' . $menuId,
+    };
     $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
 
     return $this->cache($key, fn() =>
         new CacheValue(
-          $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $langcode, $options),
+          $this->makeRequest('GET', $endpoint, $langcode, $options),
           $this->time->getRequestTime(),
           ['external_menu:%s:%s', $menuId, $langcode],
         )
-    )->value;
-  }
-
-  /**
-   * Makes a request to fetch main menu from Etusivu instance.
-   *
-   * @param string $langcode
-   *   The langcode.
-   * @param array $options
-   *   The request options.
-   *
-   * @return \Drupal\helfi_navigation\CacheValue
-   *   The JSON object representing main menu.
-   *
-   * @throws \GuzzleHttp\Exception\GuzzleException
-   */
-  public function getMainMenu(string $langcode, array $options = []) : object {
-    $key = $this->getCacheKey(sprintf('external_menu:main:%s', $langcode), $options);
-
-    return $this->cache($key, fn() =>
-      new CacheValue(
-        $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options),
-        $this->time->getRequestTime(),
-        ['external_menu:main:%s', $langcode]
-      )
     )->value;
   }
 
@@ -201,7 +181,7 @@ class ApiManager {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function updateMainMenu(string $langcode, array $data) : object {
+  public function update(string $langcode, array $data) : object {
     if (!$this->authorization) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }

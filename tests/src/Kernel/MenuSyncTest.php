@@ -55,19 +55,6 @@ class MenuSyncTest extends KernelTestBase {
   }
 
   /**
-   * Populates the required configuration.
-   *
-   * @param string $siteName
-   *   The site name.
-   * @param string $apiKey
-   *   The api key.
-   */
-  private function populateConfiguration(string $siteName, string $apiKey = '123') : void {
-    $this->config('system.site')->set('name', $siteName)->save();
-    $this->config('helfi_navigation.api')->set('key', $apiKey)->save();
-  }
-
-  /**
    * Make sure undefined language fallbacks to default language.
    */
   public function testLanguageFallback() : void {
@@ -120,7 +107,7 @@ class MenuSyncTest extends KernelTestBase {
 
     $apiManager = $this->createMock(ApiManager::class);
     $apiManager->expects($this->once())
-      ->method('updateMainMenu')
+      ->method('update')
       // Capture arguments passed to syncMenu() so we can test them.
       ->will($this->returnCallback(function (string $langcode, array $data) use ($siteName) {
         $this->assertEquals($siteName, $data['site_name']);
@@ -161,7 +148,7 @@ class MenuSyncTest extends KernelTestBase {
     $this->populateConfiguration('Test');
     $apiManager = $this->createMock(ApiManager::class);
     $apiManager->expects($this->once())
-      ->method('updateMainMenu')
+      ->method('update')
       ->willReturn(new \stdClass());
     $this->container->set('helfi_navigation.api_manager', $apiManager);
 

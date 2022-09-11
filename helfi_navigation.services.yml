@@ -44,4 +44,5 @@ services:
     arguments:
       - '@tempstore.shared'
       - '@language_manager'
+      - '@cache_tags.invalidator'
       - '@helfi_navigation.api_manager'

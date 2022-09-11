@@ -28,8 +28,9 @@ final class MainNavigationMenuBlock extends ExternalMenuBlockBase {
    * {@inheritdoc}
    */
   protected function buildMenuTree(): array {
-    $data = $this->apiManager->getMainMenu(
-      $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId()
+    $data = $this->apiManager->get(
+      $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
+      'main'
     );
 
     $menu = [];
