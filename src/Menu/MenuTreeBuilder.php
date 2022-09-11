@@ -18,7 +18,14 @@ use Drupal\helfi_api_base\Link\InternalDomainResolver;
 final class MenuTreeBuilder {
 
   /**
-   * Constructs MenuUpdater.
+   * Constructs a new instance.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   * @param \Drupal\helfi_api_base\Link\InternalDomainResolver $domainResolver
+   *   The internal domain resolver.
+   * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuTree
+   *   The menu link tree builder service.
    */
   public function __construct(
     private EntityTypeManagerInterface $entityTypeManager,
@@ -94,6 +101,7 @@ final class MenuTreeBuilder {
 
     foreach ($menuItems as $element) {
       /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $link */
+      // @todo Do we want to show links other than MenuLinkContent?
       if (!$link = $this->getEntity($element->link)) {
         continue;
       }
@@ -106,16 +114,14 @@ final class MenuTreeBuilder {
         continue;
       }
 
-      // Only show accessible links.
-      if ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) {
-        continue;
-      }
-
       /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menuLink */
       $menuLink = $link->getTranslation($langcode);
 
-      // Handle only published menu links.
-      if (!$menuLink->isPublished()) {
+      // Only show accessible links (and published).
+      if (
+        ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) ||
+        !$menuLink->isPublished()
+      ) {
         continue;
       }
 

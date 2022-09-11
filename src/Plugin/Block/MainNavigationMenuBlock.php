@@ -27,16 +27,6 @@ final class MainNavigationMenuBlock extends ExternalMenuBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags(): array {
-    $tags = parent::getCacheTags();
-    // Cache tags should be cleared any time main menu is saved.
-    $tags[] = 'config:system.menu.main';
-    return $tags;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function buildMenuTree(): array {
     $data = $this->apiManager->getMainMenu(
       $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId()

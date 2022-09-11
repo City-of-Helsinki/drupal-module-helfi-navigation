@@ -41,6 +41,13 @@ class ApiManager {
   private ?\Exception $previousException = NULL;
 
   /**
+   * Whether to bypass cache or not.
+   *
+   * @var bool
+   */
+  private bool $bypassCache = FALSE;
+
+  /**
    * Construct an instance.
    *
    * @param \Drupal\Component\Datetime\TimeInterface $time
@@ -68,6 +75,18 @@ class ApiManager {
   }
 
   /**
+   * Allow cache to be bypassed.
+   *
+   * @return $this
+   *   The self.
+   */
+  public function withBypassCache() : self {
+    $instance = clone $this;
+    $instance->bypassCache = TRUE;
+    return $instance;
+  }
+
+  /**
    * Gets the cached data for given menu and language.
    *
    * @param string $key
@@ -84,10 +103,11 @@ class ApiManager {
     $exception = new TransferException();
     $value = ($cache = $this->cache->get($key)) ? $cache->data : NULL;
 
-    // Attempt to re-fetch the data in case cache does not exist or has
-    // expired.
+    // Attempt to re-fetch the data in case cache does not exist, cache has
+    // expired or bypass cache is set to true.
     if (
       ($value instanceof CacheValue && $value->hasExpired($this->time->getRequestTime())) ||
+      $this->bypassCache ||
       $value === NULL
     ) {
       try {

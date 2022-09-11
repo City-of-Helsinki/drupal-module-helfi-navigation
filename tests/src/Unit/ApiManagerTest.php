@@ -397,4 +397,45 @@ class ApiManagerTest extends UnitTestCase {
     $this->assertEquals(50, $attempts);
   }
 
+  /**
+   * Make sure cache can be bypassed when configured so.
+   *
+   * @covers ::makeRequest
+   * @covers ::getMainMenu
+   * @covers ::__construct
+   * @covers ::cache
+   * @covers ::getDefaultRequestOptions
+   * @covers ::withBypassCache
+   * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
+   * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   */
+  public function testCacheBypass() : void {
+    $requests = [];
+    $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+      new Response(200, body: json_encode(['value' => 1])),
+      new Response(200, body: json_encode(['value' => 2])),
+    ]);
+    $sut = $this->getSut(
+      $client,
+    );
+    // Make sure cache is used for all requests.
+    for ($i = 0; $i < 3; $i++) {
+      $response = $sut->getMainMenu('en');
+      $this->assertEquals(1, $response->value);
+    }
+    // Make sure cache is bypassed when configured so.
+    $response = $sut->withBypassCache()->getMainMenu('en');
+    $this->assertEquals(2, $response->value);
+
+    // Bypassing the cache creates a clone of ApiManager instance to ensure
+    // cache is only bypassed when explicitly told so, and should default to
+    // false.
+    // We defined only two responses, so this should fail to OutOfboundException
+    // if cache was bypassed here.
+    for ($i = 0; $i < 3; $i++) {
+      $response = $sut->getMainMenu('en');
+      $this->assertEquals(2, $response->value);
+    }
+  }
+
 }

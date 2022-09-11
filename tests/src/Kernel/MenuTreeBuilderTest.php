@@ -163,6 +163,8 @@ class MenuTreeBuilderTest extends KernelTestBase {
     ]);
     $this->assertCount(1, $tree['sub_tree']);
     $this->assertFalse($tree['sub_tree'][0]->hasItems);
+    // Make sure first level links use root as their parent.
+    $this->assertEquals('liikenne', $tree['sub_tree'][0]->parentId);
 
     // Make sure link becomes available when the parent is translated.
     $linkEntities['64a5a6d1-ffce-481b-b321-260d9cf66ad9']->addTranslation('fi')
