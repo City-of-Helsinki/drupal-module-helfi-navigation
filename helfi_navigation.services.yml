@@ -24,10 +24,15 @@ services:
       - '@language_manager'
       - '@config.factory'
       - '@helfi_navigation.api_manager'
-      - '@helfi_navigation.menu_tree_builder_service'
-  helfi_navigation.menu_tree_builder_service:
+      - '@helfi_navigation.menu_tree_builder'
+  helfi_navigation.menu_tree_builder:
     class: \Drupal\helfi_navigation\Menu\MenuTreeBuilder
     arguments:
       - '@entity_type.manager'
       - '@helfi_api_base.internal_domain_resolver'
       - '@menu.link_tree'
+  helfi_navigation.anonymous_user:
+    class: \Drupal\Core\Session\AnonymousUserSession
+  helfi_navigation.menu_tree_manipulators:
+    class: \Drupal\helfi_navigation\Menu\MenuTreeManipulator
+    arguments: ['@access_manager', '@helfi_navigation.anonymous_user', '@entity_type.manager']

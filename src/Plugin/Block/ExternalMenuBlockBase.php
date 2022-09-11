@@ -85,24 +85,26 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
       ],
     ];
 
+    $menuTree = NULL;
+
     try {
       $menuId = $this->getDerivativeId();
       $menuTree = $this->menuTreeFactory
         ->transform($this->buildMenuTree(), $this->getOptions());
+
+      $build += [
+        '#sorted' => TRUE,
+        '#items' => $menuTree,
+        '#theme' => 'menu__external_menu',
+        '#menu_type' => $menuId,
+      ];
     }
     catch (\Exception) {
+    }
+    if (!is_array($menuTree)) {
       // Cache for 60 seconds if request fails.
       $build['#cache']['max-age'] = 60;
-      return $build;
     }
-
-    if (!is_array($menuTree)) {
-      return $build;
-    }
-    $build['#sorted'] = TRUE;
-    $build['#items'] = $menuTree;
-    $build['#theme'] = 'menu__external_menu';
-    $build['#menu_type'] = $menuId;
 
     return $build;
   }

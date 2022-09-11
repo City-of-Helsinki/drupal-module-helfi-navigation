@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
 use Drupal\Core\Config\ConfigException;
@@ -7,8 +9,6 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MenuUpdater;
-use Drupal\KernelTests\KernelTestBase;
-use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\system\Entity\Menu;
 
@@ -18,34 +18,6 @@ use Drupal\system\Entity\Menu;
  * @group helfi_navigation
  */
 class MenuSyncTest extends KernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'system',
-    'link',
-    'user',
-    'menu_link_content',
-    'helfi_api_base',
-    'language',
-    'helfi_navigation',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() : void {
-    parent::setUp();
-
-    $this->installEntitySchema('user');
-    $this->installEntitySchema('menu_link_content');
-    $this->installConfig(['language', 'system']);
-
-    foreach (['fi', 'sv'] as $langcode) {
-      ConfigurableLanguage::createFromLangcode($langcode)->save();
-    }
-  }
 
   /**
    * Gets the queue.

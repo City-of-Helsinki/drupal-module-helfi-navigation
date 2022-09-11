@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Menu;
 
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
@@ -55,6 +56,9 @@ final class MenuTreeBuilder {
     );
 
     $tree = $this->menuTree->transform($tree, [
+      // Sync menu links accessible to anonymous users and sort them
+      // the same way core does.
+      ['callable' => 'helfi_navigation.menu_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ]);
 
@@ -102,6 +106,11 @@ final class MenuTreeBuilder {
         continue;
       }
 
+      // Only show accessible links.
+      if ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) {
+        continue;
+      }
+
       /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menuLink */
       $menuLink = $link->getTranslation($langcode);
 
@@ -140,9 +149,9 @@ final class MenuTreeBuilder {
         $item['attributes']->{"data-protocol"} = $protocol;
       }
 
-      if (count($element->subtree) > 0) {
-        $item['hasItems'] = TRUE;
+      if ($element->hasChildren) {
         $item['sub_tree'] = $this->transformMenuItems($element->subtree, $langcode);
+        $item['hasItems'] = count($item['sub_tree']) > 0;
       }
 
       $items[] = (object) $item;
