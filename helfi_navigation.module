@@ -134,3 +134,12 @@ function _helfi_navigation_queue_item(string $langcode) : void {
     $queue->createItem($langcode);
   }
 }
+
+/**
+ * Implements hook_cron().
+ */
+function helfi_navigation_cron() : void {
+  /** @var \Drupal\helfi_navigation\CacheWarmer $warmer */
+  $warmer = \Drupal::service('helfi_navigation.cache_warmer');
+  $warmer->warm();
+}
