@@ -6,7 +6,8 @@ namespace Drupal\Tests\helfi_navigation\Functional;
 
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\Tests\helfi_api_base\Functional\BrowserTestBase;
+use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests menu blocks.
@@ -19,6 +20,9 @@ class MenuBlockTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'language',
+    'content_translation',
+    'helfi_api_base',
     'block',
     'helfi_navigation',
   ];
@@ -34,6 +38,13 @@ class MenuBlockTest extends BrowserTestBase {
   public function setUp() : void {
     parent::setUp();
 
+    foreach (['fi', 'sv'] as $langcode) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
+    $this->config('language.negotiation')
+      ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
+      ->save();
+
     $config = $this->config('helfi_api_base.environment_resolver.settings');
     $config->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, 'local');
     $config->set(EnvironmentResolver::PROJECT_NAME_KEY, Project::ASUMINEN);
@@ -44,6 +55,7 @@ class MenuBlockTest extends BrowserTestBase {
    * Make sure menu block can be placed.
    */
   public function testExternalMenuBlock() : void {
+    // @todo Test that api addresses are set in drupalSettings.
     _helfi_navigation_generate_blocks('stark', 'content', TRUE);
 
     // Verify that:
@@ -125,7 +137,7 @@ class MenuBlockTest extends BrowserTestBase {
     ];
 
     foreach (['en', 'sv', 'fi'] as $language) {
-      $this->drupalGet('<front>', ['query' => ['language' => $language]]);
+      $this->drupalGet('/' . $language);
 
       ['menus' => $menus] = $expected[$language];
 

@@ -9,7 +9,7 @@ use Drupal\Core\Menu\MenuLinkBase;
 /**
  * Provides an implementation of menu link.
  */
-class ExternalMenuLink extends MenuLinkBase {
+final class ExternalMenuLink extends MenuLinkBase {
 
   /**
    * {@inheritdoc}

@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation\Menu;
 
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
  * Create menu tree from Drupal menu.
@@ -50,7 +50,7 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function buildMenuTree(string $menuName, string $langcode, object $rootElement): array {
+  public function build(string $menuName, string $langcode, object $rootElement): array {
     if (!isset($rootElement->name, $rootElement->url, $rootElement->id)) {
       throw new \LogicException(
         'Missing $rootElement->name, $rootElement->url or $rootElement->id property.'
@@ -76,7 +76,7 @@ final class MenuTreeBuilder {
       'external' => FALSE,
       'attributes' => new \stdClass(),
       'weight' => 0,
-      'sub_tree' => $this->transformMenuItems($tree, $langcode, $rootElement->id),
+      'sub_tree' => $this->transform($tree, $langcode, $rootElement->id),
     ];
   }
 
@@ -96,11 +96,11 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function transformMenuItems(array $menuItems, string $langcode, string $rootId = NULL): array {
+  private function transform(array $menuItems, string $langcode, string $rootId = NULL): array {
     $items = [];
 
     foreach ($menuItems as $element) {
-      /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $link */
+      /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
       // @todo Do we want to show links other than MenuLinkContent?
       if (!$link = $this->getEntity($element->link)) {
         continue;
@@ -144,6 +144,7 @@ final class MenuTreeBuilder {
         'attributes' => new \stdClass(),
         'external' => $isExternal,
         'hasItems' => FALSE,
+        'expanded' => $menuLink->isExpanded(),
         'weight' => $menuLink->getWeight(),
       ];
 
@@ -156,7 +157,7 @@ final class MenuTreeBuilder {
       }
 
       if ($element->hasChildren) {
-        $item['sub_tree'] = $this->transformMenuItems($element->subtree, $langcode);
+        $item['sub_tree'] = $this->transform($element->subtree, $langcode);
         $item['hasItems'] = count($item['sub_tree']) > 0;
       }
 
@@ -172,14 +173,14 @@ final class MenuTreeBuilder {
    * @param \Drupal\Core\Menu\MenuLinkInterface $link
    *   The menu link.
    *
-   * @return \Drupal\Core\Entity\EntityInterface|null
-   *   Boolean if menu link has no metadata. NULL if entity not found and
-   *   an EntityInterface if found.
+   * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
+   *   NULL if entity not found and
+   *   a MenuLinkContentInterface if found.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function getEntity(MenuLinkInterface $link): ? EntityInterface {
+  private function getEntity(MenuLinkInterface $link): ? MenuLinkContentInterface {
     // MenuLinkContent::getEntity() has protected visibility and cannot be used
     // to directly fetch the entity.
     $metadata = $link->getMetaData();

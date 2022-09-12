@@ -2,13 +2,11 @@ services:
   logger.channel.helfi_navigation:
     parent: logger.channel_base
     arguments: ['helfi_navigation']
-  helfi_navigation.external_menu_tree_factory:
-    class: Drupal\helfi_navigation\ExternalMenuTreeFactory
+  helfi_navigation.external_menu_tree_builder:
+    class: Drupal\helfi_navigation\ExternalMenuTreeBuilder
     arguments:
       - '@helfi_api_base.internal_domain_resolver'
       - '@request_stack'
-      - '@uuid'
-      - '@menu.active_trail'
   helfi_navigation.api_manager:
     class: Drupal\helfi_navigation\ApiManager
     arguments:

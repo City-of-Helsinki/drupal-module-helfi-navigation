@@ -135,6 +135,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::getDefaultRequestOptions
+   * @covers ::getUrl
    */
   public function testUpdateMainMenu() : void {
     $requests = [];
@@ -162,6 +163,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::makeRequest
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
+   * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -191,6 +193,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::makeRequest
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
+   * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -219,6 +222,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
+   * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -253,6 +257,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
+   * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
@@ -294,6 +299,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
+   * @covers ::getUrl
    */
   public function testRequestLoggingException() : void {
     $this->expectException(GuzzleException::class);
@@ -317,6 +323,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
+   * @covers ::getUrl
    */
   public function testMockFallbackException() : void {
     $this->expectException(FileNotExistsException::class);
@@ -340,6 +347,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
+   * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */
   public function testMockFallback() : void {
@@ -369,6 +377,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
+   * @covers ::getUrl
    */
   public function testFastRequestFailure() : void {
     // Override environment name so we don't fallback to mock responses.
@@ -406,6 +415,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
    * @covers ::withBypassCache
+   * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    */

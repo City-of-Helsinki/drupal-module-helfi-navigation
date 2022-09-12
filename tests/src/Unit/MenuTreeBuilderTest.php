@@ -21,7 +21,7 @@ class MenuTreeBuilderTest extends UnitTestCase {
    *
    * @dataProvider rootElementExceptionData
    * @covers ::__construct
-   * @covers ::buildMenuTree
+   * @covers ::build
    */
   public function testRootElementException(\stdClass $rootElement) : void {
     $this->expectException(\LogicException::class);
@@ -32,7 +32,7 @@ class MenuTreeBuilderTest extends UnitTestCase {
       new InternalDomainResolver(),
       $this->prophesize(MenuLinkTreeInterface::class)->reveal(),
     );
-    $menuTreeBuilder->buildMenuTree('main', 'en', $rootElement);
+    $menuTreeBuilder->build('main', 'en', $rootElement);
   }
 
   /**

@@ -4,27 +4,24 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation;
 
-use Drupal\Component\Uuid\UuidInterface;
-use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_navigation\Plugin\Menu\ExternalMenuLink;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Helper class for external menu tree actions.
  */
-final class ExternalMenuTreeFactory {
+final class ExternalMenuTreeBuilder {
 
   /**
-   * The current request.
+   * The menu links in active trail.
    *
-   * @var \Symfony\Component\HttpFoundation\Request
+   * @var array
    */
-  protected Request $currentRequest;
+  private array $activeTrail = [];
 
   /**
    * Constructs a tree instance from supplied JSON.
@@ -33,24 +30,17 @@ final class ExternalMenuTreeFactory {
    *   Internal domain resolver.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   * @param \Drupal\Component\Uuid\UuidInterface $uuidService
-   *   UUID service.
-   * @param \Drupal\Core\Menu\MenuActiveTrailInterface $menuActiveTrail
-   *   The active menu trail service.
    */
   public function __construct(
     private InternalDomainResolver $domainResolver,
-    RequestStack $requestStack,
-    private UuidInterface $uuidService,
-    private MenuActiveTrailInterface $menuActiveTrail,
+    private RequestStack $requestStack,
   ) {
-    $this->currentRequest = $requestStack->getCurrentRequest();
   }
 
   /**
    * Form and return a menu tree instance for given menu items.
    *
-   * @param array $menu
+   * @param array $items
    *   The menu.
    * @param array $options
    *   Options for the menu link item handling.
@@ -58,10 +48,8 @@ final class ExternalMenuTreeFactory {
    * @return array|null
    *   The resulting menu tree instance.
    */
-  public function transform(array $menu, array $options = []) :? array {
-    $options += ['active_trail' => $this->menuActiveTrail->getActiveTrailIds($options['menu_type'])];
-
-    $tree = $this->transformItems($menu, $options);
+  public function build(array $items, array $options = []) :? array {
+    $tree = $this->transform($items, $options);
 
     return $tree ?? NULL;
   }
@@ -69,7 +57,7 @@ final class ExternalMenuTreeFactory {
   /**
    * Create menu link items from JSON elements.
    *
-   * @param array $menuItems
+   * @param array $items
    *   Provided menu items.
    * @param array $options
    *   Keyed array of options needed to create menu link items.
@@ -77,46 +65,32 @@ final class ExternalMenuTreeFactory {
    * @return array
    *   Resulting array of menu links.
    */
-  protected function transformItems(array $menuItems, array $options): array {
-    $items = [];
+  private function transform(array $items, array $options): array {
+    $links = [];
 
     [
-      'active_trail' => $active_trail,
       'expand_all_items' => $expand_all_items,
       'level' => $level,
       'max_depth' => $max_depth,
       'menu_type' => $menu_type,
     ] = $options;
 
-    foreach ($menuItems as $element) {
-      $item = $this->createLink($element, $menu_type, $active_trail, (bool) $expand_all_items);
+    foreach ($items as $item) {
+      $link = $this->createLink($item, $menu_type, (bool) $expand_all_items);
 
-      $options = [
-        'active_trail' => $active_trail,
-        'max_depth' => $max_depth,
-        'menu_type' => $menu_type,
-        'expand_all_items' => $expand_all_items,
-        'level' => $level + 1,
-      ];
+      $options['level'] = $level + 1;
 
-      if (isset($element->sub_tree)) {
-        // Make sure there's parent ids in subtree items.
-        foreach ($element->sub_tree as &$sub_tree_item) {
-          if (empty($sub_tree_item->parentId)) {
-            $sub_tree_item->parentId = $item['id'];
-          }
-        }
-
+      if (isset($item->sub_tree)) {
         // Handle subtree.
         if ($level < $max_depth) {
-          $item['below'] = $this->transformItems($element->sub_tree, $options);
+          $link['below'] = $this->transform($item->sub_tree, $options);
         }
       }
 
-      $items[] = $item;
+      $links[$link['id']] = $link;
     }
 
-    return $items;
+    return $links;
   }
 
   /**
@@ -124,29 +98,28 @@ final class ExternalMenuTreeFactory {
    *
    * @param object $item
    *   Menu tree item.
-   * @param string $menu_name
+   * @param string $menu
    *   Menu name.
-   * @param array $active_trail
-   *   An array of menu link items in active trail.
    * @param bool $expand_all_items
    *   Should the menu link item be expanded.
    *
    * @return array
-   *   Returns a menu link.
+   *   A menu link.
    */
-  protected function createLink(object $item, string $menu_name, array $active_trail, bool $expand_all_items): array {
+  private function createLink(
+    object $item,
+    string $menu,
+    bool $expand_all_items
+  ): array {
     $link_definition = [
-      'menu_name' => $menu_name,
+      'menu_name' => $menu,
       'options' => [],
       'title' => $item->name,
+      'provider' => 'helfi_navigation',
     ];
 
     // Parse the URL.
     $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
-
-    if (!isset($item->id)) {
-      $item->id = 'menu_link_content:' . $this->uuidService->generate();
-    }
 
     if (!isset($item->parentId)) {
       $item->parentId = NULL;
@@ -165,12 +138,13 @@ final class ExternalMenuTreeFactory {
     }
 
     return [
-      'attributes' => new Attribute(),
+      'attributes' => new Attribute($item->attributes ?? []),
       'title' => $item->name,
       'id' => $item->id,
       'parent_id' => $item->parentId,
-      'is_expanded' => $expand_all_items,
-      'in_active_trail' => $this->inActiveTrail($item, $active_trail),
+      'is_expanded' => $expand_all_items || !empty($item->expanded),
+      // @todo mark parents in active trail as well.
+      'in_active_trail' => $this->inActiveTrail($item),
       'original_link' => new ExternalMenuLink([], $item->id, $link_definition),
       'external' => $item->external,
       'url' => $item->url,
@@ -183,22 +157,23 @@ final class ExternalMenuTreeFactory {
    *
    * @param object $item
    *   Menu link item.
-   * @param array $active_trail
-   *   An array of active menu links.
    *
    * @return bool
    *   Returns true or false.
    */
-  protected function inActiveTrail(object $item, array $active_trail): bool {
+  private function inActiveTrail(object $item): bool {
     if ($item->url->isRouted() && $item->url->getRouteName() === '<nolink>') {
       return FALSE;
     }
-    $currentPath = parse_url($this->currentRequest->getUri(), PHP_URL_PATH);
+    if (!$request = $this->requestStack->getCurrentRequest()) {
+      throw new \LogicException('Request is not set.');
+    }
+    $currentPath = parse_url($request->getUri(), PHP_URL_PATH);
     $linkPath = parse_url($item->url->getUri(), PHP_URL_PATH);
 
     // We don't care about the domain when comparing URLs because the
     // site might be served from multiple different domains.
-    if ($linkPath === $currentPath || in_array($item->id, $active_trail)) {
+    if ($linkPath === $currentPath) {
       return TRUE;
     }
     return FALSE;

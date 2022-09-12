@@ -24,6 +24,9 @@ use Psr\Log\LoggerInterface;
  */
 class ApiManager {
 
+  public const API_GLOBAL_MENU = '/api/v1/global-menu';
+  public const API_JSON = '/jsonapi/menu_items';
+
   use CacheKeyTrait;
 
   /**
@@ -154,9 +157,10 @@ class ApiManager {
   ) : object {
 
     $endpoint = match ($menuId) {
-      'main' => '/api/v1/global-menu',
-      default => '/jsonapi/menu_items/' . $menuId,
+      'main' => static::API_GLOBAL_MENU,
+      default => sprintf('%s/%s', static::API_JSON, $menuId),
     };
+
     $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
 
     return $this->cache($key, fn() =>
@@ -185,7 +189,7 @@ class ApiManager {
     if (!$this->authorization) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
-    $endpoint = sprintf('/api/v1/global-menu/%s', $this->environmentResolver->getActiveEnvironment()->getId());
+    $endpoint = sprintf('%s/%s', static::API_GLOBAL_MENU, $this->environmentResolver->getActiveEnvironment()->getId());
     return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
     ]);
@@ -218,6 +222,34 @@ class ApiManager {
   }
 
   /**
+   * Gets the url for given type and langcode.
+   *
+   * @param string $type
+   *   The type.
+   * @param string $langcode
+   *   The langcode.
+   * @param array $options
+   *   The url options.
+   *
+   * @return string
+   *   The URL.
+   */
+  public function getUrl(string $type, string $langcode, array $options = []) : string {
+    $activeEnvironmentName = $this->environmentResolver
+      ->getActiveEnvironment()
+      ->getEnvironmentName();
+
+    $baseUrl = $this->environmentResolver
+      ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName)
+      ->getUrl($langcode);
+
+    return match ($type) {
+      'base' => $baseUrl,
+      'api' => sprintf('%s/%s', $baseUrl, ltrim($options['endpoint'], '/')),
+    };
+  }
+
+  /**
    * Makes a request based on parameters and returns the response.
    *
    * @param string $method
@@ -244,11 +276,7 @@ class ApiManager {
       ->getActiveEnvironment()
       ->getEnvironmentName();
 
-    $baseUrl = $this->environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName)
-      ->getUrl($langcode);
-
-    $url = sprintf('%s/%s', $baseUrl, ltrim($endpoint, '/'));
+    $url = $this->getUrl('api', $langcode, ['endpoint' => $endpoint]);
 
     $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName));
 

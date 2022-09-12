@@ -57,8 +57,8 @@ class MenuTreeBuilderTest extends KernelTestBase {
    * Tests menu tree build.
    *
    * @covers ::__construct
-   * @covers ::buildMenuTree
-   * @covers ::transformMenuItems
+   * @covers ::build
+   * @covers ::transform
    * @covers ::getEntity
    */
   public function testBuildMenuTree() : void {
@@ -116,6 +116,12 @@ class MenuTreeBuilderTest extends KernelTestBase {
         'parent' => 'menu_link_content:0d8a1366-4fcd-4dbc-bb75-854dedf28a1b',
         'link' => ['tel:+358040123'],
       ],
+      [
+        'uuid' => '263464a3-bd76-4a4e-a77f-03ab4960ff1e',
+        'langcode' => 'en',
+        'title' => 'Link 6',
+        'link' => ['uri' => 'route:<nolink>'],
+      ],
     ];
 
     $linkEntities = [];
@@ -123,7 +129,7 @@ class MenuTreeBuilderTest extends KernelTestBase {
       $linkEntities[$link['uuid']] = $this->createTestLink($link);
     }
 
-    $tree = $this->menuTreeBuilder->buildMenuTree('main', 'en', (object) [
+    $tree = $this->menuTreeBuilder->build('main', 'en', (object) [
       'name' => 'Test',
       'url' => 'https://localhost/test',
       'id' => 'liikenne',
@@ -134,8 +140,11 @@ class MenuTreeBuilderTest extends KernelTestBase {
     // parent, thus it should be hidden as well.
     // - Link 2 is unpublished.
     // - Link 3 is in different language.
-    $this->assertCount(2, $tree['sub_tree']);
+    $this->assertCount(3, $tree['sub_tree']);
     $this->assertFalse($tree['sub_tree'][0]->hasItems);
+
+    // Test <nolink>.
+    $this->assertEquals('', $tree['sub_tree'][2]->url);
 
     // Link 5 should have three links deep tree.
     $this->assertTrue($tree['sub_tree'][1]->hasItems);
@@ -156,7 +165,7 @@ class MenuTreeBuilderTest extends KernelTestBase {
       ->save();
 
     // Only one finnish link should be available.
-    $tree = $this->menuTreeBuilder->buildMenuTree('main', 'fi', (object) [
+    $tree = $this->menuTreeBuilder->build('main', 'fi', (object) [
       'name' => 'Test',
       'url' => 'https://localhost/test',
       'id' => 'liikenne',
@@ -170,7 +179,7 @@ class MenuTreeBuilderTest extends KernelTestBase {
     $linkEntities['64a5a6d1-ffce-481b-b321-260d9cf66ad9']->addTranslation('fi')
       ->save();
 
-    $tree = $this->menuTreeBuilder->buildMenuTree('main', 'fi', (object) [
+    $tree = $this->menuTreeBuilder->build('main', 'fi', (object) [
       'name' => 'Test',
       'url' => 'https://localhost/test',
       'id' => 'liikenne',

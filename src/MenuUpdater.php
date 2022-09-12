@@ -65,7 +65,7 @@ class MenuUpdater {
 
     $tree = $this
       ->menuTreeBuilder
-      ->buildMenuTree('main', $langcode, (object) [
+      ->build('main', $langcode, (object) [
         'id' => vsprintf('base:%s', [
           preg_replace('/[^a-z0-9_]+/', '_', strtolower($siteName)),
         ]),
