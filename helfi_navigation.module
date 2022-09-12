@@ -162,7 +162,7 @@ function helfi_navigation_page_attachments(array &$attachments) {
     ];
     // @todo We need a better way to deal with local docker.so urls.
     foreach ($links as $type => $link) {
-      $links[$type] = str_replace(['http', ':8080'], ['https', ''], $link);
+      $links[$type] = str_replace(['http://', ':8080'], ['https://', ''], $link);
     }
 
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
