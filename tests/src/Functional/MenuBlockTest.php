@@ -7,6 +7,8 @@ namespace Drupal\Tests\helfi_navigation\Functional;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -22,6 +24,10 @@ class MenuBlockTest extends BrowserTestBase {
   protected static $modules = [
     'language',
     'content_translation',
+    'node',
+    'menu_ui',
+    'path',
+    'path_alias',
     'helfi_api_base',
     'block',
     'helfi_navigation',
@@ -45,10 +51,16 @@ class MenuBlockTest extends BrowserTestBase {
       ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
       ->save();
 
+    NodeType::create([
+      'type' => 'page',
+    ])->save();
+
     $config = $this->config('helfi_api_base.environment_resolver.settings');
     $config->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, 'local');
     $config->set(EnvironmentResolver::PROJECT_NAME_KEY, Project::ASUMINEN);
     $config->save();
+
+    _helfi_navigation_generate_blocks('stark', 'content', TRUE);
   }
 
   /**
@@ -56,8 +68,6 @@ class MenuBlockTest extends BrowserTestBase {
    */
   public function testExternalMenuBlock() : void {
     // @todo Test that api addresses are set in drupalSettings.
-    _helfi_navigation_generate_blocks('stark', 'content', TRUE);
-
     // Verify that:
     // 1. Mega menu has only two levels of links.
     // 2. Block label is translated when a translation is provided.
@@ -153,6 +163,75 @@ class MenuBlockTest extends BrowserTestBase {
       $this->assertTrue(count($elements) > 1);
       $elements = $this->getSession()->getPage()->findAll('css', '#block-external-menu-mega-menu ul ul ul');
       $this->assertCount(0, $elements);
+    }
+  }
+
+  /**
+   * Tests active trail.
+   */
+  public function testActiveTrail() : void {
+    $content = [
+      '/urban-environment-and-traffic' =>
+        [
+          'title' => 'Urban environment and traffic',
+          'active_trail' => [
+            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          ],
+        ],
+      '/urban-environment-and-traffic/parking' => [
+        'title' => 'Parking',
+        'active_trail' => [
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
+        ],
+      ],
+      '/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods' => [
+        'title' => 'Parking areas, prices and payment methods',
+        // Third level is not visible in menu block, make sure two parents are
+        // set in active trail.
+        'active_trail' => [
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
+        ],
+      ],
+      // Test different second level link to make sure active trail is not
+      // cached for wrong language.
+      '/urban-environment-and-traffic/cycling' => [
+        'title' => 'Cycling',
+        'active_trail' => [
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling',
+        ],
+      ],
+    ];
+
+    foreach ($content as $path => $data) {
+      $node = Node::create([
+        'title' => $data['title'],
+        'path' => $path,
+        'type' => 'page',
+      ]);
+      $node->save();
+    }
+
+    foreach ($content as $path => $data) {
+      $this->drupalGet('/en' . $path);
+      $this->assertActiveTrail($data['active_trail']);
+    }
+  }
+
+  /**
+   * Asserts that expected links are in active trail.
+   *
+   * @param array $expected
+   *   An array of expected links.
+   */
+  private function assertActiveTrail(array $expected) : void {
+    $items = $this->getSession()->getPage()->findAll('css', 'a.menu__link--in-path');
+
+    $this->assertCount(count($expected), $items);
+    foreach ($items as $item) {
+      $this->assertTrue(in_array($item->getAttribute('href'), $expected));
     }
   }
 

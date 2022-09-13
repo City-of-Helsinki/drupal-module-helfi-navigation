@@ -99,9 +99,13 @@ final class ExternalMenuTreeBuilder {
       $options['level'] = $level + 1;
 
       if (isset($item->sub_tree)) {
-        // Handle subtree.
+        // We need to render full tree structure to collect the entire
+        // active trail chain.
+        $subTree = $this->transform($item->sub_tree, $options);
+
+        // Only show subtree up to max depth.
         if ($level < $max_depth) {
-          $link['below'] = $this->transform($item->sub_tree, $options);
+          $link['below'] = $subTree;
         }
       }
       $links[] = $link;
