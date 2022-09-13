@@ -150,6 +150,14 @@ class MenuTreeBuilderTest extends KernelTestBase {
     $this->assertTrue($tree['sub_tree'][1]->hasItems);
     $this->assertTrue($tree['sub_tree'][1]->sub_tree[0]->hasItems);
     $this->assertFalse($tree['sub_tree'][1]->sub_tree[0]->sub_tree[0]->hasItems);
+    // Make the whole tree is included in parents. The tree should be sorted
+    // from last to first element in tree.
+    $this->assertEquals([
+      'menu_link_content:0b10ba16-e2d5-4251-ac37-8ed27a02ff1f',
+      'menu_link_content:0d8a1366-4fcd-4dbc-bb75-854dedf28a1b',
+      'menu_link_content:64a5a6d1-ffce-481b-b321-260d9cf66ad9',
+      'liikenne',
+    ], $tree['sub_tree'][1]->sub_tree[0]->sub_tree[0]->parents);
     // Tel/mailto links should be external and have attributes to indicate that.
     $this->assertTrue($tree['sub_tree'][1]->sub_tree[0]->sub_tree[0]->external);
     $this->assertEquals((object) [

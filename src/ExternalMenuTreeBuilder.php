@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class ExternalMenuTreeBuilder {
 
   /**
-   * The menu links in active trail.
+   * All menu link IDs in active trail.
    *
-   * @var array
+   * @var string[]
    */
   private array $activeTrail = [];
 
@@ -50,8 +50,26 @@ final class ExternalMenuTreeBuilder {
    */
   public function build(array $items, array $options = []) :? array {
     $tree = $this->transform($items, $options);
+    $this->updateActiveTrail($tree);
 
     return $tree ?? NULL;
+  }
+
+  /**
+   * Updates active trail from last item upwards.
+   *
+   * @param array $tree
+   *   The menu tree to update.
+   */
+  private function updateActiveTrail(array &$tree) : void {
+    foreach ($tree as &$item) {
+      if (isset($item['below'])) {
+        $this->updateActiveTrail($item['below']);
+      }
+      if (isset($this->activeTrail[$item['id']])) {
+        $item['in_active_trail'] = TRUE;
+      }
+    }
   }
 
   /**
@@ -86,8 +104,7 @@ final class ExternalMenuTreeBuilder {
           $link['below'] = $this->transform($item->sub_tree, $options);
         }
       }
-
-      $links[$link['id']] = $link;
+      $links[] = $link;
     }
 
     return $links;
@@ -137,14 +154,20 @@ final class ExternalMenuTreeBuilder {
       $link_definition['weight'] = $item->weight;
     }
 
+    if ($inActiveTrail = $this->inActiveTrail($item)) {
+      // Add whole tree in active trail.
+      array_map(function ($parent) {
+        $this->activeTrail[$parent] = $parent;
+      }, $item->parents ?? []);
+    }
+
     return [
       'attributes' => new Attribute($item->attributes ?? []),
       'title' => $item->name,
       'id' => $item->id,
       'parent_id' => $item->parentId,
       'is_expanded' => $expand_all_items || !empty($item->expanded),
-      // @todo mark parents in active trail as well.
-      'in_active_trail' => $this->inActiveTrail($item),
+      'in_active_trail' => $inActiveTrail,
       'original_link' => new ExternalMenuLink([], $item->id, $link_definition),
       'external' => $item->external,
       'url' => $item->url,

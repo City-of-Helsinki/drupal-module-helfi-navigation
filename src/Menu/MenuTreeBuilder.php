@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation\Menu;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
+use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
@@ -26,11 +27,14 @@ final class MenuTreeBuilder {
    *   The internal domain resolver.
    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuTree
    *   The menu link tree builder service.
+   * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menuLinkManager
+   *   The menu link manager.
    */
   public function __construct(
     private EntityTypeManagerInterface $entityTypeManager,
     private InternalDomainResolver $domainResolver,
-    private MenuLinkTreeInterface $menuTree
+    private MenuLinkTreeInterface $menuTree,
+    private MenuLinkManagerInterface $menuLinkManager,
   ) {
   }
 
@@ -136,6 +140,16 @@ final class MenuTreeBuilder {
 
       $isExternal = $this->domainResolver->isExternal($menuLink->getUrlObject());
 
+      // Include all parent ids for given menu links.
+      if ($parents = $this->menuLinkManager->getParentIds($menuLink->getPluginId())) {
+        $parents = array_keys($parents);
+
+        // Add first level root item as parent as well.
+        if (!isset($parents[$rootId])) {
+          $parents[] = $rootId;
+        }
+      }
+
       $item = [
         'id' => $menuLink->getPluginId(),
         'name' => $menuLink->getTitle(),
@@ -145,6 +159,7 @@ final class MenuTreeBuilder {
         'external' => $isExternal,
         'hasItems' => FALSE,
         'expanded' => $menuLink->isExpanded(),
+        'parents' => $parents ?? [],
         'weight' => $menuLink->getWeight(),
       ];
 
@@ -157,7 +172,7 @@ final class MenuTreeBuilder {
       }
 
       if ($element->hasChildren) {
-        $item['sub_tree'] = $this->transform($element->subtree, $langcode);
+        $item['sub_tree'] = $this->transform($element->subtree, $langcode, $rootId);
         $item['hasItems'] = count($item['sub_tree']) > 0;
       }
 
