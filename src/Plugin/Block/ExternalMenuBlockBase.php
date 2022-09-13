@@ -4,9 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
-use Drupal\helfi_navigation\ExternalMenuTreeFactory;
+use Drupal\helfi_navigation\ExternalMenuTreeBuilder;
 use Drupal\helfi_navigation\ApiManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -18,9 +20,9 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   /**
    * The menu tree factory.
    *
-   * @var \Drupal\helfi_navigation\ExternalMenuTreeFactory
+   * @var \Drupal\helfi_navigation\ExternalMenuTreeBuilder
    */
-  protected ExternalMenuTreeFactory $menuTreeFactory;
+  protected ExternalMenuTreeBuilder $menuTreeBuilder;
 
   /**
    * The global navigation service.
@@ -42,7 +44,7 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->apiManager = $container->get('helfi_navigation.api_manager');
-    $instance->menuTreeFactory = $container->get('helfi_navigation.external_menu_tree_factory');
+    $instance->menuTreeBuilder = $container->get('helfi_navigation.external_menu_tree_builder');
     $instance->languageManager = $container->get('language_manager');
     return $instance;
   }
@@ -51,7 +53,9 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
    * {@inheritdoc}
    */
   public function getCacheTags() : array {
-    return [];
+    return Cache::mergeTags([
+      sprintf('external_menu_block:%s', $this->getDerivativeId()),
+    ], parent::getCacheTags());
   }
 
   /**
@@ -67,12 +71,12 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   }
 
   /**
-   * Builds the external menu tree.
+   * Gets the external menu tree.
    *
    * @return array
    *   The external menu tree.
    */
-  abstract protected function buildMenuTree() : array;
+  abstract protected function getTreeFromResponse(\stdClass $response) : array;
 
   /**
    * {@inheritdoc}
@@ -80,22 +84,35 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   public function build() : array {
     $build = [
       '#cache' => [
-        'cache_context' => $this->getCacheContexts(),
-        'cache_tags' => $this->getCacheTags(),
+        'contexts' => $this->getCacheContexts(),
+        'tags' => $this->getCacheTags(),
       ],
     ];
 
-    $menuId = $this->getDerivativeId();
-    $menu_tree = $this->menuTreeFactory
-      ->transform($this->buildMenuTree(), $this->getOptions());
+    $menuTree = NULL;
 
-    if (!is_array($menu_tree)) {
-      return $build;
+    try {
+      $menuId = $this->getDerivativeId();
+      $response = $this->apiManager->get(
+        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
+        $menuId,
+      );
+      $menuTree = $this->menuTreeBuilder
+        ->build($this->getTreeFromResponse($response), $this->getOptions());
+
+      $build += [
+        '#sorted' => TRUE,
+        '#items' => $menuTree,
+        '#theme' => 'menu__external_menu',
+        '#menu_type' => $menuId,
+      ];
     }
-    $build['#sorted'] = TRUE;
-    $build['#items'] = $menu_tree;
-    $build['#theme'] = 'menu__external_menu';
-    $build['#menu_type'] = $menuId;
+    catch (\Exception) {
+    }
+    if (!is_array($menuTree)) {
+      // Cache for 60 seconds if request fails.
+      $build['#cache']['max-age'] = 60;
+    }
 
     return $build;
   }

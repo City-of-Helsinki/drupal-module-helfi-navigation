@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_navigation\ApiManager;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
 
@@ -20,7 +21,10 @@ function helfi_navigation_theme_suggestions_menu_alter(array &$suggestions, arra
     if (isset($variables['menu_type'])) {
       $suggestions[] = 'menu__external_menu__' . $variables['menu_type'];
     }
-    if (str_contains($variables['attributes']['block_id'], 'mega_menu')) {
+    if (
+      isset($variables['attributes']['block_id']) &&
+      str_contains($variables['attributes']['block_id'], 'mega_menu')
+    ) {
       $suggestions[] = 'menu__external_menu__mega_menu';
     }
   }
@@ -102,26 +106,69 @@ function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $ent
  * Create menu update queue item.
  */
 function _helfi_navigation_queue_item(string $langcode) : void {
-  $menuUpdater = \Drupal::service('helfi_navigation.menu_updater');
+  $menuUpdater = Drupal::service('helfi_navigation.menu_updater');
 
   // Fallback to currently active language if item has no language.
   if ($langcode === LanguageInterface::LANGCODE_NOT_SPECIFIED) {
-    $langcode = \Drupal::languageManager()
+    $langcode = Drupal::languageManager()
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
   }
   try {
-    $menuUpdater->syncMenu($langcode);
-    \Drupal::messenger()->addMessage(t('Global navigation was synced successfully!'));
+    $status = $menuUpdater->syncMenu($langcode);
+
+    if (!$status) {
+      Drupal::messenger()->addWarning(t("Global navigation was synced successfully, but won't be visible until published manually."));
+    }
+    else {
+      Drupal::messenger()->addMessage(t('Global navigation was synced successfully!'));
+    }
   }
   catch (ConfigException) {
-    \Drupal::messenger()->addWarning(t('Global navigation sync failed because API keys are not set.'));
+    Drupal::messenger()->addWarning(t('Global navigation sync failed because API keys are not set.'));
   }
-  catch (\Exception $e) {
-    \Drupal::messenger()->addWarning(t('Global navigation sync failed: @reason The item will be placed in a queue and will be synced again later.', [
+  catch (Exception $e) {
+    Drupal::messenger()->addWarning(t('Global navigation sync failed: @reason The item will be placed in a queue and will be synced again later.', [
       '@reason' => $e->getMessage(),
     ]));
     // Queue item if the synchronization failed.
-    $queue = \Drupal::queue('helfi_navigation_menu_queue');
+    $queue = Drupal::queue('helfi_navigation_menu_queue');
     $queue->createItem($langcode);
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function helfi_navigation_cron() : void {
+  /** @var \Drupal\helfi_navigation\CacheWarmer $warmer */
+  $warmer = Drupal::service('helfi_navigation.cache_warmer');
+  $warmer->warm();
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function helfi_navigation_page_attachments(array &$attachments) {
+  $langcode = Drupal::languageManager()
+    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+    ->getId();
+  /** @var \Drupal\helfi_navigation\ApiManager $apiManager */
+  $apiManager = Drupal::service('helfi_navigation.api_manager');
+
+  try {
+    $links = [
+      'api' => $apiManager->getUrl('api', $langcode, ['endpoint' => ApiManager::API_GLOBAL_MENU]),
+      'canonical' => $apiManager->getUrl('base', $langcode),
+    ];
+    // @todo We need a better way to deal with local docker.so urls.
+    foreach ($links as $type => $link) {
+      $links[$type] = str_replace(['http://', ':8080'], ['https://', ''], $link);
+    }
+
+    $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
+      'links' => $links,
+    ];
+  }
+  catch (\Exception) {
   }
 }

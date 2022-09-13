@@ -8,11 +8,13 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\File\Exception\FileNotExistsException;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
@@ -21,6 +23,9 @@ use Psr\Log\LoggerInterface;
  * Service class for global navigation related functions.
  */
 class ApiManager {
+
+  public const API_GLOBAL_MENU = '/api/v1/global-menu';
+  public const API_JSON = '/jsonapi/menu_items';
 
   use CacheKeyTrait;
 
@@ -32,6 +37,20 @@ class ApiManager {
   private ?string $authorization;
 
   /**
+   * The previous exception.
+   *
+   * @var \Exception|null
+   */
+  private ?\Exception $previousException = NULL;
+
+  /**
+   * Whether to bypass cache or not.
+   *
+   * @var bool
+   */
+  private bool $bypassCache = FALSE;
+
+  /**
    * Construct an instance.
    *
    * @param \Drupal\Component\Datetime\TimeInterface $time
@@ -40,7 +59,7 @@ class ApiManager {
    *   The cache service.
    * @param \GuzzleHttp\ClientInterface $httpClient
    *   The HTTP client.
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
    *   EnvironmentResolver helper class.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
@@ -51,11 +70,23 @@ class ApiManager {
     private TimeInterface $time,
     private CacheBackendInterface $cache,
     private ClientInterface $httpClient,
-    private EnvironmentResolver $environmentResolver,
+    private EnvironmentResolverInterface $environmentResolver,
     private LoggerInterface $logger,
     ConfigFactoryInterface $configFactory
   ) {
     $this->authorization = $configFactory->get('helfi_navigation.api')->get('key');
+  }
+
+  /**
+   * Allow cache to be bypassed.
+   *
+   * @return $this
+   *   The self.
+   */
+  public function withBypassCache() : self {
+    $instance = clone $this;
+    $instance->bypassCache = TRUE;
+    return $instance;
   }
 
   /**
@@ -75,10 +106,11 @@ class ApiManager {
     $exception = new TransferException();
     $value = ($cache = $this->cache->get($key)) ? $cache->data : NULL;
 
-    // Attempt to re-fetch the data in case cache does not exist or has
-    // expired.
+    // Attempt to re-fetch the data in case cache does not exist, cache has
+    // expired or bypass cache is set to true.
     if (
       ($value instanceof CacheValue && $value->hasExpired($this->time->getRequestTime())) ||
+      $this->bypassCache ||
       $value === NULL
     ) {
       try {
@@ -118,45 +150,26 @@ class ApiManager {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function getExternalMenu(
+  public function get(
     string $langcode,
     string $menuId,
     array $options = []
   ) : object {
+
+    $endpoint = match ($menuId) {
+      'main' => static::API_GLOBAL_MENU,
+      default => sprintf('%s/%s', static::API_JSON, $menuId),
+    };
+
     $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
 
     return $this->cache($key, fn() =>
         new CacheValue(
-          $this->makeRequest('GET', "/jsonapi/menu_items/$menuId", $langcode, $options),
+          $this->makeRequest('GET', $endpoint, $langcode, $options),
           $this->time->getRequestTime(),
           ['external_menu:%s:%s', $menuId, $langcode],
         )
-    )->data;
-  }
-
-  /**
-   * Makes a request to fetch main menu from Etusivu instance.
-   *
-   * @param string $langcode
-   *   The langcode.
-   * @param array $options
-   *   The request options.
-   *
-   * @return object
-   *   The JSON object representing main menu.
-   *
-   * @throws \GuzzleHttp\Exception\GuzzleException
-   */
-  public function getMainMenu(string $langcode, array $options = []) : object {
-    $key = $this->getCacheKey(sprintf('external_menu:main:%s', $langcode), $options);
-
-    return $this->cache($key, fn() =>
-      new CacheValue(
-        $this->makeRequest('GET', '/api/v1/global-menu', $langcode, $options),
-        $this->time->getRequestTime(),
-        ['external_menu:main:%s', $langcode]
-      )
-    )->data;
+    )->value;
   }
 
   /**
@@ -167,16 +180,73 @@ class ApiManager {
    * @param array $data
    *   The JSON data to update.
    *
+   * @return object
+   *   The JSON object.
+   *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function updateMainMenu(string $langcode, array $data) : void {
+  public function update(string $langcode, array $data) : object {
     if (!$this->authorization) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
-    $endpoint = sprintf('/api/v1/global-menu/%s', $this->environmentResolver->getActiveEnvironment()->getId());
-    $this->makeRequest('POST', $endpoint, $langcode, [
+    $endpoint = sprintf('%s/%s', static::API_GLOBAL_MENU, $this->environmentResolver->getActiveEnvironment()->getId());
+    return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
     ]);
+  }
+
+  /**
+   * Gets the default request options.
+   *
+   * @return array
+   *   The request options.
+   */
+  private function getDefaultRequestOptions(string $environmentName) : array {
+    $options = ['timeout' => 15];
+
+    if ($this->authorization !== NULL) {
+      $options['headers']['Authorization'] = sprintf('Basic %s', $this->authorization);
+    }
+
+    if (drupal_valid_test_ua()) {
+      // Speed up mock tests by using very low request timeout value when
+      // running tests.
+      $options['timeout'] = 1;
+    }
+
+    if ($environmentName === 'local') {
+      // Disable SSL verification in local environment.
+      $options['verify'] = FALSE;
+    }
+    return $options;
+  }
+
+  /**
+   * Gets the url for given type and langcode.
+   *
+   * @param string $type
+   *   The type.
+   * @param string $langcode
+   *   The langcode.
+   * @param array $options
+   *   The url options.
+   *
+   * @return string
+   *   The URL.
+   */
+  public function getUrl(string $type, string $langcode, array $options = []) : string {
+    $activeEnvironmentName = $this->environmentResolver
+      ->getActiveEnvironment()
+      ->getEnvironmentName();
+
+    $baseUrl = $this->environmentResolver
+      ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName)
+      ->getUrl($langcode);
+
+    return match ($type) {
+      'base' => $baseUrl,
+      'api' => sprintf('%s/%s', $baseUrl, ltrim($options['endpoint'], '/')),
+    };
   }
 
   /**
@@ -206,32 +276,30 @@ class ApiManager {
       ->getActiveEnvironment()
       ->getEnvironmentName();
 
-    $baseUrl = $this->environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName)
-      ->getUrl($langcode);
+    $url = $this->getUrl('api', $langcode, ['endpoint' => $endpoint]);
 
-    $url = sprintf('%s/%s', $baseUrl, ltrim($endpoint, '/'));
-
-    // Disable SSL verification in local environment.
-    if ($activeEnvironmentName === 'local') {
-      $options['verify'] = FALSE;
-    }
-
-    if ($this->authorization !== NULL) {
-      $options['headers']['Authorization'] = sprintf('Basic %s', $this->authorization);
-    }
+    $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName));
 
     try {
+      if ($this->previousException instanceof \Exception) {
+        // Fail any further request instantly after one failed request, so we
+        // don't block the rendering process and cause the site to time-out when
+        // Etusivu instance is not reachable.
+        throw $this->previousException;
+      }
       $response = $this->httpClient->request($method, $url, $options);
       $data = \GuzzleHttp\json_decode($response->getBody()->getContents());
 
-      return $data instanceof \stdClass ? $data : (object) ['data' => NULL];
+      return $data instanceof \stdClass ? $data : new \stdClass();
     }
     catch (\Exception $e) {
-      // Serve mock data on local environments if requests fail.
+      if ($e instanceof GuzzleException) {
+        $this->previousException = $e;
+      }
+      // Serve mock data in local environments if requests fail.
       if (
         $method === 'GET' &&
-        $e instanceof ClientException &&
+        ($e instanceof ClientException || $e instanceof ConnectException) &&
         $activeEnvironmentName === 'local'
       ) {
         $this->logger->warning(
@@ -245,7 +313,7 @@ class ApiManager {
         ]);
 
         if (!file_exists($fileName)) {
-          throw new \InvalidArgumentException(
+          throw new FileNotExistsException(
             sprintf('[%s]. Attempted to use mock data, but the mock file was not found for "%s" endpoint.', $e->getMessage(), $endpoint)
           );
         }

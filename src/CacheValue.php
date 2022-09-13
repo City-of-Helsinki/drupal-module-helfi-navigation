@@ -14,7 +14,7 @@ final class CacheValue {
   /**
    * Constructs a new instance.
    *
-   * @param object $data
+   * @param object $value
    *   The cache data.
    * @param int $created
    *   The created date.
@@ -22,7 +22,7 @@ final class CacheValue {
    *   The cache tags.
    */
   public function __construct(
-    public object $data,
+    public object $value,
     public int $created,
     public array $tags,
   ) {

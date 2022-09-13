@@ -132,11 +132,15 @@ function _helfi_navigation_get_block_configuration() : array {
  *
  * @param string $theme
  *   Current default theme machine name.
+ * @param string|null $region
+ *   The region.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function _helfi_navigation_generate_blocks(string $theme) : void {
+function _helfi_navigation_generate_blocks(string $theme, ?string $region = NULL, bool $labelDisplay = FALSE) : void {
   $default_config = [
     'settings' => [
-      'label_display' => 0,
+      'label_display' => $labelDisplay,
       'provider' => 'helfi_navigation',
       'level' => 1,
       'depth' => 1,
@@ -152,6 +156,10 @@ function _helfi_navigation_generate_blocks(string $theme) : void {
 
   foreach (_helfi_navigation_get_block_configuration() as $id => $config) {
     $block_config = array_replace_recursive($default_config, $config);
+
+    if ($region) {
+      $block_config['region'] = $region;
+    }
     $block_config['id'] = $id;
     $block_config['settings']['id'] = $config['plugin'];
 

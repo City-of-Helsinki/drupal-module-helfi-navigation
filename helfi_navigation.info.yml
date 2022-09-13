@@ -3,6 +3,7 @@ description: 'Provides global menus and blocks for Hel.fi instances.'
 type: module
 core_version_requirement: '^8.9 || ^9'
 dependencies:
-  - block
-  - helfi_api_base
-  - language
+  - drupal:block
+  - drupal:helfi_api_base
+  - drupal:menu_link_content
+  - drupal:language

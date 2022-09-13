@@ -4,7 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_navigation\Functional;
 
-use Drupal\Tests\helfi_api_base\Functional\BrowserTestBase;
+use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\Project;
+use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests menu blocks.
@@ -17,6 +22,13 @@ class MenuBlockTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'language',
+    'content_translation',
+    'node',
+    'menu_ui',
+    'path',
+    'path_alias',
+    'helfi_api_base',
     'block',
     'helfi_navigation',
   ];
@@ -27,19 +39,199 @@ class MenuBlockTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
+   * {@inheritdoc}
+   */
+  public function setUp() : void {
+    parent::setUp();
+
+    foreach (['fi', 'sv'] as $langcode) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
+    $this->config('language.negotiation')
+      ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
+      ->save();
+
+    NodeType::create([
+      'type' => 'page',
+    ])->save();
+
+    $config = $this->config('helfi_api_base.environment_resolver.settings');
+    $config->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, 'local');
+    $config->set(EnvironmentResolver::PROJECT_NAME_KEY, Project::ASUMINEN);
+    $config->save();
+
+    _helfi_navigation_generate_blocks('stark', 'content', TRUE);
+  }
+
+  /**
    * Make sure menu block can be placed.
    */
   public function testExternalMenuBlock() : void {
-    $blocks = _helfi_navigation_get_block_configuration();
-    foreach ($blocks as $block) {
-      $this->drupalPlaceBlock($block['plugin'], [
-        'label' => $block['settings']['label'],
-      ]);
-    }
-    $this->drupalGet('<front>');
+    // @todo Test that api addresses are set in drupalSettings.
+    // Verify that:
+    // 1. Mega menu has only two levels of links.
+    // 2. Block label is translated when a translation is provided.
+    // 3. Link are translated.
+    // These blocks and their content will be generated from fixtures/*.json
+    // files.
+    $expected = [
+      'fi' => [
+        'menus' => [
+          'External - Mega menu' => [
+            'Kaupunkiympäristö ja liikenne',
+            'Pysäköinti',
+          ],
+          'External - Footer bottom navigation' => [
+            'Saavutettavuusseloste',
+          ],
+          'External - Header language links' => [
+            'Selkokieli',
+          ],
+          'External - Header top navigation' => [
+            'Uutiset',
+          ],
+          'Helsingin kaupunki' => [
+            'Työpaikat',
+          ],
+          'Ota yhteyttä' => [
+            'Kaupunkineuvonta – Helsinki-info',
+          ],
+        ],
+      ],
+      'sv' => [
+        'menus' => [
+          'External - Footer bottom navigation' => [
+            'Tillgänglighetsutlåtande',
+          ],
+          'External - Header language links' => [
+            'Lättläst språk',
+          ],
+          'External - Header top navigation' => [
+            'Nyheter',
+          ],
+          'External - Mega menu' => [
+            'Stadsmiljö ock trafik',
+            'Parkering',
+          ],
+          'Helsingfors stad' => [
+            'Lediga jobb',
+          ],
+          'Ta kontakt' => [
+            'Ge respons',
+          ],
+        ],
+      ],
+      'en' => [
+        'menus' => [
+          'External - Footer bottom navigation' => [
+            'Accessibility statement',
+          ],
+          'External - Header language links' => [
+            'Selkokieli',
+          ],
+          'External - Header top navigation' => [
+            'News',
+          ],
+          'External - Mega menu' => [
+            'Urban environment and traffic',
+            'Parking',
+          ],
+          'City of Helsinki' => [
+            'Employment opportunities',
+          ],
+          'Connect' => [
+            'Feedback',
+          ],
+        ],
+      ],
+    ];
 
-    foreach ($blocks as $block) {
-      $this->assertSession()->pageTextContains($block['settings']['label']);
+    foreach (['en', 'sv', 'fi'] as $language) {
+      $this->drupalGet('/' . $language);
+
+      ['menus' => $menus] = $expected[$language];
+
+      foreach ($menus as $label => $links) {
+        $this->assertSession()->pageTextContains($label);
+        foreach ($links as $link) {
+          $this->assertSession()->linkExistsExact($link);
+        }
+      }
+      // Make sure mega menu has only two levels of links since it's configured
+      // to only show up to two levels.
+      $elements = $this->getSession()->getPage()->findAll('css', '#block-external-menu-mega-menu ul ul');
+      $this->assertTrue(count($elements) > 1);
+      $elements = $this->getSession()->getPage()->findAll('css', '#block-external-menu-mega-menu ul ul ul');
+      $this->assertCount(0, $elements);
+    }
+  }
+
+  /**
+   * Tests active trail.
+   */
+  public function testActiveTrail() : void {
+    $content = [
+      '/urban-environment-and-traffic' =>
+        [
+          'title' => 'Urban environment and traffic',
+          'active_trail' => [
+            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          ],
+        ],
+      '/urban-environment-and-traffic/parking' => [
+        'title' => 'Parking',
+        'active_trail' => [
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
+        ],
+      ],
+      '/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods' => [
+        'title' => 'Parking areas, prices and payment methods',
+        // Third level is not visible in menu block, make sure two parents are
+        // set in active trail.
+        'active_trail' => [
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
+        ],
+      ],
+      // Test different second level link to make sure active trail is not
+      // cached for wrong language.
+      '/urban-environment-and-traffic/cycling' => [
+        'title' => 'Cycling',
+        'active_trail' => [
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling',
+        ],
+      ],
+    ];
+
+    foreach ($content as $path => $data) {
+      $node = Node::create([
+        'title' => $data['title'],
+        'path' => $path,
+        'type' => 'page',
+      ]);
+      $node->save();
+    }
+
+    foreach ($content as $path => $data) {
+      $this->drupalGet('/en' . $path);
+      $this->assertActiveTrail($data['active_trail']);
+    }
+  }
+
+  /**
+   * Asserts that expected links are in active trail.
+   *
+   * @param array $expected
+   *   An array of expected links.
+   */
+  private function assertActiveTrail(array $expected) : void {
+    $items = $this->getSession()->getPage()->findAll('css', 'a.menu__link--in-path');
+
+    $this->assertCount(count($expected), $items);
+    foreach ($items as $item) {
+      $this->assertTrue(in_array($item->getAttribute('href'), $expected));
     }
   }
 

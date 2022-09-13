@@ -2,15 +2,13 @@ services:
   logger.channel.helfi_navigation:
     parent: logger.channel_base
     arguments: ['helfi_navigation']
-  helfi_navigation.external_menu_tree_factory:
-    class: \Drupal\helfi_navigation\ExternalMenuTreeFactory
+  helfi_navigation.external_menu_tree_builder:
+    class: Drupal\helfi_navigation\ExternalMenuTreeBuilder
     arguments:
       - '@helfi_api_base.internal_domain_resolver'
       - '@request_stack'
-      - '@uuid'
-      - '@menu.active_trail'
   helfi_navigation.api_manager:
-    class: \Drupal\helfi_navigation\ApiManager
+    class: Drupal\helfi_navigation\ApiManager
     arguments:
       - '@datetime.time'
       - '@cache.default'
@@ -19,15 +17,31 @@ services:
       - '@logger.channel.helfi_navigation'
       - '@config.factory'
   helfi_navigation.menu_updater:
-    class: \Drupal\helfi_navigation\MenuUpdater
+    class: Drupal\helfi_navigation\MenuUpdater
     arguments:
       - '@language_manager'
       - '@config.factory'
       - '@helfi_navigation.api_manager'
-      - '@helfi_navigation.menu_tree_builder_service'
-  helfi_navigation.menu_tree_builder_service:
-    class: \Drupal\helfi_navigation\Menu\MenuTreeBuilder
+      - '@helfi_navigation.menu_tree_builder'
+  helfi_navigation.menu_tree_builder:
+    class: Drupal\helfi_navigation\Menu\MenuTreeBuilder
     arguments:
       - '@entity_type.manager'
       - '@helfi_api_base.internal_domain_resolver'
       - '@menu.link_tree'
+      - '@plugin.manager.menu.link'
+  helfi_navigation.anonymous_user:
+    class: Drupal\Core\Session\AnonymousUserSession
+  helfi_navigation.menu_tree_manipulators:
+    class: Drupal\helfi_navigation\Menu\MenuTreeManipulator
+    arguments:
+      - '@access_manager'
+      - '@helfi_navigation.anonymous_user'
+      - '@entity_type.manager'
+  helfi_navigation.cache_warmer:
+    class: Drupal\helfi_navigation\CacheWarmer
+    arguments:
+      - '@tempstore.shared'
+      - '@language_manager'
+      - '@cache_tags.invalidator'
+      - '@helfi_navigation.api_manager'

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
 use Drupal\Core\Config\ConfigException;
@@ -7,8 +9,6 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MenuUpdater;
-use Drupal\KernelTests\KernelTestBase;
-use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\system\Entity\Menu;
 
@@ -18,34 +18,6 @@ use Drupal\system\Entity\Menu;
  * @group helfi_navigation
  */
 class MenuSyncTest extends KernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'system',
-    'link',
-    'user',
-    'menu_link_content',
-    'helfi_api_base',
-    'language',
-    'helfi_navigation',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() : void {
-    parent::setUp();
-
-    $this->installEntitySchema('user');
-    $this->installEntitySchema('menu_link_content');
-    $this->installConfig(['language', 'system']);
-
-    foreach (['fi', 'sv'] as $langcode) {
-      ConfigurableLanguage::createFromLangcode($langcode)->save();
-    }
-  }
 
   /**
    * Gets the queue.
@@ -131,12 +103,11 @@ class MenuSyncTest extends KernelTestBase {
    */
   public function testConfigTranslation(string $langcode) : void {
     $siteName = 'Site name ' . $langcode;
-    $this->config('system.site')->set('name', $siteName)->save();
-    $this->config('helfi_navigation.api')->set('key', '123')->save();
+    $this->populateConfiguration($siteName);
 
     $apiManager = $this->createMock(ApiManager::class);
     $apiManager->expects($this->once())
-      ->method('updateMainMenu')
+      ->method('update')
       // Capture arguments passed to syncMenu() so we can test them.
       ->will($this->returnCallback(function (string $langcode, array $data) use ($siteName) {
         $this->assertEquals($siteName, $data['site_name']);
@@ -144,6 +115,12 @@ class MenuSyncTest extends KernelTestBase {
         $this->assertEquals($siteName, $data['menu_tree']['name']);
         $this->assertEquals($langcode, $data['langcode']);
         $this->assertStringStartsWith('http://', $data['menu_tree']['url']);
+
+        return (object) [
+          'status' => [
+            (object) ['value' => TRUE],
+          ],
+        ];
       }));
     $this->container->set('helfi_navigation.api_manager', $apiManager);
 
@@ -162,6 +139,22 @@ class MenuSyncTest extends KernelTestBase {
       ['en'],
       ['sv'],
     ];
+  }
+
+  /**
+   * Tests entity status when API returns an empty response.
+   */
+  public function testEmptyStatus() : void {
+    $this->populateConfiguration('Test');
+    $apiManager = $this->createMock(ApiManager::class);
+    $apiManager->expects($this->once())
+      ->method('update')
+      ->willReturn(new \stdClass());
+    $this->container->set('helfi_navigation.api_manager', $apiManager);
+
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Failed to parse entity published state.');
+    $this->getMenuUpdater()->syncMenu('fi');
   }
 
   /**

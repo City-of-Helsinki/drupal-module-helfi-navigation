@@ -35,8 +35,21 @@ We call a macro which calls itself to render the full tree.
       <ul>
     {% endif %}
     {% for item in items %}
-      <li{{ item.attributes }}>
-        {{ link(item.title, item.url) }}
+      {% set item_classes = [
+        has_children ? 'menu__item--has-children',
+        item.in_active_trail ? 'menu__item--in-path',
+        'item--level-' ~ (level + 1),
+      ]%}
+      <li{{ item.attributes.removeAttribute('class').addClass(item_classes) }}>
+        {% set link_attributes = {
+          'class':
+          [
+            'menu__link',
+            item.in_active_trail ? 'menu__link--in-path',
+          ],
+          'aria-current': item.is_currentPage ? 'page': null,
+        } %}
+        {{ link(item.title, item.url, link_attributes) }}
         {% if item.below %}
           {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
         {% endif %}
