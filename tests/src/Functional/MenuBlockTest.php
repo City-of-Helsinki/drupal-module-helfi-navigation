@@ -177,11 +177,17 @@ class MenuBlockTest extends BrowserTestBase {
           'active_trail' => [
             'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
           ],
+          'aria_current' => [
+            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          ],
         ],
       '/urban-environment-and-traffic/parking' => [
         'title' => 'Parking',
         'active_trail' => [
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
+        ],
+        'aria_current' => [
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
         ],
       ],
@@ -193,6 +199,7 @@ class MenuBlockTest extends BrowserTestBase {
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
         ],
+        'aria_current' => [],
       ],
       // Test different second level link to make sure active trail is not
       // cached for wrong language.
@@ -200,6 +207,9 @@ class MenuBlockTest extends BrowserTestBase {
         'title' => 'Cycling',
         'active_trail' => [
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling',
+        ],
+        'aria_current' => [
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling',
         ],
       ],
@@ -216,22 +226,31 @@ class MenuBlockTest extends BrowserTestBase {
 
     foreach ($content as $path => $data) {
       $this->drupalGet('/en' . $path);
-      $this->assertActiveTrail($data['active_trail']);
+      $this->assertActiveTrail($data['active_trail'], $data['aria_current']);
     }
   }
 
   /**
    * Asserts that expected links are in active trail.
    *
-   * @param array $expected
-   *   An array of expected links.
+   * @param array $expectedActiveTrail
+   *   An array of expected URLs in active trail.
+   * @param array $expectedAriaCurrent
+   *   An array of expected URLs with aria-current attribute.
    */
-  private function assertActiveTrail(array $expected) : void {
+  private function assertActiveTrail(array $expectedActiveTrail, array $expectedAriaCurrent) : void {
     $items = $this->getSession()->getPage()->findAll('css', 'a.menu__link--in-path');
 
-    $this->assertCount(count($expected), $items);
+    $this->assertCount(count($expectedActiveTrail), $items);
     foreach ($items as $item) {
-      $this->assertTrue(in_array($item->getAttribute('href'), $expected));
+      $this->assertTrue(in_array($item->getAttribute('href'), $expectedActiveTrail));
+    }
+
+    $ariaCurrent = $this->getSession()->getPage()->findAll('css', '[aria-current="page"]');
+    $this->assertCount(count($expectedAriaCurrent), $ariaCurrent);
+
+    foreach ($ariaCurrent as $item) {
+      $this->assertTrue(in_array($item->getAttribute('href'), $expectedAriaCurrent));
     }
   }
 
