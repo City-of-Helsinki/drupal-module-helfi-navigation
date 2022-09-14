@@ -78,15 +78,19 @@ final class MenuTreeBuilder {
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ]);
 
-    return [
+    $item = [
       'id' => $rootElement->id,
       'name' => $rootElement->name,
-      'url' => $rootElement->url,
+      'url' => $rootElement->url->setAbsolute()->toString(),
       'external' => FALSE,
       'attributes' => new \stdClass(),
       'weight' => 0,
       'sub_tree' => $this->transform($tree, $langcode, $rootElement->id),
     ];
+
+    return $this->eventDispatcher->dispatch(
+      new MenuTreeBuilderLink($rootElement->url, $langcode, $item)
+    )->item;
   }
 
   /**
@@ -182,7 +186,7 @@ final class MenuTreeBuilder {
       }
       // Allow item to be altered.
       $item = $this->eventDispatcher
-        ->dispatch(new MenuTreeBuilderLink($link, $item))
+        ->dispatch(new MenuTreeBuilderLink($link->getUrlObject(), $link->language()->getId(), $item))
         ->item;
 
       $items[] = (object) $item;

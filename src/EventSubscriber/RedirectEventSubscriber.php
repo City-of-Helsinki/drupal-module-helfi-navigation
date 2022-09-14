@@ -2,8 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\helfi_navigation\Event;
+namespace Drupal\helfi_navigation\EventSubscriber;
 
+use Drupal\Core\PathProcessor\OutboundPathProcessorInterface;
+use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
 use Drupal\redirect\RedirectRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -13,20 +15,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class RedirectEventSubscriber implements EventSubscriberInterface {
 
   /**
-   * The redirect repository.
+   * Constructs a new instance.
    *
-   * @var \Drupal\redirect\RedirectRepository|null
-   */
-  private ?RedirectRepository $redirectRepository;
-
-  /**
-   * Sets th redirect repository if available.
-   *
-   * @param \Drupal\redirect\RedirectRepository $redirectRepository
+   * @param \Drupal\redirect\RedirectRepository $repository
    *   The redirect repository.
    */
-  public function setRedirectRepository(RedirectRepository $redirectRepository) : void {
-    $this->redirectRepository = $redirectRepository;
+  public function __construct(
+    private RedirectRepository $repository,
+    private OutboundPathProcessorInterface $pathProcessor
+  ) {
   }
 
   /**
@@ -40,10 +37,18 @@ final class RedirectEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\helfi_navigation\Event\MenuTreeBuilderLink $event
    *   The event to respond to.
    */
-  private function updateLink(MenuTreeBuilderLink $event) : void {
-    if (!$this->redirectRepository) {
+  public function updateLink(MenuTreeBuilderLink $event) : void {
+    $path = $event->url->setAbsolute(FALSE)->toString();
+
+    $options = ['prefix' => ''];
+    $p = $this->pathProcessor->processOutbound($path, $options);
+
+    $prefix = '/' . rtrim($options['prefix'], '/');
+
+    if ($path !== $prefix) {
       return;
     }
+    $x = 1;
   }
 
   /**
@@ -51,9 +56,7 @@ final class RedirectEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() : array {
     return [
-      MenuTreeBuilderLink::class => [
-        ['updateLink'],
-      ],
+      MenuTreeBuilderLink::class => ['updateLink'],
     ];
   }
 

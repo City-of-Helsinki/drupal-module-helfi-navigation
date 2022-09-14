@@ -46,7 +46,3 @@ services:
       - '@language_manager'
       - '@cache_tags.invalidator'
       - '@helfi_navigation.api_manager'
-    helfi_navigation.redirect_event_subscriber:
-      class: Drupal\helfi_navigation\Event\RedirectEventSubscriber
-      calls:
-        - [setRedirectRepository, ['@?redirect.repository']]
