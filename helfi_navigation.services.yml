@@ -30,6 +30,7 @@ services:
       - '@helfi_api_base.internal_domain_resolver'
       - '@menu.link_tree'
       - '@plugin.manager.menu.link'
+      - '@event_dispatcher'
   helfi_navigation.anonymous_user:
     class: Drupal\Core\Session\AnonymousUserSession
   helfi_navigation.menu_tree_manipulators:
@@ -45,3 +46,7 @@ services:
       - '@language_manager'
       - '@cache_tags.invalidator'
       - '@helfi_navigation.api_manager'
+    helfi_navigation.redirect_event_subscriber:
+      class: Drupal\helfi_navigation\Event\RedirectEventSubscriber
+      calls:
+        - [setRedirectRepository, ['@?redirect.repository']]

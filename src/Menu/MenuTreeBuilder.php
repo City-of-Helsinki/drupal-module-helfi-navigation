@@ -11,7 +11,9 @@ use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
+use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
 use Drupal\menu_link_content\MenuLinkContentInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Create menu tree from Drupal menu.
@@ -29,12 +31,15 @@ final class MenuTreeBuilder {
    *   The menu link tree builder service.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menuLinkManager
    *   The menu link manager.
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+   *   The event dispatcher.
    */
   public function __construct(
     private EntityTypeManagerInterface $entityTypeManager,
     private InternalDomainResolver $domainResolver,
     private MenuLinkTreeInterface $menuTree,
     private MenuLinkManagerInterface $menuLinkManager,
+    private EventDispatcherInterface $eventDispatcher
   ) {
   }
 
@@ -118,18 +123,18 @@ final class MenuTreeBuilder {
         continue;
       }
 
-      /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menuLink */
-      $menuLink = $link->getTranslation($langcode);
+      /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
+      $link = $link->getTranslation($langcode);
 
       // Only show accessible links (and published).
       if (
         ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) ||
-        !$menuLink->isPublished()
+        !$link->isPublished()
       ) {
         continue;
       }
 
-      $parentId = $menuLink->getParentId();
+      $parentId = $link->getParentId();
       // The first level link (depth 0) always links to a currently active
       // instance, meaning second level (depth 1) links have no proper
       // parent. Use a pre-defined root id to keep the menu structure
@@ -138,10 +143,10 @@ final class MenuTreeBuilder {
         $parentId = (string) $rootId;
       }
 
-      $isExternal = $this->domainResolver->isExternal($menuLink->getUrlObject());
+      $isExternal = $this->domainResolver->isExternal($link->getUrlObject());
 
       // Include all parent ids for given menu links.
-      if ($parents = $this->menuLinkManager->getParentIds($menuLink->getPluginId())) {
+      if ($parents = $this->menuLinkManager->getParentIds($link->getPluginId())) {
         $parents = array_keys($parents);
 
         // Add first level root item as parent as well.
@@ -151,23 +156,23 @@ final class MenuTreeBuilder {
       }
 
       $item = [
-        'id' => $menuLink->getPluginId(),
-        'name' => $menuLink->getTitle(),
+        'id' => $link->getPluginId(),
+        'name' => $link->getTitle(),
         'parentId' => $parentId,
-        'url' => $menuLink->getUrlObject()->setAbsolute()->toString(),
+        'url' => $link->getUrlObject()->setAbsolute()->toString(),
         'attributes' => new \stdClass(),
         'external' => $isExternal,
         'hasItems' => FALSE,
-        'expanded' => $menuLink->isExpanded(),
+        'expanded' => $link->isExpanded(),
         'parents' => $parents ?? [],
-        'weight' => $menuLink->getWeight(),
+        'weight' => $link->getWeight(),
       ];
 
       if ($isExternal) {
         $item['attributes']->{"data-external"} = TRUE;
       }
 
-      if ($protocol = $this->domainResolver->getProtocol($menuLink->getUrlObject())) {
+      if ($protocol = $this->domainResolver->getProtocol($link->getUrlObject())) {
         $item['attributes']->{"data-protocol"} = $protocol;
       }
 
@@ -175,6 +180,10 @@ final class MenuTreeBuilder {
         $item['sub_tree'] = $this->transform($element->subtree, $langcode, $rootId);
         $item['hasItems'] = count($item['sub_tree']) > 0;
       }
+      // Allow item to be altered.
+      $item = $this->eventDispatcher
+        ->dispatch(new MenuTreeBuilderLink($link, $item))
+        ->item;
 
       $items[] = (object) $item;
     }
