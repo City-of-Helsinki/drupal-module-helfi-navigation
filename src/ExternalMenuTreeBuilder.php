@@ -172,6 +172,7 @@ final class ExternalMenuTreeBuilder {
       'parent_id' => $item->parentId,
       'is_expanded' => $expand_all_items || !empty($item->expanded),
       'in_active_trail' => $inActiveTrail,
+      'is_currentPage' => $inActiveTrail,
       'original_link' => new ExternalMenuLink([], $item->id, $link_definition),
       'external' => $item->external,
       'url' => $item->url,
