@@ -10,6 +10,7 @@ use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\Tests\UnitTestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @coversDefaultClass \Drupal\helfi_navigation\Menu\MenuTreeBuilder
@@ -33,6 +34,7 @@ class MenuTreeBuilderTest extends UnitTestCase {
       new InternalDomainResolver(),
       $this->prophesize(MenuLinkTreeInterface::class)->reveal(),
       $this->prophesize(MenuLinkManagerInterface::class)->reveal(),
+      $this->prophesize(EventDispatcherInterface::class)->reveal(),
     );
     $menuTreeBuilder->build('main', 'en', $rootElement);
   }
