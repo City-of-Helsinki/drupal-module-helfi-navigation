@@ -31,7 +31,6 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     // - Link 2 is unpublished.
     // - Link 3 is in different language.
     $this->assertCount(3, $tree['sub_tree']);
-    $this->assertFalse($tree['sub_tree'][0]->hasItems);
 
     // Test <nolink>.
     $this->assertEquals('', $tree['sub_tree'][2]->url);

@@ -27,18 +27,18 @@
     ],
     "menu_tree": [
       {
+        "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic",
         "id": "base:urban_environment_and_traffic",
         "name": "Urban environment and traffic",
-        "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic",
         "external": false,
         "attributes": {},
         "weight": 0,
         "sub_tree": [
           {
+            "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking",
             "id": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
             "name": "Parking",
             "parentId": "base:urban_environment_and_traffic",
-            "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking",
             "attributes": {},
             "external": false,
             "hasItems": true,
@@ -50,10 +50,10 @@
             "weight": -50,
             "sub_tree": [
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods",
                 "id": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
                 "name": "Parking areas, prices and payment methods",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods",
                 "attributes": {},
                 "external": false,
                 "hasItems": true,
@@ -66,15 +66,12 @@
                 "weight": -50,
                 "sub_tree": [
                   {
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/vehicle-removal-center",
                     "id": "menu_link_content:5c9444ef-c675-4d22-b032-7f516f9926b2",
                     "name": "Discount for low-emission cars",
                     "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
-                    "url": "tel:+3581234",
-                    "attributes": {
-                      "data-external": true,
-                      "data-protocol": "tel"
-                    },
-                    "external": true,
+                    "attributes": {},
+                    "external": false,
                     "hasItems": false,
                     "expanded": false,
                     "parents": [
@@ -86,10 +83,10 @@
                     "weight": -50
                   },
                   {
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/node/32",
                     "id": "menu_link_content:93b4a4e4-12a4-4521-b980-521d99ca6df9",
                     "name": "Car storage service – Car Hotel",
                     "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
-                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods/car-storage-service-car-hotel",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -103,12 +100,15 @@
                     "weight": -49
                   },
                   {
+                    "url": "tel:+3581234",
                     "id": "menu_link_content:2ad4e334-64e3-44af-8597-e376d984c6d4",
                     "name": "Price comparison of mobile parking apps",
                     "parentId": "menu_link_content:cdc59766-d06f-4159-be58-f03d6a748355",
-                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-areas-prices-and-payment-methods/price-comparison-of-mobile-parking-apps",
-                    "attributes": {},
-                    "external": false,
+                    "attributes": {
+                      "data-external": true,
+                      "data-protocol": "tel"
+                    },
+                    "external": true,
                     "hasItems": false,
                     "expanded": false,
                     "parents": [
@@ -122,10 +122,10 @@
                 ]
               },
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-control",
                 "id": "menu_link_content:33bde933-d660-4a14-9ee2-a00ef981096c",
                 "name": "Parking control",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/parking-control",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -138,10 +138,10 @@
                 "weight": -49
               },
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/vehicle-removal",
                 "id": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
                 "name": "Vehicle removal",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/vehicle-removal",
                 "attributes": {},
                 "external": false,
                 "hasItems": true,
@@ -154,10 +154,10 @@
                 "weight": -48,
                 "sub_tree": [
                   {
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/vehicle-removal/vehicle-removal-and-storage-costs",
                     "id": "menu_link_content:6996f328-5f7b-4348-8d4e-6568ad13e4db",
                     "name": "Vehicle removal and storage costs",
                     "parentId": "menu_link_content:5ff42c9a-f89f-4caf-b50a-22566da76607",
-                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/vehicle-removal/vehicle-removal-and-storage-costs",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -173,10 +173,10 @@
                 ]
               },
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/resident-parking",
                 "id": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
                 "name": "Resident parking",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/resident-parking",
                 "attributes": {},
                 "external": false,
                 "hasItems": true,
@@ -189,10 +189,10 @@
                 "weight": -47,
                 "sub_tree": [
                   {
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/resident-parking/resident-parking-discount-for-a-parking-hall",
                     "id": "menu_link_content:93768cda-c8e3-4297-8a63-10a4a8b55efd",
                     "name": "Resident parking discount for a parking hall",
                     "parentId": "menu_link_content:18326796-a8fd-41b0-8129-3fdb818ab207",
-                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/resident-parking/resident-parking-discount-for-a-parking-hall",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -208,10 +208,10 @@
                 ]
               },
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/business-parking-permit",
                 "id": "menu_link_content:09ce6849-3cc5-4964-859b-1ab30ab24999",
                 "name": "Business parking permit",
                 "parentId": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking/business-parking-permit",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -226,10 +226,10 @@
             ]
           },
           {
+            "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling",
             "id": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
             "name": "Cycling",
             "parentId": "base:urban_environment_and_traffic",
-            "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling",
             "attributes": {},
             "external": false,
             "hasItems": true,
@@ -241,10 +241,10 @@
             "weight": -44,
             "sub_tree": [
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/cycling-routes",
                 "id": "menu_link_content:b65dc473-9003-4f17-9529-3403d8c0ab20",
                 "name": "Cycling routes",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/cycling-routes",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -257,10 +257,10 @@
                 "weight": -50
               },
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/bicycle-parking",
                 "id": "menu_link_content:f83f426e-d15f-4a82-9b7d-bc3fc95c767a",
                 "name": "Bicycle parking",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/bicycle-parking",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -273,10 +273,10 @@
                 "weight": -49
               },
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/winter-maintenance-of-cycle-paths",
                 "id": "menu_link_content:9e675819-1868-4b2b-96a6-eff2b38c0b9a",
                 "name": "Winter maintenance of cycle paths",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/winter-maintenance-of-cycle-paths",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -289,10 +289,10 @@
                 "weight": -48
               },
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/construction-of-cycle-paths",
                 "id": "menu_link_content:9b92fafc-a710-4331-8553-e0a5b09b1078",
                 "name": "Construction of cycle paths",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/construction-of-cycle-paths",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -305,10 +305,10 @@
                 "weight": -47
               },
               {
+                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/promotion-of-cycling",
                 "id": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
                 "name": "Promotion of cycling",
                 "parentId": "menu_link_content:4b457823-49a9-4413-9b02-70a0839b4ba5",
-                "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/promotion-of-cycling",
                 "attributes": {},
                 "external": false,
                 "hasItems": true,
@@ -321,10 +321,10 @@
                 "weight": -46,
                 "sub_tree": [
                   {
+                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/promotion-of-cycling/helsinki-as-a-cycling-city",
                     "id": "menu_link_content:cb01bb31-36a8-499f-8229-b0392afcf867",
                     "name": "Helsinki as a cycling city",
                     "parentId": "menu_link_content:25d7be42-51f7-4cd8-8832-e1d7a5b0bb71",
-                    "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling/promotion-of-cycling/helsinki-as-a-cycling-city",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -346,7 +346,7 @@
     ],
     "weight": [
       {
-        "value": 0
+        "value": -10
       }
     ],
     "default_langcode": [
@@ -392,7 +392,7 @@
     ],
     "content_translation_changed": [
       {
-        "value": "2022-09-13T05:11:38+00:00",
+        "value": "2022-09-16T05:20:18+00:00",
         "format": "Y-m-d\\TH:i:sP"
       }
     ]
@@ -425,18 +425,18 @@
     ],
     "menu_tree": [
       {
+        "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-and-social-services",
         "id": "base:health_and_social_services",
         "name": "Health and Social Services",
-        "url": "https://helfi-sote.docker.so/en/health-and-social-services",
         "external": false,
         "attributes": {},
         "weight": 0,
         "sub_tree": [
           {
+            "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care",
             "id": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
             "name": "Health care",
             "parentId": "base:health_and_social_services",
-            "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care",
             "attributes": {},
             "external": false,
             "hasItems": true,
@@ -448,10 +448,10 @@
             "weight": -86,
             "sub_tree": [
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care",
                 "id": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
                 "name": "Dental care",
                 "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care",
                 "attributes": {},
                 "external": false,
                 "hasItems": true,
@@ -464,10 +464,10 @@
                 "weight": -85,
                 "sub_tree": [
                   {
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/emergency-dental-care",
                     "id": "menu_link_content:4a7858e7-90d8-4dd6-acb2-6ea20542bf5a",
                     "name": "Emergency dental care",
                     "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/emergency-dental-care",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -481,10 +481,10 @@
                     "weight": -92
                   },
                   {
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/dental-check-ups",
                     "id": "menu_link_content:5faf4e8f-9229-4759-8580-e2c24eaca400",
                     "name": "Dental check-ups",
                     "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/dental-check-ups",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -498,10 +498,10 @@
                     "weight": -91
                   },
                   {
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/children-and-young-peoples-dental-care",
                     "id": "menu_link_content:f4c91991-b833-442c-9917-e0f921da00dd",
                     "name": " Children and young people's dental care",
                     "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/children-and-young-peoples-dental-care",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -515,10 +515,10 @@
                     "weight": -90
                   },
                   {
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/orthodontic-treatment",
                     "id": "menu_link_content:806020c6-ca7a-44ed-96dc-bace7f33121c",
                     "name": "Orthodontic treatment",
                     "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/orthodontic-treatment",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -532,10 +532,10 @@
                     "weight": -89
                   },
                   {
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/dental-clinics",
                     "id": "menu_link_content:34b334f5-48b5-4014-943b-16056d6431a2",
                     "name": "Dental clinics",
                     "parentId": "menu_link_content:f7d30af5-3a94-4115-820e-78b39ad110b4",
-                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/dental-care/dental-clinics",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -551,10 +551,10 @@
                 ]
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/health-stations",
                 "id": "menu_link_content:15fdf705-0e48-40b4-8d5e-63a837689d46",
                 "name": "Health stations",
                 "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/health-stations",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -567,10 +567,10 @@
                 "weight": -66
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/urgent-and-emergency-care",
                 "id": "menu_link_content:c39abc48-e7fe-49a8-bf49-383f0e8d934b",
                 "name": "Urgent and emergency care",
                 "parentId": "menu_link_content:c5f65ef5-ea41-4281-b001-1fd391701bd8",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-care/urgent-and-emergency-care",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -585,10 +585,10 @@
             ]
           },
           {
+            "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client",
             "id": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
             "name": "Data and the rights of the client",
             "parentId": "base:health_and_social_services",
-            "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client",
             "attributes": {},
             "external": false,
             "hasItems": true,
@@ -600,10 +600,10 @@
             "weight": -84,
             "sub_tree": [
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/requesting-client-data",
                 "id": "menu_link_content:f92e9c8b-db7a-44ce-9100-26b6cb899945",
                 "name": "Requesting client data",
                 "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/requesting-client-data",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -616,10 +616,10 @@
                 "weight": -74
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/waiting-times-and-customer-satisfaction",
                 "id": "menu_link_content:3a7ff939-0967-4d3e-80a4-c349f45707e4",
                 "name": "Waiting times and customer satisfaction",
                 "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/waiting-times-and-customer-satisfaction",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -632,10 +632,10 @@
                 "weight": -73
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/fees",
                 "id": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
                 "name": "Fees",
                 "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/fees",
                 "attributes": {},
                 "external": false,
                 "hasItems": true,
@@ -648,10 +648,10 @@
                 "weight": -72,
                 "sub_tree": [
                   {
+                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/fees/maximum-payment-limit",
                     "id": "menu_link_content:b1396d7f-b88d-40c5-a8ba-88bf0260ec72",
                     "name": "Maximum Payment Limit",
                     "parentId": "menu_link_content:f0fa6780-3a31-40d5-82ac-086be30e99b3",
-                    "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/fees/maximum-payment-limit",
                     "attributes": {},
                     "external": false,
                     "hasItems": false,
@@ -667,10 +667,10 @@
                 ]
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/right-to-receive-services-in-your-own-language",
                 "id": "menu_link_content:52ae8328-2d3a-4809-af19-212749d769f6",
                 "name": "Right to receive services in your own language",
                 "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/right-to-receive-services-in-your-own-language",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -683,10 +683,10 @@
                 "weight": -71
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/quality-control-of-services",
                 "id": "menu_link_content:ff1b21ea-bd19-4068-9388-03f8acfbcdaf",
                 "name": "Quality control of services",
                 "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/quality-control-of-services",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -699,10 +699,10 @@
                 "weight": -70
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/service-voucher",
                 "id": "menu_link_content:0e28ebd2-bd9b-4514-81c7-074b51a5ddc9",
                 "name": "Service voucher",
                 "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/service-voucher",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -715,10 +715,10 @@
                 "weight": -69
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/social-and-patient-ombudsman",
                 "id": "menu_link_content:ad91e0a9-cea5-4497-acc5-b9341cbcd0bb",
                 "name": "Social and Patient Ombudsman",
                 "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/social-and-patient-ombudsman",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -731,10 +731,10 @@
                 "weight": -68
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/dissatisfaction-with-treatment-or-service",
                 "id": "menu_link_content:235179c2-f9aa-4740-9ed8-a4a9ab5ede0d",
                 "name": "Dissatisfaction with treatment or service",
                 "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/dissatisfaction-with-treatment-or-service",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -747,10 +747,10 @@
                 "weight": -67
               },
               {
+                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/freedom-of-choice",
                 "id": "menu_link_content:8846838a-b046-49ec-83ae-90d6134a6985",
                 "name": "Freedom of choice",
                 "parentId": "menu_link_content:720fe1a2-9ba7-4fa3-b1e8-94ff90fbec36",
-                "url": "https://helfi-sote.docker.so/en/health-and-social-services/data-and-the-rights-of-the-client/freedom-of-choice",
                 "attributes": {},
                 "external": false,
                 "hasItems": false,
@@ -765,10 +765,10 @@
             ]
           },
           {
+            "url": "https://helfi-sote.docker.so/en/health-and-social-services/join-us",
             "id": "menu_link_content:df660189-d56f-4cb4-9539-32945792da19",
             "name": "Join us",
             "parentId": "base:health_and_social_services",
-            "url": "https://helfi-sote.docker.so/en/health-and-social-services/join-us",
             "attributes": {},
             "external": false,
             "hasItems": false,
@@ -785,7 +785,7 @@
     ],
     "weight": [
       {
-        "value": 0
+        "value": -9
       }
     ],
     "default_langcode": [
@@ -831,7 +831,7 @@
     ],
     "content_translation_changed": [
       {
-        "value": "2022-09-13T05:11:30+00:00",
+        "value": "2022-09-16T07:20:49+00:00",
         "format": "Y-m-d\\TH:i:sP"
       }
     ]
