@@ -52,6 +52,9 @@ jobs:
           composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
           composer require --dev donatj/mock-webserver
           composer require --dev "drupal/coder"
+          # We have an optional dependency to redirect module, install it so we can run
+          # tests against it.
+          composer require drupal/redirect
 
       - name: Install Drupal
         run: |
