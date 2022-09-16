@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\PathProcessor\OutboundPathProcessorInterface;
 use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
 use Drupal\redirect\Entity\Redirect;
 use Drupal\redirect\RedirectRepository;
@@ -21,14 +20,11 @@ final class RedirectEventSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\redirect\RedirectRepository $repository
    *   The redirect repository service.
-   * @param \Drupal\Core\PathProcessor\OutboundPathProcessorInterface $pathProcessor
-   *   The path processor service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory service.
    */
   public function __construct(
     private RedirectRepository $repository,
-    private OutboundPathProcessorInterface $pathProcessor,
     private ConfigFactoryInterface $configFactory,
   ) {
   }
@@ -46,18 +42,21 @@ final class RedirectEventSubscriber implements EventSubscriberInterface {
    */
   public function updateLink(MenuTreeBuilderLink $event) : void {
     $url = clone $event->url;
-    $path = $url->setAbsolute(FALSE)->toString();
+    $path = $url->toString();
 
-    $options = ['prefix' => ''];
-    $this->pathProcessor->processOutbound($path, $options);
-    $prefix = '/' . rtrim($options['prefix'], '/');
+    // Skip external and empty URLs.
+    if ($url->isExternal() || $path === '') {
+      return;
+    }
 
     $candidates = [
       $path,
     ];
-    // We're probably on the front page and need some special handling to figure
-    // out redirects.
-    if ($path === $prefix) {
+    // Front page requires special handling because the path is removed from
+    // URL generation. For example if the front page is set to '/front', the
+    // URL is then normalized to '/{langcode}', '/', or in case helfi_proxy is
+    // enabled, to '/{langcode}/{proxy_prefix}'.
+    if ($url->isRouted() && $url->getRouteName() === '<front>') {
       $page = $this->configFactory->get('system.site')
         ->get('page');
       if (isset($page['front'])) {

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
-use Drupal\Core\Url;
-use Drupal\path_alias\Entity\PathAlias;
 use Drupal\redirect\Entity\Redirect;
 
 /**
@@ -31,25 +29,16 @@ class MenuTreeBuilderRedirectTest extends MenuTreeBuilderTestBase {
     $this->config('system.site')
       ->set('page', ['front' => '/front'])
       ->save();
-    \Drupal::service('kernel')->rebuildContainer();
-  }
-
-  private function getMenuTree(string $langcode) : array {
-    return $this->getMenuTreeBuilder()->build('main', $langcode, (object) [
-      'name' => 'Test',
-      'url' => new Url('<front>', options: [
-        'language' => $this->languageManager()->getLanguage($langcode),
-      ]),
-      'id' => 'liikenne',
-    ]);
   }
 
   /**
-   * Tests that front page is redirected correctly.
+   * Make sure redirects are taken into account.
    */
-  public function testFrontPageRedirect() : void {
+  public function testRedirect() : void {
     $this->createLinks();
 
+    // Create redirect from /front (default <front>) to /front-page-redirect
+    // and make sure it's taken into account.
     $redirect = Redirect::create();
     $redirect->setLanguage('en');
     $redirect->setSource('/front');
@@ -58,25 +47,24 @@ class MenuTreeBuilderRedirectTest extends MenuTreeBuilderTestBase {
 
     $tree = $this->getMenuTree('en');
     $this->assertTrue(str_ends_with($tree['url'], '/en/front-page-redirect'));
-  }
 
-  public function testRegularRedirect() : void {
-    $this->createLinks();
-
-    /*$redirect = Redirect::create();
+    // Create redirect from /en/test to /node/1, which should then become
+    // /en/test-node-page.
+    $redirect = Redirect::create();
     $redirect->setLanguage('en');
-    $redirect->setSource('node-test');
-    $redirect->setRedirect('internal:/en/english-redirect');
-    $redirect->save();*/
+    $redirect->setSource('test');
+    $redirect->setRedirect('/node/1');
+    $redirect->save();
 
-    $url = Url::fromRoute('<front>');
-
+    // Make sure english menu is translated when redirect is created for
+    // english only.
     $tree = $this->getMenuTree('en');
-    $aliases = PathAlias::loadMultiple();
-    $this->assertTrue(str_ends_with($tree['sub_tree'][0]->url, '/en/english-redirect'));
+    $this->assertTrue(str_ends_with($tree['sub_tree'][0]->sub_tree[0]->url, '/en/test-node-page'));
 
+    // Make sure finnish link has no path alias because node has
+    // no finnish translation.
     $tree = $this->getMenuTree('fi');
-    $this->assertTrue(str_ends_with($tree['sub_tree'][0]->url, '/fi/test'));
+    $this->assertTrue(str_ends_with($tree['sub_tree'][0]->url, '/fi/node/1'));
   }
 
 }

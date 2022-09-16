@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
+use Drupal\Core\Url;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\MenuLinkContentInterface;
@@ -46,6 +47,12 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
       ->save();
   }
 
+  /**
+   * Gets the menu tree builder.
+   *
+   * @return \Drupal\helfi_navigation\Menu\MenuTreeBuilder
+   *   The menu tree builder service.
+   */
   protected function getMenuTreeBuilder() : MenuTreeBuilder {
     return $this->container->get('helfi_navigation.menu_tree_builder');
   }
@@ -60,11 +67,32 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
     $node = Node::create([
       'title' => 'Test',
       'type' => 'page',
-      'path' => '/test-page',
+      'path' => ['alias' => '/test-node-page', 'langcode' => 'en'],
     ]);
     $node->save();
 
     return $node;
+  }
+
+  /**
+   * Gets the menu tree in given language.
+   *
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return array
+   *   The menu tree.
+   */
+  protected function getMenuTree(string $langcode) : array {
+    $this->setOverrideLanguageCode($langcode);
+
+    return $this->getMenuTreeBuilder()->build('main', $langcode, (object) [
+      'name' => 'Test',
+      'url' => new Url('<front>', options: [
+        'language' => $this->languageManager()->getLanguage($langcode),
+      ]),
+      'id' => 'liikenne',
+    ]);
   }
 
   /**
@@ -132,6 +160,13 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
         'link' => ['uri' => 'entity:node/1'],
       ],
       [
+        'uuid' => 'b108dc3c-3a22-455f-90a7-238331bc2bfe',
+        'langcode' => 'en',
+        'title' => 'Link 4 - Child 1',
+        'parent' => 'menu_link_content:3fd92b84-6b9c-4970-934e-6b4468b618c0',
+        'link' => ['uri' => 'internal:/test'],
+      ],
+      [
         'uuid' => '64a5a6d1-ffce-481b-b321-260d9cf66ad9',
         'langcode' => 'en',
         'title' => 'Link 5 internal',
@@ -165,4 +200,5 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
     }
     return $linkEntities;
   }
+
 }

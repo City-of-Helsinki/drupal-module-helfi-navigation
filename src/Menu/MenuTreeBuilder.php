@@ -156,6 +156,8 @@ final class MenuTreeBuilder {
         }
       }
 
+      $urlObject = $link->getUrlObject();
+
       $item = [
         'id' => $link->getPluginId(),
         'name' => $link->getTitle(),
@@ -168,11 +170,15 @@ final class MenuTreeBuilder {
         'weight' => $link->getWeight(),
       ];
 
+      // Make sure url object retains the language information.
+      if (!$urlObject->getOption('language')) {
+        $urlObject->setOptions(['language' => $link->language()]);
+      }
       if ($isExternal) {
         $item['attributes']->{"data-external"} = TRUE;
       }
 
-      if ($protocol = $this->domainResolver->getProtocol($link->getUrlObject())) {
+      if ($protocol = $this->domainResolver->getProtocol($urlObject)) {
         $item['attributes']->{"data-protocol"} = $protocol;
       }
 
@@ -181,7 +187,7 @@ final class MenuTreeBuilder {
         $item['hasItems'] = count($item['sub_tree']) > 0;
       }
       $items[] = (object) $this->processItem(
-        new MenuTreeBuilderLink($link->getUrlObject(), $langcode, $item)
+        new MenuTreeBuilderLink($urlObject, $langcode, $item)
       );
     }
 

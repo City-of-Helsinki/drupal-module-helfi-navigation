@@ -26,7 +26,6 @@ class HelfiNavigationServiceProvider extends ServiceProviderBase {
       $container->register('helfi_navigation.redirect_subscriber', RedirectEventSubscriber::class)
         ->addTag('event_subscriber')
         ->addArgument(new Reference('redirect.repository'))
-        ->addArgument(new Reference('path_processor_manager'))
         ->addArgument(new Reference('config.factory'));
     }
   }

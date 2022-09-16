@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
-use Drupal\Core\Url;
-
 /**
  * Tests menu tree builder.
  *
@@ -25,11 +23,7 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
   public function testBuildMenuTree() : void {
     $linkEntities = $this->createLinks();
 
-    $tree = $this->getMenuTreeBuilder()->build('main', 'en', (object) [
-      'name' => 'Test',
-      'url' => new Url('<front>'),
-      'id' => 'liikenne',
-    ]);
+    $tree = $this->getMenuTree('en');
     // Only links after 'Link 3' should be available because:
     // - Anonymous user has no access to 'Link 1' and since 'Link 1 depth 1'
     // is a child of 'Link 1' and children inherit permission from its
@@ -69,11 +63,7 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
       ->save();
 
     // Only one finnish link should be available.
-    $tree = $this->getMenuTreeBuilder()->build('main', 'fi', (object) [
-      'name' => 'Test',
-      'url' => new Url('<front>'),
-      'id' => 'liikenne',
-    ]);
+    $tree = $this->getMenuTree('fi');
     $this->assertCount(1, $tree['sub_tree']);
     $this->assertFalse($tree['sub_tree'][0]->hasItems);
     // Make sure first level links use root as their parent.
@@ -83,11 +73,7 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     $linkEntities['64a5a6d1-ffce-481b-b321-260d9cf66ad9']->addTranslation('fi')
       ->save();
 
-    $tree = $this->getMenuTreeBuilder()->build('main', 'fi', (object) [
-      'name' => 'Test',
-      'url' => new Url('<front>'),
-      'id' => 'liikenne',
-    ]);
+    $tree = $this->getMenuTree('fi');
     $this->assertCount(2, $tree['sub_tree']);
     $this->assertTrue($tree['sub_tree'][1]->hasItems);
     // Make sure last level link is not visible because it's not translated.
