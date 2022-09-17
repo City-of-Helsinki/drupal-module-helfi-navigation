@@ -34,6 +34,8 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
 
     // Test <nolink>.
     $this->assertEquals('', $tree['sub_tree'][2]->url);
+    // Test "lang" attribute.
+    $this->assertEquals('en-GB', $tree['sub_tree'][2]->attributes->lang);
 
     // Link 5 should have three links deep tree.
     $this->assertTrue($tree['sub_tree'][1]->hasItems);

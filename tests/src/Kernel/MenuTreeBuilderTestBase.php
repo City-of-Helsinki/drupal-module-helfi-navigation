@@ -191,6 +191,7 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
         'langcode' => 'en',
         'title' => 'Link 6',
         'link' => ['uri' => 'route:<nolink>'],
+        'lang_attribute' => 'en-GB',
       ],
     ];
 

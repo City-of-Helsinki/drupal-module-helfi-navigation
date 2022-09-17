@@ -3,9 +3,10 @@ name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8888"
-  DRUPAL_CORE_VERSION: 9.3.x
+  DRUPAL_CORE_VERSION: 9.4.x
   SYMFONY_DEPRECATIONS_HELPER: disabled
   BROWSERTEST_OUTPUT_DIRECTORY: 'sites/simpletest'
+  OPTIONAL_DEPENDENCIES: drupal/redirect
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -38,7 +39,7 @@ jobs:
         run: echo "MODULE_FOLDER=$DRUPAL_ROOT/modules/contrib/${{ secrets.MODULE_NAME }}" >> $GITHUB_ENV
 
       - name: Clone drupal
-        run: git clone --depth 1 --branch "$DRUPAL_CORE_VERSION" http://git.drupal.org/project/drupal.git/ $DRUPAL_ROOT
+        run: git clone --depth 1 --branch "$DRUPAL_CORE_VERSION" https://git.drupal.org/project/drupal.git/ $DRUPAL_ROOT
 
       - name: Install required composer dependencies
         run: |
@@ -52,9 +53,8 @@ jobs:
           composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
           composer require --dev donatj/mock-webserver
           composer require --dev "drupal/coder"
-          # We have an optional dependency to redirect module, install it so we can run
-          # tests against it.
-          composer require drupal/redirect
+          # Install defined optional dependencies.
+          composer require $OPTIONAL_DEPENDENCIES
 
       - name: Install Drupal
         run: |

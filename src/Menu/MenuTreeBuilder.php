@@ -158,6 +158,11 @@ final class MenuTreeBuilder {
 
       $urlObject = $link->getUrlObject();
 
+      // Make sure url object retains the language information.
+      if (!$urlObject->getOption('language')) {
+        $urlObject->setOptions(['language' => $link->language()]);
+      }
+
       $item = [
         'id' => $link->getPluginId(),
         'name' => $link->getTitle(),
@@ -170,16 +175,19 @@ final class MenuTreeBuilder {
         'weight' => $link->getWeight(),
       ];
 
-      // Make sure url object retains the language information.
-      if (!$urlObject->getOption('language')) {
-        $urlObject->setOptions(['language' => $link->language()]);
-      }
       if ($isExternal) {
         $item['attributes']->{"data-external"} = TRUE;
       }
 
       if ($protocol = $this->domainResolver->getProtocol($urlObject)) {
         $item['attributes']->{"data-protocol"} = $protocol;
+      }
+
+      if (
+        $link->hasField('lang_attribute') &&
+        $langAttribute = $link->get('lang_attribute')->value
+      ) {
+        $item['attributes']->{"lang"} = $langAttribute;
       }
 
       if ($element->hasChildren) {
