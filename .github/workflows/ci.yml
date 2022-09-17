@@ -86,7 +86,7 @@ jobs:
 
       - name: Create an artifact from test report
         uses: actions/upload-artifact@v2
-        if: always()
+        if: failure()
         with:
           name: results
           path: |
