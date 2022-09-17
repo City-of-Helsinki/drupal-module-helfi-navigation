@@ -198,7 +198,6 @@ function helfi_navigation_uninstall($is_syncing) {
   $queue->deleteQueue();
 }
 
-
 /**
  * Add 'lang' field to menu links.
  */
