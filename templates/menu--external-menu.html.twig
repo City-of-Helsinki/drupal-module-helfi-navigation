@@ -48,7 +48,7 @@ We call a macro which calls itself to render the full tree.
             item.in_active_trail ? 'menu__link--in-path',
           ],
           'aria-current': item.is_currentPage ? 'page': null,
-          'lang': item.lang_attribute ? item.lang_attribute : null,
+          'lang': item.attributes.lang ? item.attributes.lang : null,
         } %}
         {{ link(item.title, item.url, link_attributes) }}
         {% if item.below %}
