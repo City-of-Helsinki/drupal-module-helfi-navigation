@@ -39,7 +39,9 @@
             "id": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
             "name": "Parkering",
             "parentId": "base:stadsmilj_ock_trafik",
-            "attributes": {},
+            "attributes": {
+              "lang": "sv-SV"
+            },
             "external": false,
             "hasItems": true,
             "expanded": false,

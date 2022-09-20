@@ -185,16 +185,8 @@ final class MenuTreeBuilder {
 
       $options = $link->link->first()?->options ?? [];
 
-      foreach (['lang', 'class'] as $key) {
-        if (!isset($options[$key])) {
-          continue;
-        }
-        $value = $options[$key];
-
-        if (is_array($value)) {
-          $value = implode(' ', $value);
-        }
-        $item['attributes']->{$key} = (string) $value;
+      if (isset($options['lang'])) {
+        $item['attributes']->{"lang"} = $options['lang'];
       }
 
       if ($element->hasChildren) {

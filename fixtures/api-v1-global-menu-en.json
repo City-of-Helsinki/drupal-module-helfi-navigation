@@ -39,7 +39,9 @@
             "id": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
             "name": "Parking",
             "parentId": "base:urban_environment_and_traffic",
-            "attributes": {},
+            "attributes": {
+              "lang": "en-GB"
+            },
             "external": false,
             "hasItems": true,
             "expanded": false,
