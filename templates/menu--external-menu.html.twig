@@ -40,7 +40,7 @@ We call a macro which calls itself to render the full tree.
         item.in_active_trail ? 'menu__item--in-path',
         'item--level-' ~ (level + 1),
       ]%}
-      <li{{ item.attributes.removeAttribute('class').removeAttribute('lang').addClass(item_classes) }}>
+      <li{{ item.attributes.removeAttribute('class').addClass(item_classes) }}>
         {% set link_attributes = {
           'class':
           [
