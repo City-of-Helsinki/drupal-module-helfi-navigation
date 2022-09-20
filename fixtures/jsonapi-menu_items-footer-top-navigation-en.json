@@ -22,6 +22,7 @@
           "entity_id": "35"
         },
         "options": {
+          "lang": "en-GB",
           "attributes": {
             "class": []
           },
@@ -97,7 +98,7 @@
   ],
   "links": {
     "self": {
-      "href": "https://helfi-etusivu.docker.so/en/jsonapi/menu_items/footer-top-navigation"
+      "href": "https://helfi-etusivu.docker.so/en/jsonapi/menu_items/footer-top-navigation?XDEBUG_SESSION_START=1"
     }
   }
 }

@@ -40,7 +40,7 @@ We call a macro which calls itself to render the full tree.
         item.in_active_trail ? 'menu__item--in-path',
         'item--level-' ~ (level + 1),
       ]%}
-      <li{{ item.attributes.removeAttribute('class').addClass(item_classes) }}>
+      <li{{ item.attributes.removeAttribute('class').removeAttribute('lang').addClass(item_classes) }}>
         {% set link_attributes = {
           'class':
           [
@@ -48,6 +48,7 @@ We call a macro which calls itself to render the full tree.
             item.in_active_trail ? 'menu__link--in-path',
           ],
           'aria-current': item.is_currentPage ? 'page': null,
+          'lang': item.lang_attribute ? item.lang_attribute : null,
         } %}
         {{ link(item.title, item.url, link_attributes) }}
         {% if item.below %}
