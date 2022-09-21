@@ -183,10 +183,11 @@ final class MenuTreeBuilder {
         $item['attributes']->{"data-protocol"} = $protocol;
       }
 
-      $options = $link->link->first()?->options ?? [];
-
-      if (isset($options['lang'])) {
-        $item['attributes']->{"lang"} = $options['lang'];
+      if (
+        $link->hasField('lang_attribute') &&
+        $langAttribute = $link->get('lang_attribute')->value
+      ) {
+        $item['attributes']->{"lang"} = $langAttribute;
       }
 
       if ($element->hasChildren) {

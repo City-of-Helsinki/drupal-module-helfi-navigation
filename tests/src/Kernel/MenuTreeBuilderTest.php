@@ -34,8 +34,6 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
 
     // Test <nolink>.
     $this->assertEquals('', $tree['sub_tree'][2]->url);
-    // Test "lang" attribute.
-    $this->assertEquals('en-GB', $tree['sub_tree'][2]->attributes->lang);
 
     // Link 5 should have three links deep tree.
     $this->assertTrue($tree['sub_tree'][1]->hasItems);
@@ -63,6 +61,9 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     $linkEntities['0d8a1366-4fcd-4dbc-bb75-854dedf28a1b']->addTranslation('fi')
       ->save();
 
+    // Make sure lang attribute is set.
+    $this->assertEquals('en-US', $tree['sub_tree'][1]->attributes->lang);
+
     // Only one finnish link should be available.
     $tree = $this->getMenuTree('fi');
     $this->assertCount(1, $tree['sub_tree']);
@@ -72,13 +73,19 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
 
     // Make sure link becomes available when the parent is translated.
     $linkEntities['64a5a6d1-ffce-481b-b321-260d9cf66ad9']->addTranslation('fi')
+      ->set('lang_attribute', 'fi-SV')
       ->save();
 
     $tree = $this->getMenuTree('fi');
     $this->assertCount(2, $tree['sub_tree']);
     $this->assertTrue($tree['sub_tree'][1]->hasItems);
-    // Make sure last level link is not visible because it's not translated.
+    // Assert that last level link is not visible because it's not translated.
     $this->assertFalse($tree['sub_tree'][1]->sub_tree[0]->hasItems);
+    // Assert that lang attribute can be translated and doesn't change the
+    // original (english) value.
+    $this->assertEquals('fi-SV', $tree['sub_tree'][1]->attributes->lang);
+    $tree = $this->getMenuTree('en');
+    $this->assertEquals('en-US', $tree['sub_tree'][1]->attributes->lang);
   }
 
 }

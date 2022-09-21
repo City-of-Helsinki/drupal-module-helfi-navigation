@@ -79,7 +79,7 @@ class MenuBlockTest extends BrowserTestBase {
         'menus' => [
           'External - Mega menu' => [
             'Kaupunkiympäristö ja liikenne' => [],
-            'Pysäköinti' => [],
+            'Pysäköinti' => ['lang' => 'fi-FI'],
           ],
           'External - Footer bottom navigation' => [
             'Saavutettavuusseloste' => [],
@@ -111,7 +111,7 @@ class MenuBlockTest extends BrowserTestBase {
           ],
           'External - Mega menu' => [
             'Stadsmiljö ock trafik' => [],
-            'Parkering' => [],
+            'Parkering' => ['lang' => 'sv-SV'],
           ],
           'Helsingfors stad' => [
             'Lediga jobb' => ['lang' => 'sv-SV'],
@@ -134,7 +134,7 @@ class MenuBlockTest extends BrowserTestBase {
           ],
           'External - Mega menu' => [
             'Urban environment and traffic' => [],
-            'Parking' => [],
+            'Parking' => ['lang' => 'en-GB'],
           ],
           'City of Helsinki' => [
             'Employment opportunities' => ['lang' => 'en-GB'],
@@ -157,6 +157,7 @@ class MenuBlockTest extends BrowserTestBase {
           $this->assertSession()->linkExistsExact($link);
           $item = $this->getSession()->getPage()->findLink($link);
 
+          // Test lang attributes.
           foreach ($attributes as $key => $value) {
             $this->assertEquals($value, $item->getAttribute($key));
           }

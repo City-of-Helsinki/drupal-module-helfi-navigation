@@ -171,6 +171,7 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
         'langcode' => 'en',
         'title' => 'Link 5 internal',
         'link' => ['https://www.hel.fi/helsinki/test'],
+        'lang_attribute' => 'en-US',
       ],
       [
         'uuid' => '0d8a1366-4fcd-4dbc-bb75-854dedf28a1b',
