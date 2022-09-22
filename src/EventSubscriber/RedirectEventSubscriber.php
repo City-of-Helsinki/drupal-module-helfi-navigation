@@ -42,7 +42,8 @@ final class RedirectEventSubscriber implements EventSubscriberInterface {
    */
   public function updateLink(MenuTreeBuilderLink $event) : void {
     $url = clone $event->url;
-    $path = $url->toString();
+    $path = $url->toString(TRUE)
+      ->getGeneratedUrl();
 
     // Skip external and empty URLs.
     if ($url->isExternal() || $path === '') {
