@@ -24,8 +24,8 @@ use Psr\Log\LoggerInterface;
  */
 class ApiManager {
 
-  public const API_GLOBAL_MENU = '/api/v1/global-menu';
-  public const API_JSON = '/jsonapi/menu_items';
+  public const GLOBAL_MENU_ENDPOINT = '/api/v1/global-menu';
+  public const MENU_ENDPOINT = '/api/v1/menu';
 
   use CacheKeyTrait;
 
@@ -157,8 +157,8 @@ class ApiManager {
   ) : object {
 
     $endpoint = match ($menuId) {
-      'main' => static::API_GLOBAL_MENU,
-      default => sprintf('%s/%s', static::API_JSON, $menuId),
+      'main' => static::GLOBAL_MENU_ENDPOINT,
+      default => sprintf('%s/%s', static::MENU_ENDPOINT, $menuId),
     };
 
     $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
@@ -189,7 +189,7 @@ class ApiManager {
     if (!$this->authorization) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
-    $endpoint = sprintf('%s/%s', static::API_GLOBAL_MENU, $this->environmentResolver->getActiveEnvironment()->getId());
+    $endpoint = sprintf('%s/%s', static::GLOBAL_MENU_ENDPOINT, $this->environmentResolver->getActiveEnvironment()->getId());
     return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
     ]);
@@ -314,7 +314,7 @@ class ApiManager {
 
         if (!file_exists($fileName)) {
           throw new FileNotExistsException(
-            sprintf('[%s]. Attempted to use mock data, but the mock file was not found for "%s" endpoint.', $e->getMessage(), $endpoint)
+            sprintf('[%s]. Attempted to use mock data, but the mock file "%s" was not found for "%s" endpoint.', $e->getMessage(), basename($fileName), $endpoint)
           );
         }
         return \GuzzleHttp\json_decode(file_get_contents($fileName));
