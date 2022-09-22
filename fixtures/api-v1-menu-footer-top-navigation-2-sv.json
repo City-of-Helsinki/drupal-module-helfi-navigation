@@ -1,0 +1,30 @@
+[
+  {
+    "url": "https://www.hel.fi/sv/beslutsfattande-och-forvaltning/ta-kontakt/helsingfors-info",
+    "id": "menu_link_content:2dcceefe-557c-4b67-ab7a-9d0ffb6899a7",
+    "name": "Helsingfors-info",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:2dcceefe-557c-4b67-ab7a-9d0ffb6899a7"
+    ],
+    "weight": -47
+  },
+  {
+    "url": "https://www.hel.fi/kaupunkiymparisto/sv/kontaktuppgifter-och-respons/respons/",
+    "id": "menu_link_content:371773fe-8a10-47de-b587-bdc60b24f30a",
+    "name": "Ge respons",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:371773fe-8a10-47de-b587-bdc60b24f30a"
+    ],
+    "weight": -46
+  }
+]

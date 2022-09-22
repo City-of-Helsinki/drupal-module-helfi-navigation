@@ -1,0 +1,58 @@
+[
+  {
+    "url": "",
+    "id": "menu_link_content:43179e20-05bc-49be-8ae7-fcb77d99a1a7",
+    "name": "© Helsingin kaupunki 2022",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:43179e20-05bc-49be-8ae7-fcb77d99a1a7"
+    ],
+    "weight": -50
+  },
+  {
+    "url": "https://www.hel.fi/saavutettavuus",
+    "id": "menu_link_content:2b164761-bf85-42ae-ada3-2480221b5087",
+    "name": "Saavutettavuusseloste",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:2b164761-bf85-42ae-ada3-2480221b5087"
+    ],
+    "weight": -49
+  },
+  {
+    "url": "https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/hallinto/tietopyynnot/",
+    "id": "menu_link_content:bbe53fbd-9c4f-4503-8cbd-d7856f957acb",
+    "name": "Tietopyynnöt",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:bbe53fbd-9c4f-4503-8cbd-d7856f957acb"
+    ],
+    "weight": -48
+  },
+  {
+    "url": "https://www.hel.fi/tietoapalvelusta",
+    "id": "menu_link_content:e2cff3db-7ada-418d-9079-c2586161755e",
+    "name": "Tietoa hel.fistä",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:e2cff3db-7ada-418d-9079-c2586161755e"
+    ],
+    "weight": -47
+  }
+]
