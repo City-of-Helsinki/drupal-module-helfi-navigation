@@ -280,6 +280,11 @@ class ApiManager {
 
     $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName));
 
+    $formatter = function (string $data) : object {
+      $data = \GuzzleHttp\json_decode($data);
+      return $data instanceof \stdClass ? $data : new \stdClass();
+    };
+
     try {
       if ($this->previousException instanceof \Exception) {
         // Fail any further request instantly after one failed request, so we
@@ -288,9 +293,8 @@ class ApiManager {
         throw $this->previousException;
       }
       $response = $this->httpClient->request($method, $url, $options);
-      $data = \GuzzleHttp\json_decode($response->getBody()->getContents());
 
-      return $data instanceof \stdClass ? $data : new \stdClass();
+      return $formatter($response->getBody()->getContents());
     }
     catch (\Exception $e) {
       if ($e instanceof GuzzleException) {
@@ -303,7 +307,7 @@ class ApiManager {
         $activeEnvironmentName === 'local'
       ) {
         $this->logger->warning(
-          sprintf('Global menu request failed: %s. Mock data is used instead.', $e->getMessage())
+          sprintf('Menu request failed: %s. Mock data is used instead.', $e->getMessage())
         );
 
         $fileName = vsprintf('%s/../fixtures/%s-%s.json', [
@@ -317,7 +321,7 @@ class ApiManager {
             sprintf('[%s]. Attempted to use mock data, but the mock file "%s" was not found for "%s" endpoint.', $e->getMessage(), basename($fileName), $endpoint)
           );
         }
-        return \GuzzleHttp\json_decode(file_get_contents($fileName));
+        return $formatter(file_get_contents($fileName));
       }
       // Log the error and re-throw the exception.
       $this->logger->error('Request failed with error: ' . $e->getMessage());

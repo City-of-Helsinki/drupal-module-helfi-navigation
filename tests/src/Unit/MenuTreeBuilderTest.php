@@ -10,6 +10,7 @@ use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\Tests\UnitTestCase;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -29,10 +30,18 @@ class MenuTreeBuilderTest extends UnitTestCase {
     $this->expectException(\LogicException::class);
     $this->expectExceptionMessage('Missing $rootElement->name, $rootElement->url or $rootElement->id property.');
 
+    $menuTree = $this->prophesize(MenuLinkTreeInterface::class);
+    $menuTree->load(Argument::cetera(), Argument::cetera())
+      ->shouldBeCalled()
+      ->willReturn([]);
+    $menuTree->transform(Argument::cetera(), Argument::cetera())
+      ->shouldBeCalled()
+      ->willReturn([]);
+
     $menuTreeBuilder = new MenuTreeBuilder(
       $this->prophesize(EntityTypeManagerInterface::class)->reveal(),
       new InternalDomainResolver(),
-      $this->prophesize(MenuLinkTreeInterface::class)->reveal(),
+      $menuTree->reveal(),
       $this->prophesize(MenuLinkManagerInterface::class)->reveal(),
       $this->prophesize(EventDispatcherInterface::class)->reveal(),
     );

@@ -20,27 +20,7 @@ final class ExternalMenuBlock extends ExternalMenuBlockBase {
    * {@inheritdoc}
    */
   protected function getTreeFromResponse(\stdClass $response): array {
-    $tree = [];
-    // @todo Support more than one level.
-    foreach ($response->data as $item) {
-      $attributes = [];
-
-      if (isset($item->attributes->options->lang)) {
-        $attributes['lang'] = $item->attributes->options->lang;
-      }
-
-      $tree[] = (object) [
-        'name' => $item->attributes->title,
-        'url' => $item->attributes->url,
-        'parentId' => $item->attributes->parent,
-        'external' => $item->attributes->options->external ?? FALSE,
-        'weight' => $item->attributes->weight,
-        'id' => $item->id,
-        'is_expanded' => $item->attributes->expanded,
-        'attributes' => $attributes,
-      ];
-    }
-    return $tree;
+    return (array) $response;
   }
 
 }
