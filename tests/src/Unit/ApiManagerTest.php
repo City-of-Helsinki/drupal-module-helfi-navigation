@@ -137,6 +137,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::makeRequest
    * @covers ::getDefaultRequestOptions
    * @covers ::getUrl
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testUpdateMainMenu() : void {
     $requests = [];
@@ -167,6 +168,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testGetExternalMenu() : void {
     $requests = [];
@@ -197,6 +199,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testGetMainMenu() : void {
     $requests = [];
@@ -226,6 +229,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testStaleCacheOnRequestFailure() : void {
     $requests = [];
@@ -261,6 +265,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testStaleCacheUpdate() : void {
     $time = time();
@@ -350,6 +355,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getDefaultRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testMockFallback() : void {
     // Use logger to verify that mock file is actually used.
@@ -419,6 +425,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testCacheBypass() : void {
     $requests = [];
