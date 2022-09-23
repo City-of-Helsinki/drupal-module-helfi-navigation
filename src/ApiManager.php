@@ -145,7 +145,7 @@ class ApiManager {
    * @param array $options
    *   The request options.
    *
-   * @return object
+   * @return \Drupal\helfi_navigation\ApiResponse
    *   The JSON object representing external menu.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
@@ -154,7 +154,7 @@ class ApiManager {
     string $langcode,
     string $menuId,
     array $options = []
-  ) : object {
+  ) : ApiResponse {
 
     $endpoint = match ($menuId) {
       'main' => static::GLOBAL_MENU_ENDPOINT,
@@ -261,7 +261,7 @@ class ApiManager {
    * @param array $options
    *   Body for requests.
    *
-   * @return object
+   * @return \Drupal\helfi_navigation\ApiResponse
    *   The JSON object.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
@@ -271,7 +271,7 @@ class ApiManager {
     string $endpoint,
     string $langcode,
     array $options = []
-  ): object {
+  ): ApiResponse {
     $activeEnvironmentName = $this->environmentResolver
       ->getActiveEnvironment()
       ->getEnvironmentName();
@@ -279,11 +279,6 @@ class ApiManager {
     $url = $this->getUrl('api', $langcode, ['endpoint' => $endpoint]);
 
     $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName));
-
-    $formatter = function (string $data) : object {
-      $data = \GuzzleHttp\json_decode($data);
-      return $data instanceof \stdClass ? $data : new \stdClass();
-    };
 
     try {
       if ($this->previousException instanceof \Exception) {
@@ -294,7 +289,7 @@ class ApiManager {
       }
       $response = $this->httpClient->request($method, $url, $options);
 
-      return $formatter($response->getBody()->getContents());
+      return new ApiResponse(\GuzzleHttp\json_decode($response->getBody()->getContents()));
     }
     catch (\Exception $e) {
       if ($e instanceof GuzzleException) {
@@ -321,7 +316,7 @@ class ApiManager {
             sprintf('[%s]. Attempted to use mock data, but the mock file "%s" was not found for "%s" endpoint.', $e->getMessage(), basename($fileName), $endpoint)
           );
         }
-        return $formatter(file_get_contents($fileName));
+        return new ApiResponse(\GuzzleHttp\json_decode(file_get_contents($fileName)));
       }
       // Log the error and re-throw the exception.
       $this->logger->error('Request failed with error: ' . $e->getMessage());

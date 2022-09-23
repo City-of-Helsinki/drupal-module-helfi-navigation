@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
+use Drupal\helfi_navigation\ApiResponse;
+
 /**
  * Provides an external menu block for global main navigation.
  *
@@ -25,10 +27,10 @@ final class MainNavigationMenuBlock extends ExternalMenuBlockBase {
   /**
    * {@inheritdoc}
    */
-  protected function getTreeFromResponse(\stdClass $response): array {
+  protected function getTreeFromResponse(ApiResponse $response): array {
     $tree = [];
 
-    foreach ($response as $item) {
+    foreach ($response->data as $item) {
       if (!isset($item->menu_tree)) {
         continue;
       }

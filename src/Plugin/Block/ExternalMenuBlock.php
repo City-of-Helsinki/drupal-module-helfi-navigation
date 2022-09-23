@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
+use Drupal\helfi_navigation\ApiResponse;
+
 /**
  * Provides an external menu block.
  *
@@ -19,8 +21,8 @@ final class ExternalMenuBlock extends ExternalMenuBlockBase {
   /**
    * {@inheritdoc}
    */
-  protected function getTreeFromResponse(\stdClass $response): array {
-    return (array) $response;
+  protected function getTreeFromResponse(ApiResponse $response) : array {
+    return $response->data;
   }
 
 }

@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "url": "https://www.helsinginseutu.fi/hs/selkosivut-fi",
+    "id": "menu_link_content:850e3f55-053a-4360-b03c-6d7ec4b2b5b4",
+    "name": "Selkokieli",
+    "parentId": "",
+    "attributes": {
+      "data-external": true
+    },
+    "external": true,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:850e3f55-053a-4360-b03c-6d7ec4b2b5b4"
+    ],
+    "weight": -50
+  },
+  {
+    "url": "https://www.helsinginseutu.fi/hs/viittomakieli-fi",
+    "id": "menu_link_content:82c9fab6-3d65-496f-9d4a-eb5f090979a2",
+    "name": "Viittomakieli",
+    "parentId": "",
+    "attributes": {
+      "data-external": true
+    },
+    "external": true,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:82c9fab6-3d65-496f-9d4a-eb5f090979a2"
+    ],
+    "weight": -49
+  }
+]
