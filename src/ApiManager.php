@@ -180,12 +180,12 @@ class ApiManager {
    * @param array $data
    *   The JSON data to update.
    *
-   * @return object
+   * @return \Drupal\helfi_navigation\ApiResponse
    *   The JSON object.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function update(string $langcode, array $data) : object {
+  public function update(string $langcode, array $data) : ApiResponse {
     if (!$this->authorization) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }

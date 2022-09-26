@@ -81,10 +81,10 @@ class MenuUpdater {
         'menu_tree' => $tree,
       ]
     );
-    if (!isset($response->status)) {
+    if (!isset($response->data->status)) {
       throw new \InvalidArgumentException('Failed to parse entity published state.');
     }
-    return reset($response->status)->value;
+    return reset($response->data->status)->value;
   }
 
 }
