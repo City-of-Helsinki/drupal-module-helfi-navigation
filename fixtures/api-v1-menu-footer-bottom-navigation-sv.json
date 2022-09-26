@@ -1,0 +1,58 @@
+[
+  {
+    "url": "",
+    "id": "menu_link_content:06848a78-a5ac-4a4c-b1d4-495fad9b3048",
+    "name": "© Helsingfors stad 2022",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:06848a78-a5ac-4a4c-b1d4-495fad9b3048"
+    ],
+    "weight": -50
+  },
+  {
+    "url": "https://www.hel.fi/tillganglighet",
+    "id": "menu_link_content:0dd24f23-5fdc-43d7-a834-d06933ef3e09",
+    "name": "Tillgänglighetsutlåtande",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:0dd24f23-5fdc-43d7-a834-d06933ef3e09"
+    ],
+    "weight": -49
+  },
+  {
+    "url": "https://www.hel.fi/helsinki/sv/stad-och-forvaltning/forvaltning/begaran-om-uppgifter/",
+    "id": "menu_link_content:ec54b992-80ba-47af-a910-0c9d4ebd2cc7",
+    "name": "Dataskydd",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:ec54b992-80ba-47af-a910-0c9d4ebd2cc7"
+    ],
+    "weight": -48
+  },
+  {
+    "url": "https://www.hel.fi/informationomsidorna",
+    "id": "menu_link_content:c1c817ba-b113-4adb-ae86-0f50b340f43d",
+    "name": "Information om hel.fi",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:c1c817ba-b113-4adb-ae86-0f50b340f43d"
+    ],
+    "weight": -47
+  }
+]

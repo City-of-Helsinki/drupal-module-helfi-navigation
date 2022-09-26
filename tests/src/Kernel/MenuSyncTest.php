@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\helfi_navigation\ApiManager;
+use Drupal\helfi_navigation\ApiResponse;
 use Drupal\helfi_navigation\MenuUpdater;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\system\Entity\Menu;
@@ -116,11 +117,11 @@ class MenuSyncTest extends KernelTestBase {
         $this->assertEquals($langcode, $data['langcode']);
         $this->assertStringStartsWith('http://', $data['menu_tree']['url']);
 
-        return (object) [
+        return new ApiResponse((object) [
           'status' => [
             (object) ['value' => TRUE],
           ],
-        ];
+        ]);
       }));
     $this->container->set('helfi_navigation.api_manager', $apiManager);
 
@@ -149,7 +150,7 @@ class MenuSyncTest extends KernelTestBase {
     $apiManager = $this->createMock(ApiManager::class);
     $apiManager->expects($this->once())
       ->method('update')
-      ->willReturn(new \stdClass());
+      ->willReturn(new ApiResponse([]));
     $this->container->set('helfi_navigation.api_manager', $apiManager);
 
     $this->expectException(\InvalidArgumentException::class);

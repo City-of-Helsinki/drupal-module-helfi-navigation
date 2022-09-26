@@ -10,6 +10,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
 use Drupal\helfi_navigation\ExternalMenuTreeBuilder;
 use Drupal\helfi_navigation\ApiManager;
+use Drupal\helfi_navigation\ApiResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -73,10 +74,13 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   /**
    * Gets the external menu tree.
    *
-   * @return array
+   * @param \Drupal\helfi_navigation\ApiResponse $response
+   *   The API response.
+   *
+   * @return mixed
    *   The external menu tree.
    */
-  abstract protected function getTreeFromResponse(\stdClass $response) : array;
+  abstract protected function getTreeFromResponse(ApiResponse $response) : mixed;
 
   /**
    * {@inheritdoc}

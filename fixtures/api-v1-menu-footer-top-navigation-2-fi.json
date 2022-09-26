@@ -1,0 +1,48 @@
+[
+  {
+    "url": "https://neuvonta.hel.fi/",
+    "id": "menu_link_content:1eeb9ae9-88ab-4e38-8ab0-92cd7399bfa8",
+    "name": "Kaupunkineuvonta – Helsinki-info",
+    "parentId": "",
+    "attributes": {
+      "data-external": true
+    },
+    "external": true,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:1eeb9ae9-88ab-4e38-8ab0-92cd7399bfa8"
+    ],
+    "weight": -50
+  },
+  {
+    "url": "https://search.hel.fi/",
+    "id": "menu_link_content:aeca3670-182d-4cda-a1d1-df752cea5006",
+    "name": "Hae yhteystietoja ja numeroita",
+    "parentId": "",
+    "attributes": {
+      "data-external": true
+    },
+    "external": true,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:aeca3670-182d-4cda-a1d1-df752cea5006"
+    ],
+    "weight": -49
+  },
+  {
+    "url": "https://www.hel.fi/kaupunkiymparisto/fi/yhteystiedot/anna+palautetta",
+    "id": "menu_link_content:b9d7a5a5-ead4-4316-aef4-46f468ca839c",
+    "name": "Anna palautetta",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:b9d7a5a5-ead4-4316-aef4-46f468ca839c"
+    ],
+    "weight": -48
+  }
+]

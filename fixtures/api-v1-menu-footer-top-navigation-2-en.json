@@ -1,0 +1,30 @@
+[
+  {
+    "url": "https://www.hel.fi/en/decision-making/contact-us/helsinki-info",
+    "id": "menu_link_content:895c14db-fdbf-4de6-95c5-1b532a28031b",
+    "name": "Helsinki-info",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:895c14db-fdbf-4de6-95c5-1b532a28031b"
+    ],
+    "weight": -45
+  },
+  {
+    "url": "https://www.hel.fi/kaupunkiymparisto/en/feedback/feedback",
+    "id": "menu_link_content:40b7052a-7619-4f6d-80d5-387d22fab475",
+    "name": "Feedback",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:40b7052a-7619-4f6d-80d5-387d22fab475"
+    ],
+    "weight": -44
+  }
+]

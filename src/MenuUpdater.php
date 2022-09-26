@@ -61,7 +61,7 @@ class MenuUpdater {
     }
     $instanceUri = Url::fromRoute('<front>', options: [
       'language' => $this->languageManager->getLanguage($langcode),
-    ])->setAbsolute();
+    ]);
 
     $tree = $this
       ->menuTreeBuilder
@@ -70,7 +70,7 @@ class MenuUpdater {
           preg_replace('/[^a-z0-9_]+/', '_', strtolower($siteName)),
         ]),
         'name' => $siteName,
-        'url' => $instanceUri->toString(),
+        'url' => $instanceUri,
       ]);
 
     $response = $this->apiManager->update(
@@ -81,10 +81,10 @@ class MenuUpdater {
         'menu_tree' => $tree,
       ]
     );
-    if (!isset($response->status)) {
+    if (!isset($response->data->status)) {
       throw new \InvalidArgumentException('Failed to parse entity published state.');
     }
-    return reset($response->status)->value;
+    return reset($response->data->status)->value;
   }
 
 }

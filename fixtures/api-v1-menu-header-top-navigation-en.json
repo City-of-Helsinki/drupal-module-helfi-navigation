@@ -1,0 +1,44 @@
+[
+  {
+    "url": "https://www.hel.fi/helsinki/coronavirus-en",
+    "id": "menu_link_content:e0dfbbcb-46e2-414e-8229-9eac5bc7e298",
+    "name": "Coronavirus",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:e0dfbbcb-46e2-414e-8229-9eac5bc7e298"
+    ],
+    "weight": -50
+  },
+  {
+    "url": "https://www.hel.fi/uutiset/en",
+    "id": "menu_link_content:033a3225-ab43-437b-bf7b-64aa8d8c9c58",
+    "name": "News",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:033a3225-ab43-437b-bf7b-64aa8d8c9c58"
+    ],
+    "weight": -49
+  },
+  {
+    "url": "https://www.hel.fi/kaupunkiymparisto/en/feedback/feedback",
+    "id": "menu_link_content:d4836700-f9c2-4870-8f5d-3217338f868d",
+    "name": "Feedback",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:d4836700-f9c2-4870-8f5d-3217338f868d"
+    ],
+    "weight": -48
+  }
+]

@@ -13,6 +13,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\CacheValue;
+use Drupal\helfi_navigation\ApiResponse;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
@@ -136,6 +137,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::makeRequest
    * @covers ::getDefaultRequestOptions
    * @covers ::getUrl
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testUpdateMainMenu() : void {
     $requests = [];
@@ -166,6 +168,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testGetExternalMenu() : void {
     $requests = [];
@@ -178,7 +181,7 @@ class ApiManagerTest extends UnitTestCase {
     // Test empty and non-empty response.
     for ($i = 0; $i < 2; $i++) {
       $response = $sut->get('fi', 'main');
-      $this->assertInstanceOf(\stdClass::class, $response);
+      $this->assertInstanceOf(ApiResponse::class, $response);
       $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
     }
     // Make sure cache is used (request queue should be empty).
@@ -196,6 +199,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testGetMainMenu() : void {
     $requests = [];
@@ -207,7 +211,7 @@ class ApiManagerTest extends UnitTestCase {
     // Test empty and non-empty response.
     for ($i = 0; $i < 2; $i++) {
       $response = $sut->get('fi', 'main');
-      $this->assertInstanceOf(\stdClass::class, $response);
+      $this->assertInstanceOf(ApiResponse::class, $response);
       $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
     }
     // Make sure cache is used (request queue should be empty).
@@ -225,6 +229,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testStaleCacheOnRequestFailure() : void {
     $requests = [];
@@ -235,7 +240,7 @@ class ApiManagerTest extends UnitTestCase {
     $time = time();
     // Expired cache object.
     $cacheValue = new CacheValue(
-      (object) ['value' => 1],
+      new ApiResponse((object) ['value' => 1]),
       $time - (CacheValue::TTL + 10),
       [],
     );
@@ -246,7 +251,7 @@ class ApiManagerTest extends UnitTestCase {
       $this->getTimeMock($time)->reveal(),
     );
     $response = $sut->get('fi', 'main');
-    $this->assertInstanceOf(\stdClass::class, $response);
+    $this->assertInstanceOf(ApiResponse::class, $response);
   }
 
   /**
@@ -260,6 +265,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testStaleCacheUpdate() : void {
     $time = time();
@@ -282,13 +288,13 @@ class ApiManagerTest extends UnitTestCase {
       $this->getTimeMock($time)->reveal(),
     );
     $response = $sut->get('en', 'main');
-    $this->assertInstanceOf(\stdClass::class, $response);
+    $this->assertInstanceOf(ApiResponse::class, $response);
     // Make sure cache was updated.
-    $this->assertEquals('value', $response->value);
+    $this->assertEquals('value', $response->data->value);
     // Re-fetch the data to make sure we still get updated data and make sure
     // no further HTTP requests are made.
     $response = $sut->get('en', 'main');
-    $this->assertEquals('value', $response->value);
+    $this->assertEquals('value', $response->data->value);
   }
 
   /**
@@ -349,6 +355,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getDefaultRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testMockFallback() : void {
     // Use logger to verify that mock file is actually used.
@@ -366,7 +373,7 @@ class ApiManagerTest extends UnitTestCase {
       logger: $logger->reveal(),
     );
     $response = $sut->get('fi', 'footer-bottom-navigation');
-    $this->assertInstanceOf(\stdClass::class, $response);
+    $this->assertInstanceOf(ApiResponse::class, $response);
   }
 
   /**
@@ -418,6 +425,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
+   * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testCacheBypass() : void {
     $requests = [];
@@ -431,12 +439,12 @@ class ApiManagerTest extends UnitTestCase {
     // Make sure cache is used for all requests.
     for ($i = 0; $i < 3; $i++) {
       $response = $sut->get('en', 'main');
-      $this->assertEquals(1, $response->value);
+      $this->assertEquals(1, $response->data->value);
     }
     // Make sure cache is bypassed when configured so and the cached content
     // is updated.
     $response = $sut->withBypassCache()->get('en', 'main');
-    $this->assertEquals(2, $response->value);
+    $this->assertEquals(2, $response->data->value);
 
     // withBypassCache() method creates a clone of ApiManager instance to ensure
     // cache is only bypassed when explicitly told so.
@@ -444,7 +452,7 @@ class ApiManagerTest extends UnitTestCase {
     // if cache was bypassed here.
     for ($i = 0; $i < 3; $i++) {
       $response = $sut->get('en', 'main');
-      $this->assertEquals(2, $response->value);
+      $this->assertEquals(2, $response->data->value);
     }
   }
 

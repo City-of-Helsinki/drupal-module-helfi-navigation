@@ -78,69 +78,69 @@ class MenuBlockTest extends BrowserTestBase {
       'fi' => [
         'menus' => [
           'External - Mega menu' => [
-            'Kaupunkiympäristö ja liikenne',
-            'Pysäköinti',
+            'Kaupunkiympäristö ja liikenne' => [],
+            'Pysäköinti' => ['lang' => 'fi-FI'],
           ],
           'External - Footer bottom navigation' => [
-            'Saavutettavuusseloste',
+            'Saavutettavuusseloste' => [],
           ],
           'External - Header language links' => [
-            'Selkokieli',
+            'Selkokieli' => [],
           ],
           'External - Header top navigation' => [
-            'Uutiset',
+            'Uutiset' => [],
           ],
           'Helsingin kaupunki' => [
-            'Työpaikat',
+            'Työpaikat' => ['lang' => 'fi-FI'],
           ],
           'Ota yhteyttä' => [
-            'Kaupunkineuvonta – Helsinki-info',
+            'Kaupunkineuvonta – Helsinki-info' => [],
           ],
         ],
       ],
       'sv' => [
         'menus' => [
           'External - Footer bottom navigation' => [
-            'Tillgänglighetsutlåtande',
+            'Tillgänglighetsutlåtande' => [],
           ],
           'External - Header language links' => [
-            'Lättläst språk',
+            'Lättläst språk' => [],
           ],
           'External - Header top navigation' => [
-            'Nyheter',
+            'Nyheter' => [],
           ],
           'External - Mega menu' => [
-            'Stadsmiljö ock trafik',
-            'Parkering',
+            'Stadsmiljö ock trafik' => [],
+            'Parkering' => ['lang' => 'sv-SV'],
           ],
           'Helsingfors stad' => [
-            'Lediga jobb',
+            'Lediga jobb' => ['lang' => 'sv-SV'],
           ],
           'Ta kontakt' => [
-            'Ge respons',
+            'Ge respons' => [],
           ],
         ],
       ],
       'en' => [
         'menus' => [
           'External - Footer bottom navigation' => [
-            'Accessibility statement',
+            'Accessibility statement' => [],
           ],
           'External - Header language links' => [
-            'Selkokieli',
+            'Selkokieli' => [],
           ],
           'External - Header top navigation' => [
-            'News',
+            'News' => [],
           ],
           'External - Mega menu' => [
-            'Urban environment and traffic',
-            'Parking',
+            'Urban environment and traffic' => [],
+            'Parking' => ['lang' => 'en-GB'],
           ],
           'City of Helsinki' => [
-            'Employment opportunities',
+            'Employment opportunities' => ['lang' => 'en-GB'],
           ],
           'Connect' => [
-            'Feedback',
+            'Feedback' => [],
           ],
         ],
       ],
@@ -153,8 +153,14 @@ class MenuBlockTest extends BrowserTestBase {
 
       foreach ($menus as $label => $links) {
         $this->assertSession()->pageTextContains($label);
-        foreach ($links as $link) {
+        foreach ($links as $link => $attributes) {
           $this->assertSession()->linkExistsExact($link);
+          $item = $this->getSession()->getPage()->findLink($link);
+
+          // Test lang attributes.
+          foreach ($attributes as $key => $value) {
+            $this->assertEquals($value, $item->getAttribute($key));
+          }
         }
       }
       // Make sure mega menu has only two levels of links since it's configured
@@ -171,20 +177,20 @@ class MenuBlockTest extends BrowserTestBase {
    */
   public function testActiveTrail() : void {
     $content = [
-      '/urban-environment-and-traffic' =>
+      '/urban-environment-and-traffic/urban-environment-and-traffic' =>
         [
           'title' => 'Urban environment and traffic',
           'active_trail' => [
-            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
           ],
           'aria_current' => [
-            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
           ],
         ],
       '/urban-environment-and-traffic/parking' => [
         'title' => 'Parking',
         'active_trail' => [
-          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
         ],
         'aria_current' => [
@@ -196,7 +202,7 @@ class MenuBlockTest extends BrowserTestBase {
         // Third level is not visible in menu block, make sure two parents are
         // set in active trail.
         'active_trail' => [
-          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
         ],
         'aria_current' => [],
@@ -206,7 +212,7 @@ class MenuBlockTest extends BrowserTestBase {
       '/urban-environment-and-traffic/cycling' => [
         'title' => 'Cycling',
         'active_trail' => [
-          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling',
         ],
         'aria_current' => [

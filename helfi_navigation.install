@@ -8,6 +8,8 @@
 declare(strict_types = 1);
 
 use Drupal\block\Entity\Block;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Implements hook_install().
@@ -18,6 +20,7 @@ function helfi_navigation_install($is_syncing) : void {
   if ($is_syncing) {
     return;
   }
+
   /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
   $theme_handler = \Drupal::service('theme_handler');
 
@@ -193,4 +196,26 @@ function helfi_navigation_uninstall($is_syncing) {
   // Delete Menu queue.
   $queue = \Drupal::queue('helfi_navigation_menu_queue');
   $queue->deleteQueue();
+}
+
+/**
+ * Add 'lang' field to menu links.
+ */
+function helfi_navigation_update_9001() : void {
+  $manager = \Drupal::entityDefinitionUpdateManager();
+  $fields = [];
+  $fields['lang_attribute'] = BaseFieldDefinition::create('string')
+    ->setLabel(new TranslatableMarkup('Language attribute'))
+    ->setDescription(new TranslatableMarkup('The "lang" attribute.'))
+    ->setTranslatable(TRUE)
+    ->setRevisionable(TRUE)
+    ->setSetting('max_length', 10)
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+    ])
+    ->setDisplayConfigurable('form', TRUE);
+
+  foreach ($fields as $name => $field) {
+    $manager->installFieldStorageDefinition($name, 'menu_link_content', 'helfi_navigation', $field);
+  }
 }
