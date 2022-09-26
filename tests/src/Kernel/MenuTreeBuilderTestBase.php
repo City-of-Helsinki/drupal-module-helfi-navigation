@@ -96,7 +96,7 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
   }
 
   /**
-   * Create new menu link.
+   * Create a test menu link.
    *
    * @param array $overrides
    *   The overrides.

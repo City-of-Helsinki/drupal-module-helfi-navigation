@@ -1,0 +1,46 @@
+[
+  {
+    "url": "https://www.hel.fi/rekry/en/",
+    "id": "menu_link_content:64c40732-d8e6-4c45-b735-b5bdb72904ac",
+    "name": "Employment opportunities",
+    "parentId": "",
+    "attributes": {
+      "lang": "en-GB"
+    },
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:64c40732-d8e6-4c45-b735-b5bdb72904ac"
+    ],
+    "weight": 0
+  },
+  {
+    "url": "https://www.hel.fi/helsinki/en/administration/administration/communication/information",
+    "id": "menu_link_content:048c2391-b992-470e-86e3-40421e32da00",
+    "name": "Media contacts",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:048c2391-b992-470e-86e3-40421e32da00"
+    ],
+    "weight": 0
+  },
+  {
+    "url": "https://www.hel.fi/some",
+    "id": "menu_link_content:63333bf8-4936-497d-aef2-fe0316e9488a",
+    "name": "The city on social media",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:63333bf8-4936-497d-aef2-fe0316e9488a"
+    ],
+    "weight": 0
+  }
+]

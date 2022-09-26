@@ -24,8 +24,8 @@ use Psr\Log\LoggerInterface;
  */
 class ApiManager {
 
-  public const API_GLOBAL_MENU = '/api/v1/global-menu';
-  public const API_JSON = '/jsonapi/menu_items';
+  public const GLOBAL_MENU_ENDPOINT = '/api/v1/global-menu';
+  public const MENU_ENDPOINT = '/api/v1/menu';
 
   use CacheKeyTrait;
 
@@ -145,7 +145,7 @@ class ApiManager {
    * @param array $options
    *   The request options.
    *
-   * @return object
+   * @return \Drupal\helfi_navigation\ApiResponse
    *   The JSON object representing external menu.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
@@ -154,11 +154,11 @@ class ApiManager {
     string $langcode,
     string $menuId,
     array $options = []
-  ) : object {
+  ) : ApiResponse {
 
     $endpoint = match ($menuId) {
-      'main' => static::API_GLOBAL_MENU,
-      default => sprintf('%s/%s', static::API_JSON, $menuId),
+      'main' => static::GLOBAL_MENU_ENDPOINT,
+      default => sprintf('%s/%s', static::MENU_ENDPOINT, $menuId),
     };
 
     $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
@@ -180,16 +180,16 @@ class ApiManager {
    * @param array $data
    *   The JSON data to update.
    *
-   * @return object
+   * @return \Drupal\helfi_navigation\ApiResponse
    *   The JSON object.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function update(string $langcode, array $data) : object {
+  public function update(string $langcode, array $data) : ApiResponse {
     if (!$this->authorization) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
-    $endpoint = sprintf('%s/%s', static::API_GLOBAL_MENU, $this->environmentResolver->getActiveEnvironment()->getId());
+    $endpoint = sprintf('%s/%s', static::GLOBAL_MENU_ENDPOINT, $this->environmentResolver->getActiveEnvironment()->getId());
     return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
     ]);
@@ -261,7 +261,7 @@ class ApiManager {
    * @param array $options
    *   Body for requests.
    *
-   * @return object
+   * @return \Drupal\helfi_navigation\ApiResponse
    *   The JSON object.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
@@ -271,7 +271,7 @@ class ApiManager {
     string $endpoint,
     string $langcode,
     array $options = []
-  ): object {
+  ): ApiResponse {
     $activeEnvironmentName = $this->environmentResolver
       ->getActiveEnvironment()
       ->getEnvironmentName();
@@ -288,9 +288,8 @@ class ApiManager {
         throw $this->previousException;
       }
       $response = $this->httpClient->request($method, $url, $options);
-      $data = \GuzzleHttp\json_decode($response->getBody()->getContents());
 
-      return $data instanceof \stdClass ? $data : new \stdClass();
+      return new ApiResponse(\GuzzleHttp\json_decode($response->getBody()->getContents()));
     }
     catch (\Exception $e) {
       if ($e instanceof GuzzleException) {
@@ -303,7 +302,7 @@ class ApiManager {
         $activeEnvironmentName === 'local'
       ) {
         $this->logger->warning(
-          sprintf('Global menu request failed: %s. Mock data is used instead.', $e->getMessage())
+          sprintf('Menu request failed: %s. Mock data is used instead.', $e->getMessage())
         );
 
         $fileName = vsprintf('%s/../fixtures/%s-%s.json', [
@@ -314,10 +313,10 @@ class ApiManager {
 
         if (!file_exists($fileName)) {
           throw new FileNotExistsException(
-            sprintf('[%s]. Attempted to use mock data, but the mock file was not found for "%s" endpoint.', $e->getMessage(), $endpoint)
+            sprintf('[%s]. Attempted to use mock data, but the mock file "%s" was not found for "%s" endpoint.', $e->getMessage(), basename($fileName), $endpoint)
           );
         }
-        return \GuzzleHttp\json_decode(file_get_contents($fileName));
+        return new ApiResponse(\GuzzleHttp\json_decode(file_get_contents($fileName)));
       }
       // Log the error and re-throw the exception.
       $this->logger->error('Request failed with error: ' . $e->getMessage());

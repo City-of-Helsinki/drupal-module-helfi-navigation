@@ -1,0 +1,34 @@
+[
+  {
+    "url": "https://www.helsingforsregionen.fi/hs/selkosivut-sv",
+    "id": "menu_link_content:668e2433-6044-48bf-af69-f8d685c44897",
+    "name": "Lättläst språk",
+    "parentId": "",
+    "attributes": {
+      "data-external": true
+    },
+    "external": true,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:668e2433-6044-48bf-af69-f8d685c44897"
+    ],
+    "weight": -48
+  },
+  {
+    "url": "https://www.helsingforsregionen.fi/hs/viittomakieli-fi/teckensprak",
+    "id": "menu_link_content:575a5938-4588-4b17-bba3-b0192f1a007d",
+    "name": "Teckenspråk",
+    "parentId": "",
+    "attributes": {
+      "data-external": true
+    },
+    "external": true,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:575a5938-4588-4b17-bba3-b0192f1a007d"
+    ],
+    "weight": -47
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "url": "",
+    "id": "menu_link_content:8b54478c-5d6e-4f56-af3f-f17580937dc7",
+    "name": "© City of Helsinki 2022",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:8b54478c-5d6e-4f56-af3f-f17580937dc7"
+    ],
+    "weight": -50
+  },
+  {
+    "url": "https://www.hel.fi/accessibility",
+    "id": "menu_link_content:b3a008f1-3bc3-4549-96dd-2e4e63d4b64b",
+    "name": "Accessibility statement",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:b3a008f1-3bc3-4549-96dd-2e4e63d4b64b"
+    ],
+    "weight": -49
+  },
+  {
+    "url": "https://www.hel.fi/helsinki/en/administration/administration/information-requests/",
+    "id": "menu_link_content:363e8504-3ee6-4f9f-90f5-b0f847051239",
+    "name": "Information requests",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:363e8504-3ee6-4f9f-90f5-b0f847051239"
+    ],
+    "weight": -48
+  },
+  {
+    "url": "https://www.hel.fi/about",
+    "id": "menu_link_content:5f2580fb-ecf9-4b84-af22-829415e94ee9",
+    "name": "About hel.fi",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:5f2580fb-ecf9-4b84-af22-829415e94ee9"
+    ],
+    "weight": -47
+  }
+]

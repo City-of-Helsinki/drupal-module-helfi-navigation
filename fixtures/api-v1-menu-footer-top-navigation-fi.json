@@ -1,0 +1,46 @@
+[
+  {
+    "url": "https://www.hel.fi/rekry/fi/",
+    "id": "menu_link_content:98fdc9bf-40d6-426a-add7-ebb66b039ee9",
+    "name": "Työpaikat",
+    "parentId": "",
+    "attributes": {
+      "lang": "fi-FI"
+    },
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:98fdc9bf-40d6-426a-add7-ebb66b039ee9"
+    ],
+    "weight": -49
+  },
+  {
+    "url": "https://www.hel.fi/some",
+    "id": "menu_link_content:b2ffe34e-00f4-4bc7-ada9-0cffe3022333",
+    "name": "Sosiaalinen media",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:b2ffe34e-00f4-4bc7-ada9-0cffe3022333"
+    ],
+    "weight": -48
+  },
+  {
+    "url": "https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/hallinto/viestinta/viestinta/",
+    "id": "menu_link_content:c8ef2b1c-df80-4c49-a798-2b52dfc22e0e",
+    "name": "Medialle",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:c8ef2b1c-df80-4c49-a798-2b52dfc22e0e"
+    ],
+    "weight": -47
+  }
+]

@@ -50,7 +50,7 @@ final class MenuTreeBuilder {
    *   Menu type.
    * @param string $langcode
    *   Language code.
-   * @param object $rootElement
+   * @param object|null $rootElement
    *   The root element.
    *
    * @return array
@@ -59,12 +59,7 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function build(string $menuName, string $langcode, object $rootElement): array {
-    if (!isset($rootElement->name, $rootElement->url, $rootElement->id)) {
-      throw new \LogicException(
-        'Missing $rootElement->name, $rootElement->url or $rootElement->id property.'
-      );
-    }
+  public function build(string $menuName, string $langcode, object $rootElement = NULL): array {
     $tree = $this->menuTree->load(
       $menuName,
       (new MenuTreeParameters())
@@ -78,16 +73,24 @@ final class MenuTreeBuilder {
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ]);
 
-    return $this->processItem(
-      new MenuTreeBuilderLink($rootElement->url, $langcode, [
-        'id' => $rootElement->id,
-        'name' => $rootElement->name,
-        'external' => FALSE,
-        'attributes' => new \stdClass(),
-        'weight' => 0,
-        'sub_tree' => $this->transform($tree, $langcode, $rootElement->id),
-      ])
-    );
+    if ($rootElement) {
+      if (!isset($rootElement->name, $rootElement->url, $rootElement->id)) {
+        throw new \LogicException(
+          'Missing $rootElement->name, $rootElement->url or $rootElement->id property.'
+        );
+      }
+      return $this->processItem(
+        new MenuTreeBuilderLink($rootElement->url, $langcode, [
+          'id' => $rootElement->id,
+          'name' => $rootElement->name,
+          'external' => FALSE,
+          'attributes' => new \stdClass(),
+          'weight' => 0,
+          'sub_tree' => $this->transform($tree, $langcode, $rootElement->id),
+        ])
+      );
+    }
+    return $this->transform($tree, $langcode);
   }
 
   /**
@@ -151,7 +154,7 @@ final class MenuTreeBuilder {
         $parents = array_keys($parents);
 
         // Add first level root item as parent as well.
-        if (!isset($parents[$rootId])) {
+        if (!isset($parents[$rootId]) && $rootId) {
           $parents[] = $rootId;
         }
       }
@@ -218,7 +221,7 @@ final class MenuTreeBuilder {
       ->dispatch($link);
 
     return array_merge([
-      'url' => $menuTreeBuilderLink->url->setAbsolute()->toString(),
+      'url' => $menuTreeBuilderLink->url->setAbsolute()->toString(TRUE)->getGeneratedUrl(),
     ], $menuTreeBuilderLink->item);
   }
 

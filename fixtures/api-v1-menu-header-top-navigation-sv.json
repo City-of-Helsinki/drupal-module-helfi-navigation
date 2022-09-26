@@ -1,0 +1,44 @@
+[
+  {
+    "url": "https://www.hel.fi/helsinki/corona-sv",
+    "id": "menu_link_content:ce10258d-b28b-47a1-93f7-8cb34c7a6c45",
+    "name": "Coronaviruset",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:ce10258d-b28b-47a1-93f7-8cb34c7a6c45"
+    ],
+    "weight": -50
+  },
+  {
+    "url": "https://www.hel.fi/uutiset/sv",
+    "id": "menu_link_content:f35371b8-3d05-4ca9-b9b3-655c892063de",
+    "name": "Nyheter",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:f35371b8-3d05-4ca9-b9b3-655c892063de"
+    ],
+    "weight": -49
+  },
+  {
+    "url": "https://www.hel.fi/kaupunkiymparisto/sv/kontaktuppgifter-och-respons/respons/",
+    "id": "menu_link_content:c2000bb1-3a54-4ee4-be0b-413c6ca92c0b",
+    "name": "Ge respons",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:c2000bb1-3a54-4ee4-be0b-413c6ca92c0b"
+    ],
+    "weight": -48
+  }
+]

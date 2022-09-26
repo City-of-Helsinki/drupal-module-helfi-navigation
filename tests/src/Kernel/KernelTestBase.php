@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
+use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 
 /**
  * A base test class for all Kernel tests.
  */
-abstract class KernelTestBase extends CoreKernelTestBase {
+abstract class KernelTestBase extends ApiKernelTestBase {
 
   use ApiTestTrait;
   use LanguageManagerTrait;
@@ -26,7 +26,6 @@ abstract class KernelTestBase extends CoreKernelTestBase {
     'user',
     'content_translation',
     'menu_link_content',
-    'helfi_api_base',
     'language',
     'path_alias',
     'path',

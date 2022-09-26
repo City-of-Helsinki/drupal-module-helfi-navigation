@@ -13,6 +13,69 @@ namespace Drupal\Tests\helfi_navigation\Kernel;
 class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
 
   /**
+   * Tests menu tree without root object.
+   *
+   * @covers ::__construct
+   * @covers ::build
+   * @covers ::transform
+   * @covers ::getEntity
+   */
+  public function testBuildMenuTreeWithoutRoot() : void {
+    $this->createLinks();
+
+    $tree = $this->getMenuTreeBuilder()->build('main', 'en');
+    $this->assertTree($tree, FALSE);
+  }
+
+  /**
+   * Asserts that tree is build correctly.
+   *
+   * @param array $tree
+   *   The tree to run asserts against.
+   * @param bool $hasRoot
+   *   Whether the tree has root element.
+   */
+  private function assertTree(array $tree, bool $hasRoot) : void {
+    // Only links after 'Link 3' should be available because:
+    // - Anonymous user has no access to 'Link 1' and since 'Link 1 depth 1'
+    // is a child of 'Link 1' and children inherit permission from its
+    // parent, thus it should be hidden as well.
+    // - Link 2 is unpublished.
+    // - Link 3 is in different language.
+    $this->assertCount(3, $tree);
+
+    // Test <nolink>.
+    $this->assertEquals('', $tree[2]->url);
+
+    // Link 5 should have three links deep tree.
+    $this->assertTrue($tree[1]->hasItems);
+    $this->assertTrue($tree[1]->sub_tree[0]->hasItems);
+    $this->assertFalse($tree[1]->sub_tree[0]->sub_tree[0]->hasItems);
+
+    $expectedParents = [
+      'menu_link_content:0b10ba16-e2d5-4251-ac37-8ed27a02ff1f',
+      'menu_link_content:0d8a1366-4fcd-4dbc-bb75-854dedf28a1b',
+      'menu_link_content:64a5a6d1-ffce-481b-b321-260d9cf66ad9',
+    ];
+    // Trees with root element should include the root element as a parent
+    // as well.
+    if ($hasRoot) {
+      $expectedParents[] = 'liikenne';
+    }
+    // Make the whole tree is included in parents. The tree should be sorted
+    // from last to first element in tree.
+    $this->assertEquals($expectedParents, $tree[1]->sub_tree[0]->sub_tree[0]->parents);
+    // Tel/mailto links should be external and have attributes to indicate that.
+    $this->assertTrue($tree[1]->sub_tree[0]->sub_tree[0]->external);
+    $this->assertEquals((object) [
+      'data-external' => TRUE,
+      'data-protocol' => 'tel',
+    ], $tree[1]->sub_tree[0]->sub_tree[0]->attributes);
+    // Link 5 should be marked as internal by InternalDomainResolver.
+    $this->assertFalse($tree[1]->external);
+  }
+
+  /**
    * Tests menu tree build.
    *
    * @covers ::__construct
@@ -24,37 +87,7 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     $linkEntities = $this->createLinks();
 
     $tree = $this->getMenuTree('en');
-    // Only links after 'Link 3' should be available because:
-    // - Anonymous user has no access to 'Link 1' and since 'Link 1 depth 1'
-    // is a child of 'Link 1' and children inherit permission from its
-    // parent, thus it should be hidden as well.
-    // - Link 2 is unpublished.
-    // - Link 3 is in different language.
-    $this->assertCount(3, $tree['sub_tree']);
-
-    // Test <nolink>.
-    $this->assertEquals('', $tree['sub_tree'][2]->url);
-
-    // Link 5 should have three links deep tree.
-    $this->assertTrue($tree['sub_tree'][1]->hasItems);
-    $this->assertTrue($tree['sub_tree'][1]->sub_tree[0]->hasItems);
-    $this->assertFalse($tree['sub_tree'][1]->sub_tree[0]->sub_tree[0]->hasItems);
-    // Make the whole tree is included in parents. The tree should be sorted
-    // from last to first element in tree.
-    $this->assertEquals([
-      'menu_link_content:0b10ba16-e2d5-4251-ac37-8ed27a02ff1f',
-      'menu_link_content:0d8a1366-4fcd-4dbc-bb75-854dedf28a1b',
-      'menu_link_content:64a5a6d1-ffce-481b-b321-260d9cf66ad9',
-      'liikenne',
-    ], $tree['sub_tree'][1]->sub_tree[0]->sub_tree[0]->parents);
-    // Tel/mailto links should be external and have attributes to indicate that.
-    $this->assertTrue($tree['sub_tree'][1]->sub_tree[0]->sub_tree[0]->external);
-    $this->assertEquals((object) [
-      'data-external' => TRUE,
-      'data-protocol' => 'tel',
-    ], $tree['sub_tree'][1]->sub_tree[0]->sub_tree[0]->attributes);
-    // Link 5 should be marked as internal by InternalDomainResolver.
-    $this->assertFalse($tree['sub_tree'][1]->external);
+    $this->assertTree($tree['sub_tree'], TRUE);
 
     // Translate one subtree item to make sure it's not visible in
     // finnish, because the parent is not translated.

@@ -1,0 +1,46 @@
+[
+  {
+    "url": "https://www.hel.fi/rekry/sv/",
+    "id": "menu_link_content:ccee7277-ac96-4c4d-ae90-3fbd803f2e44",
+    "name": "Lediga jobb",
+    "parentId": "",
+    "attributes": {
+      "lang": "sv-SV"
+    },
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:ccee7277-ac96-4c4d-ae90-3fbd803f2e44"
+    ],
+    "weight": -49
+  },
+  {
+    "url": "https://www.hel.fi/some",
+    "id": "menu_link_content:bc1c2d0c-d398-44f0-97e4-a7be971516eb",
+    "name": "Sociala medier",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:bc1c2d0c-d398-44f0-97e4-a7be971516eb"
+    ],
+    "weight": -48
+  },
+  {
+    "url": "https://www.hel.fi/helsinki/sv/stad-och-forvaltning/forvaltning/kommunikation/kommunikation-information",
+    "id": "menu_link_content:04dc230c-aa45-4336-ae8c-2fc7d7918e39",
+    "name": "Medietjänster",
+    "parentId": "",
+    "attributes": [],
+    "external": false,
+    "hasItems": false,
+    "expanded": false,
+    "parents": [
+      "menu_link_content:04dc230c-aa45-4336-ae8c-2fc7d7918e39"
+    ],
+    "weight": -47
+  }
+]
