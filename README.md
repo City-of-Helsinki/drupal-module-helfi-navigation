@@ -1,4 +1,4 @@
-# HELfi navigation
+# Navigation
 
 ![CI](https://github.com/City-of-Helsinki/drupal-module-helfi-navigation/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/City-of-Helsinki/drupal-module-helfi-navigation/branch/main/graph/badge.svg?token=FQZHJAJYOZ)](https://codecov.io/gh/City-of-Helsinki/drupal-module-helfi-navigation) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=City-of-Helsinki_drupal-module-helfi-navigation&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=City-of-Helsinki_drupal-module-helfi-navigation)
