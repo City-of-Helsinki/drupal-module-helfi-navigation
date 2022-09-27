@@ -160,7 +160,8 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       // Create back and current/parent links accordingly.
       $menu_link_back = [
         'title' => $this->t('Front page'),
-        'url' => Url::fromUri('base:/'),
+        // @todo Change this to point Etusivu instance once it's live.
+        'url' => Url::fromUri('https://www.hel.fi/'),
       ];
       $menu_link_current_or_parent = $grand_parent_link;
     }
