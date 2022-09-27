@@ -198,17 +198,3 @@ function helfi_navigation_page_attachments(array &$attachments) {
   catch (\Exception) {
   }
 }
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function helfi_navigation_menu_link_content_presave(
-  MenuLinkContentInterface $entity
-) {
-  $options = $entity->link->first()?->options ?? [];
-
-  if ($value = $entity->get('lang_attribute')->value) {
-    $options['lang'] = $value;
-  }
-  $entity->link->first()->options = $options;
-}
