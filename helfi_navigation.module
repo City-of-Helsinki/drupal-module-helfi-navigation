@@ -198,3 +198,19 @@ function helfi_navigation_page_attachments(array &$attachments) {
   catch (\Exception) {
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_navigation_preprocess_page(&$variables) {
+  $api_manager = Drupal::service('helfi_navigation.api_manager');
+  $lang_code = Drupal::languageManager()
+    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+    ->getId();
+  $response = $api_manager->get($lang_code, 'header-language-links');
+
+  // Show "header_language_links" button if menu has items.
+  if (!empty($response->data)) {
+    $variables['show_header_language_links_button'] = TRUE;
+  }
+}
