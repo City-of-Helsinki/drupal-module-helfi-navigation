@@ -109,6 +109,8 @@ function _helfi_navigation_get_block_configuration() : array {
       'region' => 'header_branding',
       'settings' => [
         'label' => 'External - Header language links',
+        'depth' => 2,
+        'expand_all_items' => TRUE,
       ],
     ],
     'external_header_top_navigation' => [
@@ -217,5 +219,24 @@ function helfi_navigation_update_9001() : void {
 
   foreach ($fields as $name => $field) {
     $manager->installFieldStorageDefinition($name, 'menu_link_content', 'helfi_navigation', $field);
+  }
+}
+
+/**
+ * Update Header language links block settings.
+ */
+function helfi_navigation_update_9002() : void {
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
+  $theme_handler = \Drupal::service('theme_handler');
+
+  if (str_starts_with($theme_handler->getDefault(), 'hdbt')) {
+    $config_factory = \Drupal::configFactory();
+    $block = $config_factory->getEditable('block.block.external_header_language_links');
+    $block_data = $block->getRawData();
+    if (!empty($block_data)) {
+      $block_data['settings']['depth'] = 2;
+      $block_data['settings']['expand_all_items'] = TRUE;
+      $block->setData($block_data)->save(TRUE);
+    }
   }
 }
