@@ -21,7 +21,7 @@ trait MenuLinkTrait {
    * @return \Drupal\node\NodeInterface
    *   The node.
    */
-  protected function createNode() : NodeInterface {
+  protected function createNodeWithAlias() : NodeInterface {
     if (!NodeType::load('page')) {
       NodeType::create(['type' => 'page']);
     }
@@ -63,7 +63,7 @@ trait MenuLinkTrait {
    *   An array of links.
    */
   protected function createLinks() : array {
-    $this->createNode();
+    $this->createNodeWithAlias();
 
     $links = [
       [
