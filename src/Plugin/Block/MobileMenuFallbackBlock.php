@@ -7,9 +7,11 @@ namespace Drupal\helfi_navigation\Plugin\Block;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\helfi_navigation\ApiManager;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,6 +59,20 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
   private PathMatcherInterface $pathMatcher;
 
   /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected LanguageManagerInterface $languageManager;
+
+  /**
+   * The global navigation service.
+   *
+   * @var \Drupal\helfi_navigation\ApiManager
+   */
+  protected ApiManager $apiManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -70,6 +86,8 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $instance->configFactory = $container->get('config.factory');
     $instance->currentRequest = $container->get('request_stack')->getCurrentRequest();
     $instance->pathMatcher = $container->get('path.matcher');
+    $instance->languageManager = $container->get('language_manager');
+    $instance->apiManager = $container->get('helfi_navigation.api_manager');
     return $instance;
   }
 
@@ -158,10 +176,16 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       // If the current menu link is not available, we're most likely browsing
       // the front page or first level of the menu tree.
       // Create back and current/parent links accordingly.
+      $url = $this->apiManager->getUrl('base',
+        $this->languageManager->getCurrentLanguage()->getId()
+      );
+
+      // @todo We need a better way to deal with local docker.so urls.
+      $url = str_replace(['http://', ':8080'], ['https://', ''], $url);
+
       $menu_link_back = [
         'title' => $this->t('Front page'),
-        // @todo Change this to point Etusivu instance once it's live.
-        'url' => Url::fromUri('https://www.hel.fi/'),
+        'url' => Url::fromUri($url),
       ];
       $menu_link_current_or_parent = $grand_parent_link;
     }
