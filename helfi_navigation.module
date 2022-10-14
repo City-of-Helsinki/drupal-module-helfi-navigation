@@ -182,7 +182,7 @@ function helfi_navigation_page_attachments(array &$attachments) {
   try {
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
       'links' => [
-        'api' => $apiManager->getUrl('api', $langcode, ['endpoint' => ApiManager::GLOBAL_MENU_ENDPOINT]),
+        'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => ApiManager::GLOBAL_MENU_ENDPOINT]),
         'canonical' => $apiManager->getUrl('canonical', $langcode),
       ],
     ];
