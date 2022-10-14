@@ -180,15 +180,11 @@ function helfi_navigation_page_attachments(array &$attachments) {
   $apiManager = Drupal::service('helfi_navigation.api_manager');
 
   try {
-    $links = [
-      'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => ApiManager::GLOBAL_MENU_ENDPOINT]),
-      // @todo Change this back once new Etusivu instance is live.
-      // 'canonical' => $apiManager->getUrl('canonical', $langcode),
-      'canonical' => 'https://www.hel.fi',
-    ];
-
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
-      'links' => $links,
+      'links' => [
+        'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => ApiManager::GLOBAL_MENU_ENDPOINT]),
+        'canonical' => $apiManager->getUrl('canonical', $langcode),
+      ],
     ];
   }
   catch (\Exception) {
