@@ -176,7 +176,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       // If the current menu link is not available, we're most likely browsing
       // the front page or first level of the menu tree.
       // Create back and current/parent links accordingly.
-      $url = $this->apiManager->getUrl('base',
+      $url = $this->apiManager->getUrl('canonical',
         $this->languageManager->getCurrentLanguage()->getId()
       );
 
