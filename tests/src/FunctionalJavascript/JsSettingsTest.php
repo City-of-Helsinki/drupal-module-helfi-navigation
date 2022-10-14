@@ -16,7 +16,6 @@ use Drupal\language\Entity\ConfigurableLanguage;
  */
 class JsSettingsTest extends WebDriverTestBase {
 
-
   /**
    * {@inheritdoc}
    */
