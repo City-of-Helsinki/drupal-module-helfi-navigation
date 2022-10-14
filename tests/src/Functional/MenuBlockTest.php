@@ -67,7 +67,6 @@ class MenuBlockTest extends BrowserTestBase {
    * Make sure menu block can be placed.
    */
   public function testExternalMenuBlock() : void {
-    // @todo Test that api addresses are set in drupalSettings.
     // Verify that:
     // 1. Mega menu has only two levels of links.
     // 2. Block label is translated when a translation is provided.

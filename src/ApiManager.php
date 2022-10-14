@@ -239,13 +239,13 @@ class ApiManager {
       ->getActiveEnvironment()
       ->getEnvironmentName();
 
-    $baseUrl = $this->environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName)
-      ->getUrl($langcode);
+    $env = $this->environmentResolver
+      ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName);
 
     return match ($type) {
-      'base' => $baseUrl,
-      'api' => sprintf('%s/%s', $baseUrl, ltrim($options['endpoint'], '/')),
+      'canonical' => $env->getUrl($langcode),
+      'js' => sprintf('%s/%s', $env->getUrl($langcode), ltrim($options['endpoint'], '/')),
+      'api' => sprintf('%s/%s', $env->getInternalAddress($langcode), ltrim($options['endpoint'], '/')),
     };
   }
 
