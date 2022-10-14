@@ -180,9 +180,6 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
         $this->languageManager->getCurrentLanguage()->getId()
       );
 
-      // @todo We need a better way to deal with local docker.so urls.
-      $url = str_replace(['http://', ':8080'], ['https://', ''], $url);
-
       $menu_link_back = [
         'title' => $this->t('Front page'),
         'url' => Url::fromUri($url),
