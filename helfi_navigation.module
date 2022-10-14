@@ -181,7 +181,7 @@ function helfi_navigation_page_attachments(array &$attachments) {
 
   try {
     $links = [
-      'api' => $apiManager->getUrl('api', $langcode, ['endpoint' => ApiManager::GLOBAL_MENU_ENDPOINT]),
+      'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => ApiManager::GLOBAL_MENU_ENDPOINT]),
       // @todo Change this back once new Etusivu instance is live.
       // 'canonical' => $apiManager->getUrl('base', $langcode),
       'canonical' => 'https://www.hel.fi',

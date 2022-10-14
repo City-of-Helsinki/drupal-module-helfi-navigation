@@ -243,7 +243,8 @@ class ApiManager {
       ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName);
 
     return match ($type) {
-      'base' => $env->getUrl($langcode),
+      'canonical' => $env->getUrl($langcode),
+      'js' => sprintf('%s/%s', $env->getUrl($langcode), ltrim($options['endpoint'], '/')),
       'api' => sprintf('%s/%s', $env->getInternalAddress($langcode), ltrim($options['endpoint'], '/')),
     };
   }
