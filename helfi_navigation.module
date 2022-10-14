@@ -180,18 +180,11 @@ function helfi_navigation_page_attachments(array &$attachments) {
   $apiManager = Drupal::service('helfi_navigation.api_manager');
 
   try {
-    $links = [
-      'api' => $apiManager->getUrl('api', $langcode, ['endpoint' => ApiManager::GLOBAL_MENU_ENDPOINT]),
-      'canonical' => $apiManager->getUrl('base', $langcode),
-    ];
-
-    // @todo We need a better way to deal with local docker.so urls.
-    foreach ($links as $type => $link) {
-      $links[$type] = str_replace(['http://', ':8080'], ['https://', ''], $link);
-    }
-
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
-      'links' => $links,
+      'links' => [
+        'api' => $apiManager->getUrl('api', $langcode, ['endpoint' => ApiManager::GLOBAL_MENU_ENDPOINT]),
+        'canonical' => $apiManager->getUrl('base', $langcode),
+      ],
     ];
   }
   catch (\Exception) {
