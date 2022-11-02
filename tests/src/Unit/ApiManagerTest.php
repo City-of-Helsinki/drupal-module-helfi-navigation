@@ -23,6 +23,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -35,6 +36,7 @@ use Psr\Log\LoggerInterface;
 class ApiManagerTest extends UnitTestCase {
 
   use ApiTestTrait;
+  use ProphecyTrait;
 
   /**
    * The cache.
@@ -333,11 +335,13 @@ class ApiManagerTest extends UnitTestCase {
    */
   public function testMockFallbackException() : void {
     $this->expectException(FileNotExistsException::class);
+    $response = $this->prophesize(ResponseInterface::class);
+    $response->getStatusCode()->willReturn(403);
     $client = $this->createMockHttpClient([
       new ClientException(
         'Test',
         $this->prophesize(RequestInterface::class)->reveal(),
-        $this->prophesize(ResponseInterface::class)->reveal(),
+        $response->reveal(),
       ),
     ]);
     $sut = $this->getSut($client);
