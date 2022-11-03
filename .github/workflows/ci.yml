@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0']
+        php-versions: ['8.0', '8.1']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
 
     services:
       db:
-        image: mariadb:10.5
+        image: mariadb:10.9
         env:
           MYSQL_USER: drupal
           MYSQL_PASSWORD: drupal

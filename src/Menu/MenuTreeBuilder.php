@@ -52,6 +52,8 @@ final class MenuTreeBuilder {
    *   Language code.
    * @param object|null $rootElement
    *   The root element.
+   * @param \Drupal\Core\Menu\MenuTreeParameters|null $parameters
+   *   The menu tree parameters.
    *
    * @return array
    *   The resulting tree.
@@ -59,13 +61,18 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function build(string $menuName, string $langcode, object $rootElement = NULL): array {
-    $tree = $this->menuTree->load(
-      $menuName,
-      (new MenuTreeParameters())
-        ->onlyEnabledLinks()
-    );
+  public function build(
+    string $menuName,
+    string $langcode,
+    object $rootElement = NULL,
+    MenuTreeParameters $parameters = NULL
+  ): array {
+    if (!$parameters) {
+      $parameters = new MenuTreeParameters();
+    }
+    $parameters->onlyEnabledLinks();
 
+    $tree = $this->menuTree->load($menuName, $parameters);
     $tree = $this->menuTree->transform($tree, [
       // Sync menu links accessible to anonymous users and sort them
       // the same way core does.
