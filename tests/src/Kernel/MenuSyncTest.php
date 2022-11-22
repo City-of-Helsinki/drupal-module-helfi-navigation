@@ -86,7 +86,6 @@ class MenuSyncTest extends KernelTestBase {
    */
   public function testEntityHooks() : void {
     $this->config('helfi_navigation.api')->set('key', '123')->save();
-    $queue = $this->getQueue();
 
     // Make sure entity insert queues items.
     $link = $this->createTestLink(['link' => ['uri' => 'internal:/']]);
