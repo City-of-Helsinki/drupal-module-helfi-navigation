@@ -5,13 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
 use Drupal\Core\Config\ConfigException;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\ApiResponse;
 use Drupal\helfi_navigation\MenuUpdater;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\system\Entity\Menu;
+use Drupal\Tests\helfi_navigation\Traits\MenuLinkTrait;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests navigation sync.
@@ -19,6 +18,9 @@ use Drupal\system\Entity\Menu;
  * @group helfi_navigation
  */
 class MenuSyncTest extends KernelTestBase {
+
+  use ProphecyTrait;
+  use MenuLinkTrait;
 
   /**
    * Gets the queue.
@@ -28,21 +30,6 @@ class MenuSyncTest extends KernelTestBase {
    */
   private function getQueue() : QueueInterface {
     return $this->container->get('queue')->get('helfi_navigation_menu_queue');
-  }
-
-  /**
-   * Throws the given exception on syncMenu().
-   *
-   * @param \Exception $exception
-   *   The exception to throw.
-   */
-  private function menuUpdaterExceptionMock(\Exception $exception) {
-    $mock = $this->getMockBuilder(MenuUpdater::class)
-      ->disableOriginalConstructor()
-      ->getMock();
-    $mock->method('syncMenu')
-      ->willThrowException($exception);
-    $this->container->set('helfi_navigation.menu_updater', $mock);
   }
 
   /**
@@ -56,28 +43,61 @@ class MenuSyncTest extends KernelTestBase {
   }
 
   /**
-   * Make sure undefined language fallbacks to default language.
+   * Make sure nothing gets queued when api key is not set.
    */
-  public function testLanguageFallback() : void {
-    $this->menuUpdaterExceptionMock(new \Exception());
+  public function testQueueNoApiKey() : void {
     $queue = $this->getQueue();
 
-    // Make sure undefined language fallbacks to default language.
-    // This also tests that item is queued on exception.
-    _helfi_navigation_queue_item(LanguageInterface::LANGCODE_NOT_SPECIFIED);
-    $this->assertEquals(1, $queue->numberOfItems());
-    $this->assertEquals('en', $queue->claimItem()->data);
+    _helfi_navigation_queue_item();
+    $this->assertEquals(0, $queue->numberOfItems());
   }
 
   /**
-   * Make sure item is not queued when API key is not set.
+   * Make sure items are queued only once.
    */
-  public function testConfigException() : void {
-    $this->menuUpdaterExceptionMock(new ConfigException());
+  public function testQueue() : void {
+    $this->config('helfi_navigation.api')->set('key', '123')->save();
     $queue = $this->getQueue();
 
-    _helfi_navigation_queue_item('fi');
-    $this->assertEquals(0, $queue->numberOfItems());
+    _helfi_navigation_queue_item();
+    $this->assertEquals(3, $queue->numberOfItems());
+  }
+
+  /**
+   * Asserts number of items placed in queue.
+   *
+   * @param int $expected
+   *   The expected queue count.
+   * @param bool $clear
+   *   Whether to clear queue or not.
+   */
+  public function assertQueueCount(int $expected, bool $clear = TRUE) : void {
+    $queue = $this->getQueue();
+    $this->assertEquals($expected, $queue->numberOfItems());
+
+    if ($clear) {
+      $queue->deleteQueue();
+      $this->assertEquals(0, $queue->numberOfItems());
+    }
+  }
+
+  /**
+   * Tests entity insert/update/delete hooks.
+   */
+  public function testEntityHooks() : void {
+    $this->config('helfi_navigation.api')->set('key', '123')->save();
+
+    // Make sure entity insert queues items.
+    $link = $this->createTestLink(['link' => ['uri' => 'internal:/']]);
+    $this->assertQueueCount(3);
+
+    // Make sure entity update queues items.
+    $link->save();
+    $this->assertQueueCount(3);
+
+    // Make sure entity delete.
+    $link->delete();
+    $this->assertQueueCount(3);
   }
 
   /**
@@ -156,35 +176,6 @@ class MenuSyncTest extends KernelTestBase {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('Failed to parse entity published state.');
     $this->getMenuUpdater()->syncMenu('fi');
-  }
-
-  /**
-   * Make sure entity hooks triggers the menu sync.
-   */
-  public function testHooks() : void {
-    $this->config('system.site')->set('name', 'Site name')->save();
-    $this->config('helfi_navigation.api')->set('key', '123')->save();
-
-    $menuUpdater = $this->prophesize(MenuUpdater::class);
-    // Make sure syncMenu is called for:
-    // - menu link update
-    // - menu link insert
-    // - menu link delete
-    // - menu update (will fallback to english langcode).
-    $menuUpdater->syncMenu('fi')->shouldBeCalledTimes(3);
-    $menuUpdater->syncMenu('en')->shouldBeCalledTimes(1);
-    $this->container->set('helfi_navigation.menu_updater', $menuUpdater->reveal());
-
-    $menuLink = MenuLinkContent::create([
-      'menu_name' => 'main',
-      'title' => 'link',
-      'langcode' => 'fi',
-      'link' => ['uri' => 'internal:/test-page'],
-    ]);
-    $menuLink->save();
-    $menuLink->set('title', '123')->save();
-    $menuLink->delete();
-    Menu::load('main')->save();
   }
 
 }
