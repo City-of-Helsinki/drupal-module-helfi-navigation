@@ -129,6 +129,9 @@ function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $ent
  * Create menu update queue item.
  */
 function _helfi_navigation_queue_item() : void {
+  if (!\Drupal::config('helfi_navigation.api')->get('key')) {
+    return;
+  }
   $queue = Drupal::queue('helfi_navigation_menu_queue');
 
   // Queue items only when queue is empty.
