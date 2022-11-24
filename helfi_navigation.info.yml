@@ -5,5 +5,6 @@ core_version_requirement: ^9 || ^10
 dependencies:
   - drupal:block
   - drupal:helfi_api_base
+  - drupal:menu_block_current_language
   - drupal:menu_link_content
   - drupal:language

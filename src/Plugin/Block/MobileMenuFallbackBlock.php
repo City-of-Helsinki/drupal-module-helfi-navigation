@@ -137,6 +137,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $manipulators = [
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+      ['callable' => 'menu_block_current_language_tree_manipulator::filterLanguages'],
     ];
 
     // Get the grandparent link for the fallback menu.
