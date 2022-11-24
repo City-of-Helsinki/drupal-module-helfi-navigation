@@ -6,7 +6,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^8.0",
-        "drupal/helfi_api_base": "*"
+        "drupal/helfi_api_base": "*",
+        "drupal/menu_block_current_language": "^1.5"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
