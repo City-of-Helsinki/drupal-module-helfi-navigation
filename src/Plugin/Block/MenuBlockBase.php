@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_navigation\ApiResponse;
 use Drupal\system\Plugin\Block\SystemMenuBlock;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -47,6 +49,13 @@ abstract class MenuBlockBase extends SystemMenuBlock {
       'level' => $this->getStartingLevel(),
       'expand_all_items' => $this->getExpandAllItems(),
     ];
+  }
+
+  protected function fetchExternalMenu(string $menuId): ApiResponse {
+    return $this->apiManager->get(
+      $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
+      $menuId,
+    );
   }
 
   /**
