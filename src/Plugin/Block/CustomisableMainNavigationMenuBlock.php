@@ -44,15 +44,15 @@ final class CustomisableMainNavigationMenuBlock extends ExternalMenuBlockBase {
   protected function getTreeFromResponse(ApiResponse $response): array {
     $tree = [];
 
+    // TODO: Add setting which allows to set the "custom" menu as first or last item of the menu.
+    $tree[] = (object) $this->getTreeFromMainMenu();
+
     foreach ($response->data as $item) {
       if (!isset($item->menu_tree)) {
         continue;
       }
       $tree[] = reset($item->menu_tree);
     }
-
-    // TODO: Add setting which allows to set the "custom" menu as first or last item of the menu.
-    $tree[] = (object) $this->getTreeFromMainMenu();
 
     return $tree;
   }

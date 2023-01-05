@@ -63,7 +63,7 @@ abstract class MenuBlockBase extends SystemMenuBlock {
    */
   public function getMaxDepth(): int {
     $max_depth = $this->getConfiguration()['depth'];
-    return $max_depth == 0 ? 10 : $max_depth;
+    return $max_depth == 0 ? 10 : (int) $max_depth;
   }
 
   /**
@@ -77,7 +77,7 @@ abstract class MenuBlockBase extends SystemMenuBlock {
    * {@inheritdoc}
    */
   public function getExpandAllItems(): bool {
-    return $this->getConfiguration()['expand_all_items'] ?: FALSE;
+    return (bool) $this->getConfiguration()['expand_all_items'] ?: FALSE;
   }
 
 }
