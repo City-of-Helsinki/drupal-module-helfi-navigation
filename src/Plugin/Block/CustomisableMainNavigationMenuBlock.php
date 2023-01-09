@@ -45,7 +45,7 @@ final class CustomisableMainNavigationMenuBlock extends ExternalMenuBlockBase {
     $tree = [];
 
     // TODO: Add setting which allows to set the "custom" menu as first or last item of the menu.
-    $tree[] = (object) $this->getTreeFromMainMenu();
+    // $tree[] = (object) $this->getTreeFromMainMenu();
 
     foreach ($response->data as $item) {
       if (!isset($item->menu_tree)) {
@@ -55,6 +55,53 @@ final class CustomisableMainNavigationMenuBlock extends ExternalMenuBlockBase {
     }
 
     return $tree;
+  }
+
+
+  public function build(): array
+  {
+    $build = parent::build();
+
+    $tree = $this->buildMenuTree();
+    $menuTree = $this->menuTreeBuilder->build($tree['sub_tree'], $this->getOptions());
+
+    // TODO: Add setting which allows to set the "custom" menu as first or last item of the menu.
+    $build['#items'][] = reset($menuTree);
+
+    return $build;
+  }
+
+
+  private function buildMenuTree() {
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    $sitename = $this->languageManager
+      ->getLanguageConfigOverride($langcode,'system.site')
+      ->get('name');
+
+    // Fallback to default translation if site name is not translated to
+    // given language.
+    if (!$sitename) {
+      $sitename = $this->config->get('system.site')
+        ->getOriginal('name', FALSE);
+    }
+
+    if (!$sitename) {
+      throw new \InvalidArgumentException('Missing "system.site[name]" configuration.');
+    }
+
+    $instanceUri = Url::fromRoute('<front>', options: [
+      'language' => $this->languageManager->getLanguage($langcode),
+    ]);
+
+    return $this
+      ->localMenuTreeBuilder
+      ->build('main', $langcode, (object) [
+        'id' => vsprintf('base:%s', [
+          preg_replace('/[^a-z0-9_]+/', '_', strtolower($sitename)),
+        ]),
+        'name' => $sitename,
+        'url' => $instanceUri,
+      ]);
   }
 
   protected function getTreeFromMainMenu(): array{
