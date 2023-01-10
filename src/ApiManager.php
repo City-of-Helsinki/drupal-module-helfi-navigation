@@ -249,6 +249,10 @@ class ApiManager {
     };
   }
 
+  public function isAuthorized(): bool {
+    return (bool) $this->authorization;
+  }
+
   /**
    * Makes a request based on parameters and returns the response.
    *
