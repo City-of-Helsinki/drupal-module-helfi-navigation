@@ -249,6 +249,11 @@ class ApiManager {
     };
   }
 
+  /**
+   * Is the system authorized to use the secured api endpoints.
+   *
+   * @return bool
+   */
   public function isAuthorized(): bool {
     return (bool) $this->authorization;
   }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\helfi_navigation\ApiResponse;
 use Drupal\system\Plugin\Block\SystemMenuBlock;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,19 +49,12 @@ abstract class MenuBlockBase extends SystemMenuBlock {
     ];
   }
 
-  protected function fetchExternalMenu(string $menuId): ApiResponse {
-    return $this->apiManager->get(
-      $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
-      $menuId,
-    );
-  }
-
   /**
    * {@inheritDoc}
    */
   public function getMaxDepth(): int {
     $max_depth = $this->getConfiguration()['depth'];
-    return $max_depth == 0 ? 10 : (int) $max_depth;
+    return $max_depth == 0 ? 10 : $max_depth;
   }
 
   /**
@@ -77,7 +68,7 @@ abstract class MenuBlockBase extends SystemMenuBlock {
    * {@inheritdoc}
    */
   public function getExpandAllItems(): bool {
-    return (bool) $this->getConfiguration()['expand_all_items'] ?: FALSE;
+    return $this->getConfiguration()['expand_all_items'] ?: FALSE;
   }
 
 }
