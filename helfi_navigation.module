@@ -163,7 +163,7 @@ function helfi_navigation_page_attachments(array &$attachments) {
   $apiManager = Drupal::service('helfi_navigation.api_manager');
   $environmentResolver = Drupal::service('helfi_api_base.environment_resolver');
 
-  $localMobileMenuUri = 'api/v1/mobile-navigation';
+  $localMobileMenuUri = 'api/v1/global-mobile-menu';
 
   $activeEnvironmentName = $environmentResolver
     ->getActiveEnvironment()

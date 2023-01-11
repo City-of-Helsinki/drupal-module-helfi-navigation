@@ -6,7 +6,6 @@ namespace Drupal\helfi_navigation\Plugin\rest\resource;
 
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
@@ -41,28 +40,28 @@ final class GlobalMobileMenu extends ResourceBase
   /**
    * The Languagemanager.
    *
-   * @var LanguageManagerInterface
+   * @var \Drupal\Core\Language\LanguageManagerInterface
    */
   protected LanguageManagerInterface $languageManager;
 
   /**
    * The Configfactory
    *
-   * @var ConfigFactory
+   * @var Drupal\Core\Config\ConfigFactory
    */
   protected ConfigFactory $configFactory;
 
   /**
    * The environmentresolver.
    *
-   * @var EnvironmentResolver
+   * @var Drupal\helfi_api_base\Environment\EnvironmentResolver
    */
   protected EnvironmentResolver $environmentResolver;
 
   /**
    * The Menutreebuilder.
    *
-   * @var MenuTreeBuilder
+   * @var Drupal\helfi_navigation\Menu\MenuTreeBuilder
    */
   protected MenuTreeBuilder $localMenuTreeBuilder;
 
@@ -96,7 +95,6 @@ final class GlobalMobileMenu extends ResourceBase
    */
   public function get(): ModifiedResourceResponse
   {
-
     $langcode = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
@@ -105,7 +103,7 @@ final class GlobalMobileMenu extends ResourceBase
       $apiResponse = $this->apiManager->get($langcode, 'main', []);
     }
     catch(\Exception $exception) {
-      return [];
+      return new ModifiedResourceResponse([], 200);
     }
 
     // If authorization key is set, just return the menu without enrichment.
