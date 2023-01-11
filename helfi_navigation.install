@@ -253,7 +253,7 @@ function helfi_navigation_update_9003() : void {
   //$updateHelper = \Drupal::service('update_helper.updater');
 
   // Enable modules if necessary.
-  if (!$moduleHandler->moduleExists('rest')) {
+  if (!$module_handler->moduleExists('rest')) {
     Drupal::service('module_installer')->install(['rest']);
   }
   if (!$module_handler->moduleExists('serialize')) {
