@@ -55,7 +55,7 @@ function helfi_navigation_install($is_syncing) : void {
     $block->delete();
   }
 
-  updateUserRestPermissions();
+  update_user_rest_permissions();
 
 }
 
@@ -250,10 +250,7 @@ function helfi_navigation_update_9002() : void {
  * Update to enable rest module.
  */
 function helfi_navigation_update_9003() : void {
-  /** @var \Drupal\Core\Extension\ModuleHandler $moduleHandler */
   $module_handler = \Drupal::service('module_handler');
-  /** @var \Drupal\update_helper\Updater $updateHelper */
-  //$updateHelper = \Drupal::service('update_helper.updater');
 
   // Enable modules if necessary.
   if (!$module_handler->moduleExists('rest')) {
@@ -263,21 +260,25 @@ function helfi_navigation_update_9003() : void {
     Drupal::service('module_installer')->install(['serialization']);
   }
 
-  // Install config
+  // Install config.
   $config_location = dirname(__FILE__) . '/config/install/';
   $config = 'rest.resource.helfi_global_mobile_menu';
   ConfigHelper::installNewConfig($config_location, $config);
 
   // Update user permissions
-  updateUserRestPermissions();
+  update_user_rest_permissions();
 
 }
 
-function updateUserRestPermissions() {
-  // Update user permissions
+/**
+ * Update user permissions.
+ *
+ * @return void
+ */
+function update_user_rest_permissions() {
   $config_factory = \Drupal::configFactory();
 
-  foreach(['user.role.anonymous','user.role.authenticated'] as $config) {
+  foreach (['user.role.anonymous', 'user.role.authenticated'] as $config) {
     $role = $config_factory->getEditable($config);
     $raw_data = $role->getRawData();
     $raw_data['dependencies']['config'][] = 'rest.resource.helfi_global_mobile_menu';
