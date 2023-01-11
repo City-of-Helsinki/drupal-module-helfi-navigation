@@ -54,6 +54,9 @@ function helfi_navigation_install($is_syncing) : void {
   foreach ($block_storage->loadMultiple($delete) as $block) {
     $block->delete();
   }
+
+  updateUserRestPermissions();
+
 }
 
 /**
@@ -266,6 +269,12 @@ function helfi_navigation_update_9003() : void {
   ConfigHelper::installNewConfig($config_location, $config);
 
   // Update user permissions
+  updateUserRestPermissions();
+
+}
+
+function updateUserRestPermissions() {
+  // Update user permissions
   $config_factory = \Drupal::configFactory();
 
   foreach(['user.role.anonymous','user.role.authenticated'] as $config) {
@@ -276,5 +285,4 @@ function helfi_navigation_update_9003() : void {
     $raw_data['permissions'][] = 'restful get helfi_global_mobile_menu';
     $role->setData($raw_data)->save(TRUE);
   }
-
 }
