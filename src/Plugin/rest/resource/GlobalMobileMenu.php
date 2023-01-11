@@ -11,7 +11,6 @@ use Drupal\Core\Url;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
-use Drupal\rest\Annotation\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -27,8 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-final class GlobalMobileMenu extends ResourceBase
-{
+final class GlobalMobileMenu extends ResourceBase {
 
   /**
    * The global navigation service.
@@ -45,7 +43,7 @@ final class GlobalMobileMenu extends ResourceBase
   protected LanguageManagerInterface $languageManager;
 
   /**
-   * The Configfactory
+   * The Configfactory.
    *
    * @var Drupal\Core\Config\ConfigFactory
    */
@@ -87,9 +85,6 @@ final class GlobalMobileMenu extends ResourceBase
   /**
    * Callback for GET requests.
    *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The request.
-   *
    * @return \Drupal\rest\ResourceResponse
    *   The response.
    */
@@ -101,7 +96,7 @@ final class GlobalMobileMenu extends ResourceBase
     try {
       $apiResponse = $this->apiManager->get($langcode, 'main', []);
     }
-    catch(\Exception $exception) {
+    catch (\Exception $exception) {
       return new ResourceResponse([], 404);
     }
 
@@ -147,6 +142,7 @@ final class GlobalMobileMenu extends ResourceBase
    * Create menu tree from local main menu.
    *
    * @return array
+   *   Menu tree.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException

@@ -265,15 +265,13 @@ function helfi_navigation_update_9003() : void {
   $config = 'rest.resource.helfi_global_mobile_menu';
   ConfigHelper::installNewConfig($config_location, $config);
 
-  // Update user permissions
+  // Update user permissions.
   update_user_rest_permissions();
 
 }
 
 /**
  * Update user permissions.
- *
- * @return void
  */
 function update_user_rest_permissions() {
   $config_factory = \Drupal::configFactory();
