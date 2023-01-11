@@ -3,7 +3,6 @@ status: true
 dependencies:
   module:
     - serialization
-    - basic_auth
 id: helfi_global_mobile_menu
 plugin_id: helfi_global_mobile_menu
 granularity: resource
