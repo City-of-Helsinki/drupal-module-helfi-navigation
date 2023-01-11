@@ -1,0 +1,23 @@
+user.role.anonymous:
+  expected_config:
+    permissions: {  }
+  update_actions:
+    change:
+      permissions:
+        - 'access content'
+        - 'display eu cookie compliance popup'
+        - 'restful get helfi_global_mobile_menu'
+        - 'view media'
+        - 'view remote entities'
+user.role.authenticated:
+  expected_config:
+    permissions: {  }
+  update_actions:
+    change:
+      permissions:
+        - 'access content'
+        - 'access toolbar'
+        - 'display eu cookie compliance popup'
+        - 'restful get helfi_global_mobile_menu'
+        - 'view media'
+        - 'view remote entities'
