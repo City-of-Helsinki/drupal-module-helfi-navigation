@@ -7,3 +7,4 @@ dependencies:
   - drupal:helfi_api_base
   - drupal:menu_link_content
   - drupal:language
+  - drupal:rest

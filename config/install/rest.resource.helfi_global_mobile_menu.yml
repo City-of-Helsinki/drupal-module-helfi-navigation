@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+id: helfi_global_mobile_menu
+plugin_id: helfi_global_mobile_menu
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - cookie
