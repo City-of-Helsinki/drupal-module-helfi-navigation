@@ -257,7 +257,7 @@ function helfi_navigation_update_9003() : void {
     Drupal::service('module_installer')->install(['rest']);
   }
   if (!$module_handler->moduleExists('serialize')) {
-    Drupal::service('module_installer')->install(['serialize']);
+    Drupal::service('module_installer')->install(['serialization']);
   }
 
   // Install config
