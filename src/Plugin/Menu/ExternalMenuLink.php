@@ -15,8 +15,9 @@ final class ExternalMenuLink extends MenuLinkBase {
    * {@inheritdoc}
    */
   public function getDerivativeId() : ? string {
-    // Return NULL explicitly, so we don't unnecessarily process global
-    // navigation links in 'translatable_menu_link_uri_iterate_menu()'.
+    // External menu links share the plugin id with regular 'menu_link_content'
+    // links. Explicitly return NULL to skip the processing done in
+    // 'translatable_menu_link_uri_iterate_menu()' function.
     return NULL;
   }
 
