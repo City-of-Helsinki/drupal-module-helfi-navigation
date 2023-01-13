@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
 
@@ -164,18 +165,29 @@ function helfi_navigation_page_attachments(array &$attachments) {
 
   $localMobileMenuUri = 'api/v1/global-mobile-menu';
 
+  /** @var Project $project */
+  $project = $environmentResolver
+    ->getActiveProject();
+
   $activeEnvironmentName = $environmentResolver
     ->getActiveEnvironment()
     ->getEnvironmentName();
 
-  $baseUrl = $environmentResolver->getActiveProject()->getEnvironment($activeEnvironmentName)->getBaseUrl();
+  $projectName = $project->getEnvironment($activeEnvironmentName)->getId();
 
-  $mobileMenuUrl = sprintf('%s/%s/%s', $baseUrl, $langcode, $localMobileMenuUri);
+  $env = $environmentResolver
+    ->getEnvironment($projectName, $activeEnvironmentName);
+
+  $apiUrl = str_replace(
+    ['http:', ':8080'],
+    ['https:', ''],
+    sprintf('%s/%s', $env->getUrl($langcode), $localMobileMenuUri)
+  );
 
   try {
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
       'links' => [
-        'api' => $mobileMenuUrl,
+        'api' => $apiUrl,
         'canonical' => $apiManager->getUrl('canonical', $langcode),
       ],
     ];
