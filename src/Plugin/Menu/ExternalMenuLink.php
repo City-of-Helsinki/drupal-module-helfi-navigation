@@ -14,6 +14,15 @@ final class ExternalMenuLink extends MenuLinkBase {
   /**
    * {@inheritdoc}
    */
+  public function getDerivativeId() : ? string {
+    // Return NULL explicitly, so we don't unnecessarily process global
+    // navigation links in 'translatable_menu_link_uri_iterate_menu()'.
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getTitle() : string {
     return (string) $this->pluginDefinition['title'];
   }
