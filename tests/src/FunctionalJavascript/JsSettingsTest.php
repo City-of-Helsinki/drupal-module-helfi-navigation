@@ -56,8 +56,15 @@ class JsSettingsTest extends WebDriverTestBase {
     foreach (['en', 'fi', 'sv'] as $language) {
       $this->drupalGet('/' . $language);
 
+      $suffix = [
+        'fi' => 'asuminen',
+        'en' => 'housing',
+        'sv' => 'boende',
+      ];
+      $currentSuffix = $suffix[$language];
+
       $settings = $this->getDrupalSettings();
-      $this->assertEquals("https://helfi-asuminen.docker.so/$language/housing/api/v1/global-mobile-menu", $settings['helfi_navigation']['links']['api']);
+      $this->assertEquals("https://helfi-asuminen.docker.so/$language/$currentSuffix/api/v1/global-mobile-menu", $settings['helfi_navigation']['links']['api']);
       $this->assertEquals("https://helfi-etusivu.docker.so/$language", $settings['helfi_navigation']['links']['canonical']);
     }
   }
