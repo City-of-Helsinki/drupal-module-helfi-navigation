@@ -57,7 +57,7 @@ class JsSettingsTest extends WebDriverTestBase {
       $this->drupalGet('/' . $language);
 
       $settings = $this->getDrupalSettings();
-      $this->assertEquals("https://helfi-etusivu.docker.so/$language/api/v1/global-menu", $settings['helfi_navigation']['links']['api']);
+      $this->assertEquals("https://helfi-asuminen.docker.so/$language/housing/api/v1/global-mobile-menu", $settings['helfi_navigation']['links']['api']);
       $this->assertEquals("https://helfi-etusivu.docker.so/$language", $settings['helfi_navigation']['links']['canonical']);
     }
   }
