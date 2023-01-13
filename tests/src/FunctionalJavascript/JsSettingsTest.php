@@ -53,14 +53,15 @@ class JsSettingsTest extends WebDriverTestBase {
    * Tests drupalSettings.
    */
   public function testSettings() : void {
+    $suffix = [
+      'fi' => 'asuminen',
+      'en' => 'housing',
+      'sv' => 'boende',
+    ];
+
     foreach (['en', 'fi', 'sv'] as $language) {
       $this->drupalGet('/' . $language);
 
-      $suffix = [
-        'fi' => 'asuminen',
-        'en' => 'housing',
-        'sv' => 'boende',
-      ];
       $currentSuffix = $suffix[$language];
 
       $settings = $this->getDrupalSettings();
