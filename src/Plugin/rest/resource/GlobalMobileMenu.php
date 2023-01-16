@@ -7,10 +7,9 @@ namespace Drupal\helfi_navigation\Plugin\rest\resource;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Url;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_navigation\ApiManager;
-use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
+use Drupal\helfi_navigation\Menu\MainMenuBuilder;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -59,9 +58,9 @@ final class GlobalMobileMenu extends ResourceBase {
   /**
    * The Menutreebuilder.
    *
-   * @var Drupal\helfi_navigation\Menu\MenuTreeBuilder
+   * @var Drupal\helfi_navigation\Menu\MainMenuBuilder
    */
-  protected MenuTreeBuilder $localMenuTreeBuilder;
+  protected MainMenuBuilder $mainMenuBuilder;
 
   /**
    * {@inheritdoc}
@@ -77,7 +76,7 @@ final class GlobalMobileMenu extends ResourceBase {
     $instance->languageManager = $container->get('language_manager');
     $instance->apiManager = $container->get('helfi_navigation.api_manager');
     $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
-    $instance->localMenuTreeBuilder = $container->get('helfi_navigation.menu_tree_builder');
+    $instance->mainMenuBuilder = $container->get('helfi_navigation.main_menu_builder');
 
     return $instance;
   }
@@ -110,7 +109,7 @@ final class GlobalMobileMenu extends ResourceBase {
     $project_name = $environment->getId();
 
     // Create menu tree and add data to the local menu.
-    $menuTree = $this->getTreeFromMainMenu();
+    $menuTree = $this->mainMenuBuilder->buildLocalMenuTree();
     $menuTree['is_injected'] = TRUE;
 
     // Commented lines are present in the api request,
@@ -136,51 +135,6 @@ final class GlobalMobileMenu extends ResourceBase {
     $apiResponse->data->{$project_name} = $site_data;
 
     return new ResourceResponse(json_decode(json_encode($apiResponse->data), TRUE), 200);
-  }
-
-  /**
-   * Create menu tree from local main menu.
-   *
-   * @return array
-   *   Menu tree.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   */
-  protected function getTreeFromMainMenu(): array {
-    $menuId = 'main';
-    $langcode = $this->languageManager->getCurrentLanguage()->getId();
-    $instanceUri = Url::fromRoute('<front>', options: [
-      'language' => $this->languageManager->getLanguage($langcode),
-    ]);
-
-    $sitename = $this->languageManager
-      ->getLanguageConfigOverride($langcode, 'system.site')
-      ->get('name');
-
-    // Fallback to default translation if site name is not translated to
-    // given language.
-    if (!$sitename) {
-      $sitename = $this->configFactory->get('system.site')
-        ->getOriginal('name', FALSE);
-    }
-
-    if (!$sitename) {
-      throw new \InvalidArgumentException('Missing "system.site[name]" configuration.');
-    }
-
-    return $this->localMenuTreeBuilder->build(
-      $menuId,
-      $langcode,
-      (object) [
-        'id' => vsprintf(
-          'base:%s',
-          [preg_replace('/[^a-z0-9_]+/', '_', strtolower($sitename))]
-        ),
-        'name' => $sitename,
-        'url' => $instanceUri,
-      ]
-    );
   }
 
 }

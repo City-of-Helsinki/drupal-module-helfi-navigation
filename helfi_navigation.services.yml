@@ -22,7 +22,7 @@ services:
       - '@language_manager'
       - '@config.factory'
       - '@helfi_navigation.api_manager'
-      - '@helfi_navigation.menu_tree_builder'
+      - '@helfi_navigation.main_menu_builder'
   helfi_navigation.menu_tree_builder:
     class: Drupal\helfi_navigation\Menu\MenuTreeBuilder
     arguments:
@@ -46,3 +46,10 @@ services:
       - '@language_manager'
       - '@cache_tags.invalidator'
       - '@helfi_navigation.api_manager'
+  helfi_navigation.main_menu_builder:
+    class: Drupal\helfi_navigation\Menu\MainMenuBuilder
+    arguments:
+      - '@language_manager'
+      - '@config.factory'
+      - '@helfi_navigation.menu_tree_builder'
+

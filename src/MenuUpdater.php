@@ -5,8 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Url;
-use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
+use Drupal\helfi_navigation\Menu\MainMenuBuilder;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 
 /**
@@ -23,14 +22,14 @@ class MenuUpdater {
    *   The config factory.
    * @param \Drupal\helfi_navigation\ApiManager $apiManager
    *   The api manager.
-   * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
+   * @param \Drupal\helfi_navigation\Menu\MainMenuBuilder $mainMenuBuilder
    *   The menu builder.
    */
   public function __construct(
     private ConfigurableLanguageManagerInterface $languageManager,
-    private ConfigFactoryInterface $config,
-    private ApiManager $apiManager,
-    private MenuTreeBuilder $menuTreeBuilder,
+    private ConfigFactoryInterface               $config,
+    private ApiManager                           $apiManager,
+    private MainMenuBuilder                      $mainMenuBuilder,
   ) {
   }
 
@@ -49,36 +48,12 @@ class MenuUpdater {
       ->getLanguageConfigOverride($langcode, 'system.site')
       ->get('name');
 
-    // Fallback to default translation if site name is not translated to
-    // given language.
-    if (!$siteName) {
-      $siteName = $this->config->get('system.site')
-        ->getOriginal('name', FALSE);
-    }
-
-    if (!$siteName) {
-      throw new \InvalidArgumentException('Missing "system.site[name]" configuration.');
-    }
-    $instanceUri = Url::fromRoute('<front>', options: [
-      'language' => $this->languageManager->getLanguage($langcode),
-    ]);
-
-    $tree = $this
-      ->menuTreeBuilder
-      ->build('main', $langcode, (object) [
-        'id' => vsprintf('base:%s', [
-          preg_replace('/[^a-z0-9_]+/', '_', strtolower($siteName)),
-        ]),
-        'name' => $siteName,
-        'url' => $instanceUri,
-      ]);
-
     $response = $this->apiManager->update(
       $langcode,
       [
         'langcode' => $langcode,
         'site_name' => $siteName,
-        'menu_tree' => $tree,
+        'menu_tree' => $this->mainMenuBuilder->buildLocalMenuTree(),
       ]
     );
     if (!isset($response->data->status)) {
