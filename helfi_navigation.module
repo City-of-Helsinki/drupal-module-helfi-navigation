@@ -13,6 +13,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
+use Drupal\helfi_api_base\Environment\Project;
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
@@ -176,16 +177,10 @@ function helfi_navigation_page_attachments(array &$attachments) {
   $env = $environmentResolver
     ->getEnvironment($projectName, $activeEnvironmentName);
 
-  $apiUrl = str_replace(
-    ['http:', ':8080'],
-    ['https:', ''],
-    sprintf('%s/%s', $env->getUrl($langcode), $localMobileMenuUri)
-  );
-
   try {
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
       'links' => [
-        'api' => $apiUrl,
+        'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => '/api/v1/global-mobile-menu'], Project::REKRY),
         'canonical' => $apiManager->getUrl('canonical', $langcode),
       ],
     ];

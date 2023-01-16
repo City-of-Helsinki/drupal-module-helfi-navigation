@@ -230,17 +230,19 @@ class ApiManager {
    *   The langcode.
    * @param array $options
    *   The url options.
+   * @param string $project_id
+   *   Project id.
    *
    * @return string
    *   The URL.
    */
-  public function getUrl(string $type, string $langcode, array $options = []) : string {
+  public function getUrl(string $type, string $langcode, array $options = [], string $projectId = Project::ETUSIVU) : string {
     $activeEnvironmentName = $this->environmentResolver
       ->getActiveEnvironment()
       ->getEnvironmentName();
 
     $env = $this->environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName);
+      ->getEnvironment($projectId, $activeEnvironmentName);
 
     return match ($type) {
       'canonical' => $env->getUrl($langcode),
