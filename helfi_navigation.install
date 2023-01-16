@@ -273,7 +273,7 @@ function helfi_navigation_update_9003() : void {
 /**
  * Update user permissions.
  */
-function update_user_rest_permissions() {
+function update_user_rest_permissions(): void {
   $config_factory = \Drupal::configFactory();
 
   foreach (['user.role.anonymous', 'user.role.authenticated'] as $config) {
