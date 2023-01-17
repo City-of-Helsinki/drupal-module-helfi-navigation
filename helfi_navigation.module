@@ -160,14 +160,6 @@ function helfi_navigation_page_attachments(array &$attachments) {
 
   /** @var \Drupal\helfi_navigation\ApiManager $apiManager */
   $apiManager = Drupal::service('helfi_navigation.api_manager');
-  $environmentResolver = Drupal::service('helfi_api_base.environment_resolver');
-
-  $project = $environmentResolver
-    ->getActiveProject();
-
-  $activeEnvironmentName = $environmentResolver
-    ->getActiveEnvironment()
-    ->getEnvironmentName();
 
   try {
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
