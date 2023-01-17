@@ -101,7 +101,7 @@ final class GlobalMobileMenu extends ResourceBase {
 
     // If authorization key is set, just return the menu without enrichment.
     if ($this->apiManager->isAuthorized()) {
-      return new ResourceResponse(json_decode(json_encode($apiResponse->data), TRUE), 200);
+      return new ResourceResponse($this->normalizeResponseData($apiResponse->data), 200);
     }
 
     $environment = $this->environmentResolver->getActiveEnvironment();
@@ -134,7 +134,20 @@ final class GlobalMobileMenu extends ResourceBase {
     // Add local menu to the api response.
     $apiResponse->data->{$project_name} = $site_data;
 
-    return new ResourceResponse(json_decode(json_encode($apiResponse->data), TRUE), 200);
+    return new ResourceResponse($this->normalizeResponseData($apiResponse->data), 200);
+  }
+
+  /**
+   * Normalizes response data.
+   *
+   * @param array|object $data
+   *   Data to normalize.
+   *
+   * @return array
+   *   Normalized data array.
+   */
+  private function normalizeResponseData(array|object $data): array {
+    return json_decode(json_encode($data), TRUE);
   }
 
 }
