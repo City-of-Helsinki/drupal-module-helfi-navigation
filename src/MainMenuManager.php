@@ -23,6 +23,8 @@ class MainMenuManager {
    *   The config factory.
    * @param \Drupal\helfi_navigation\ApiManager $apiManager
    *   The api manager.
+   * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
+   *   The menu tree builder.
    */
   public function __construct(
     private ConfigurableLanguageManagerInterface $languageManager,
