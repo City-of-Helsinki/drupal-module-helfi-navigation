@@ -9,7 +9,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_navigation\ApiManager;
-use Drupal\helfi_navigation\Menu\MainMenuBuilder;
+use Drupal\helfi_navigation\MainMenuManager;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,32 +35,32 @@ final class GlobalMobileMenu extends ResourceBase {
   protected ApiManager $apiManager;
 
   /**
-   * The Languagemanager.
+   * The language manager service..
    *
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */
   protected LanguageManagerInterface $languageManager;
 
   /**
-   * The Configfactory.
+   * The config factory service.
    *
-   * @var Drupal\Core\Config\ConfigFactory
+   * @var \Drupal\Core\Config\ConfigFactory
    */
   protected ConfigFactory $configFactory;
 
   /**
-   * The environmentresolver.
+   * The environment resolver service.
    *
-   * @var Drupal\helfi_api_base\Environment\EnvironmentResolver
+   * @var \Drupal\helfi_api_base\Environment\EnvironmentResolver
    */
   protected EnvironmentResolver $environmentResolver;
 
   /**
-   * The Menutreebuilder.
+   * The menu manager service.
    *
-   * @var Drupal\helfi_navigation\Menu\MainMenuBuilder
+   * @var Drupal\helfi_navigation\MainMenuManager
    */
-  protected MainMenuBuilder $mainMenuBuilder;
+  protected MainMenuManager $menuManager;
 
   /**
    * {@inheritdoc}
@@ -76,7 +76,7 @@ final class GlobalMobileMenu extends ResourceBase {
     $instance->languageManager = $container->get('language_manager');
     $instance->apiManager = $container->get('helfi_navigation.api_manager');
     $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
-    $instance->mainMenuBuilder = $container->get('helfi_navigation.main_menu_builder');
+    $instance->menuManager = $container->get('helfi_navigation.menu_manager');
 
     return $instance;
   }
@@ -95,7 +95,7 @@ final class GlobalMobileMenu extends ResourceBase {
     try {
       $apiResponse = $this->apiManager->get($langcode, 'main', []);
     }
-    catch (\Exception $exception) {
+    catch (\Exception) {
       return new ResourceResponse([], 404);
     }
 
@@ -109,7 +109,7 @@ final class GlobalMobileMenu extends ResourceBase {
     $project_name = $environment->getId();
 
     // Create menu tree and add data to the local menu.
-    $menuTree = $this->mainMenuBuilder->build();
+    $menuTree = $this->menuManager->build();
     $menuTree['is_injected'] = TRUE;
 
     // Commented lines are present in the api request,

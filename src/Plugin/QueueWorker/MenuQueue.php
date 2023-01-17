@@ -6,7 +6,7 @@ namespace Drupal\helfi_navigation\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
-use Drupal\helfi_navigation\MenuUpdater;
+use Drupal\helfi_navigation\MainMenuManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,18 +21,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The menu updater service.
+   * The menu manager service.
    *
-   * @var \Drupal\helfi_navigation\MenuUpdater
+   * @var \Drupal\helfi_navigation\MainMenuManager
    */
-  private MenuUpdater $menuUpdater;
+  private MainMenuManager $menuManager;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
-    $instance->menuUpdater = $container->get('helfi_navigation.menu_updater');
+    $instance->menuManager = $container->get('helfi_navigation.menu_manager');
     return $instance;
   }
 
@@ -50,7 +50,7 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
       return;
     }
     try {
-      $this->menuUpdater->syncMenu($langcode);
+      $this->menuManager->sync($langcode);
     }
     catch (\Throwable) {
       // The failed sync will be logged by ApiManager.

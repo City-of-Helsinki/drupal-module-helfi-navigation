@@ -8,7 +8,7 @@ use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\ApiResponse;
-use Drupal\helfi_navigation\MenuUpdater;
+use Drupal\helfi_navigation\MainMenuManager;
 use Drupal\Tests\helfi_navigation\Traits\MenuLinkTrait;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -33,13 +33,13 @@ class MenuSyncTest extends KernelTestBase {
   }
 
   /**
-   * Gets the menu updater service.
+   * Gets the menu manager service.
    *
-   * @return \Drupal\helfi_navigation\MenuUpdater
-   *   The menu updater service.
+   * @return \Drupal\helfi_navigation\MainMenuManager
+   *   The menu manager service.
    */
-  private function getMenuUpdater() : MenuUpdater {
-    return $this->container->get('helfi_navigation.menu_updater');
+  private function getMenuManager() : MainMenuManager {
+    return $this->container->get('helfi_navigation.menu_manager');
   }
 
   /**
@@ -105,7 +105,7 @@ class MenuSyncTest extends KernelTestBase {
    */
   public function testSyncMenuMissingSiteName() : void {
     $this->expectException(\InvalidArgumentException::class);
-    $this->getMenuUpdater()->syncMenu('fi');
+    $this->getMenuManager()->sync('fi');
   }
 
   /**
@@ -114,7 +114,7 @@ class MenuSyncTest extends KernelTestBase {
   public function testSyncMenuMissingApiKey() : void {
     $this->config('system.site')->set('name', 'Site name')->save();
     $this->expectException(ConfigException::class);
-    $this->getMenuUpdater()->syncMenu('fi');
+    $this->getMenuManager()->sync('fi');
   }
 
   /**
@@ -145,7 +145,7 @@ class MenuSyncTest extends KernelTestBase {
       }));
     $this->container->set('helfi_navigation.api_manager', $apiManager);
 
-    $this->getMenuUpdater()->syncMenu($langcode);
+    $this->getMenuManager()->sync($langcode);
   }
 
   /**
@@ -175,7 +175,7 @@ class MenuSyncTest extends KernelTestBase {
 
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('Failed to parse entity published state.');
-    $this->getMenuUpdater()->syncMenu('fi');
+    $this->getMenuManager()->sync('fi');
   }
 
 }
