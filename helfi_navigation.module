@@ -169,15 +169,10 @@ function helfi_navigation_page_attachments(array &$attachments) {
     ->getActiveEnvironment()
     ->getEnvironmentName();
 
-  $projectName = $project->getEnvironment($activeEnvironmentName)->getId();
-
-  $env = $environmentResolver
-    ->getEnvironment($projectName, $activeEnvironmentName);
-
   try {
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
       'links' => [
-        'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => '/api/v1/global-mobile-menu'], $projectName),
+        'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => '/api/v1/global-mobile-menu']),
         'canonical' => $apiManager->getUrl('canonical', $langcode),
       ],
     ];
