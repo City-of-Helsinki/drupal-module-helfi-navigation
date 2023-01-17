@@ -27,9 +27,9 @@ class MenuUpdater {
    */
   public function __construct(
     private ConfigurableLanguageManagerInterface $languageManager,
-    private ConfigFactoryInterface               $config,
-    private ApiManager                           $apiManager,
-    private MainMenuBuilder                      $mainMenuBuilder,
+    private ConfigFactoryInterface $config,
+    private ApiManager $apiManager,
+    private MainMenuBuilder $mainMenuBuilder,
   ) {
   }
 

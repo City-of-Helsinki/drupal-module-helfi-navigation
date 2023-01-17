@@ -230,7 +230,7 @@ class ApiManager {
    *   The langcode.
    * @param array $options
    *   The url options.
-   * @param string $project_id
+   * @param string $projectId
    *   Project id.
    *
    * @return string
