@@ -12,6 +12,7 @@ use Drupal\language\ConfigurableLanguageManagerInterface;
  * Build main menu tree.
  */
 class MainMenuBuilder {
+  
   /**
    * Constructs a new instance.
    *
@@ -34,7 +35,7 @@ class MainMenuBuilder {
    *
    * @param string $menuId
    *   Menu id.
-   * @param $langcode
+   * @param string $langcode
    *   Language code.
    *
    * @return mixed
