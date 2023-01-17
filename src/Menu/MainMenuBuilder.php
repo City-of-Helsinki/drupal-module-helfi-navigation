@@ -12,7 +12,7 @@ use Drupal\language\ConfigurableLanguageManagerInterface;
  * Build main menu tree.
  */
 class MainMenuBuilder {
-  
+
   /**
    * Constructs a new instance.
    *
