@@ -236,17 +236,21 @@ class ApiManager {
    * @return string
    *   The URL.
    */
-  public function getUrl(string $type, string $langcode, array $options = [], string $projectId = Project::ETUSIVU) : string {
+  public function getUrl(string $type, string $langcode, array $options = []) : string {
     $activeEnvironmentName = $this->environmentResolver
       ->getActiveEnvironment()
       ->getEnvironmentName();
 
     $env = $this->environmentResolver
-      ->getEnvironment($projectId, $activeEnvironmentName);
+      ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName);
 
     return match ($type) {
       'canonical' => $env->getUrl($langcode),
-      'js' => sprintf('%s/%s', $env->getUrl($langcode), ltrim($options['endpoint'], '/')),
+      'js' => sprintf(
+        '%s/%s',
+        $this->environmentResolver->getActiveEnvironment()->getUrl($langcode),
+        ltrim($options['endpoint'], '/')
+      ),
       'api' => sprintf('%s/%s', $env->getInternalAddress($langcode), ltrim($options['endpoint'], '/')),
     };
   }
