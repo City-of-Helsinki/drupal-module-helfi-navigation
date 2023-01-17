@@ -134,7 +134,10 @@ final class GlobalMobileMenu extends ResourceBase {
     // Add local menu to the api response.
     $apiResponse->data->{$project_name} = $site_data;
 
-    return new ResourceResponse($this->normalizeResponseData($apiResponse->data), 200);
+    $response = new ResourceResponse($this->normalizeResponseData($apiResponse->data), 200);
+    $response->getCacheableMetadata()->addCacheTags(['config:system.menu.main']);
+
+    return $response;
   }
 
   /**
