@@ -53,7 +53,7 @@ class MenuUpdater {
       [
         'langcode' => $langcode,
         'site_name' => $siteName,
-        'menu_tree' => $this->mainMenuBuilder->buildLocalMenuTree(),
+        'menu_tree' => $this->mainMenuBuilder->build(),
       ]
     );
     if (!isset($response->data->status)) {

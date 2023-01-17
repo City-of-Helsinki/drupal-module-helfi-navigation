@@ -41,7 +41,7 @@ class MainMenuBuilder {
    * @return mixed
    *   Menu tree.
    */
-  public function buildLocalMenuTree(string $menuId = 'main', string $langcode = NULL): array {
+  public function build(string $menuId = 'main', string $langcode = NULL): array {
     $langcode = $langcode ?: $this->languageManager->getCurrentLanguage()->getId();
     $instanceUri = Url::fromRoute('<front>', options: [
       'language' => $this->languageManager->getLanguage($langcode),
