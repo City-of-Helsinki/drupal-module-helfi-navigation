@@ -180,7 +180,7 @@ function helfi_navigation_page_attachments(array &$attachments) {
   try {
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
       'links' => [
-        'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => '/api/v1/global-mobile-menu'], Project::REKRY),
+        'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => '/api/v1/global-mobile-menu'], $projectName),
         'canonical' => $apiManager->getUrl('canonical', $langcode),
       ],
     ];
