@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_navigation\ApiManager;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
 
@@ -158,13 +157,14 @@ function helfi_navigation_page_attachments(array &$attachments) {
   $langcode = Drupal::languageManager()
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
     ->getId();
+
   /** @var \Drupal\helfi_navigation\ApiManager $apiManager */
   $apiManager = Drupal::service('helfi_navigation.api_manager');
 
   try {
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
       'links' => [
-        'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => ApiManager::GLOBAL_MENU_ENDPOINT]),
+        'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => '/api/v1/global-mobile-menu']),
         'canonical' => $apiManager->getUrl('canonical', $langcode),
       ],
     ];

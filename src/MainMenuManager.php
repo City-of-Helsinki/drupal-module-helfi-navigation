@@ -10,9 +10,9 @@ use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 
 /**
- * Synchronizes global menu.
+ * Menu manager service.
  */
-class MenuUpdater {
+class MainMenuManager {
 
   /**
    * Constructs a new instance.
@@ -24,7 +24,7 @@ class MenuUpdater {
    * @param \Drupal\helfi_navigation\ApiManager $apiManager
    *   The api manager.
    * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
-   *   The menu builder.
+   *   The menu tree builder.
    */
   public function __construct(
     private ConfigurableLanguageManagerInterface $languageManager,
@@ -44,7 +44,31 @@ class MenuUpdater {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function syncMenu(string $langcode): bool {
+  public function sync(string $langcode): bool {
+    $response = $this->apiManager->update(
+      $langcode,
+      [
+        'langcode' => $langcode,
+        'site_name' => $this->getSiteName($langcode),
+        'menu_tree' => $this->build(),
+      ]
+    );
+    if (!isset($response->data->status)) {
+      throw new \InvalidArgumentException('Failed to parse entity published state.');
+    }
+    return reset($response->data->status)->value;
+  }
+
+  /**
+   * Gets the site name.
+   *
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return string
+   *   The site name.
+   */
+  public function getSiteName(string $langcode) : string {
     $siteName = $this->languageManager
       ->getLanguageConfigOverride($langcode, 'system.site')
       ->get('name');
@@ -59,32 +83,38 @@ class MenuUpdater {
     if (!$siteName) {
       throw new \InvalidArgumentException('Missing "system.site[name]" configuration.');
     }
+    return $siteName;
+  }
+
+  /**
+   * Build local main menu tree.
+   *
+   * @param string $langcode
+   *   Language code.
+   *
+   * @return mixed
+   *   Menu tree.
+   */
+  public function build(string $langcode = NULL): array {
+    $langcode = $langcode ?: $this->languageManager->getCurrentLanguage()->getId();
+    $siteName = $this->getSiteName($langcode);
+
     $instanceUri = Url::fromRoute('<front>', options: [
       'language' => $this->languageManager->getLanguage($langcode),
     ]);
 
-    $tree = $this
-      ->menuTreeBuilder
-      ->build('main', $langcode, (object) [
-        'id' => vsprintf('base:%s', [
-          preg_replace('/[^a-z0-9_]+/', '_', strtolower($siteName)),
-        ]),
+    return $this->menuTreeBuilder->build(
+      'main',
+      $langcode,
+      (object) [
+        'id' => vsprintf(
+          'base:%s',
+          [preg_replace('/[^a-z0-9_]+/', '_', strtolower($siteName))]
+        ),
         'name' => $siteName,
         'url' => $instanceUri,
-      ]);
-
-    $response = $this->apiManager->update(
-      $langcode,
-      [
-        'langcode' => $langcode,
-        'site_name' => $siteName,
-        'menu_tree' => $tree,
       ]
     );
-    if (!isset($response->data->status)) {
-      throw new \InvalidArgumentException('Failed to parse entity published state.');
-    }
-    return reset($response->data->status)->value;
   }
 
 }

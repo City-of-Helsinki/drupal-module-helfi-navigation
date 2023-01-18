@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Drupal\block\Entity\Block;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_platform_config\ConfigHelper;
 
 /**
  * Implements hook_install().
@@ -53,6 +54,9 @@ function helfi_navigation_install($is_syncing) : void {
   foreach ($block_storage->loadMultiple($delete) as $block) {
     $block->delete();
   }
+
+  update_user_rest_permissions();
+
 }
 
 /**
@@ -239,5 +243,45 @@ function helfi_navigation_update_9002() : void {
       $block_data['settings']['expand_all_items'] = TRUE;
       $block->setData($block_data)->save(TRUE);
     }
+  }
+}
+
+/**
+ * Update to enable rest module.
+ */
+function helfi_navigation_update_9003() : void {
+  $module_handler = \Drupal::service('module_handler');
+
+  // Enable modules if necessary.
+  if (!$module_handler->moduleExists('rest')) {
+    Drupal::service('module_installer')->install(['rest']);
+  }
+  if (!$module_handler->moduleExists('serialize')) {
+    Drupal::service('module_installer')->install(['serialization']);
+  }
+
+  // Install config.
+  $config_location = dirname(__FILE__) . '/config/install/';
+  $config = 'rest.resource.helfi_global_mobile_menu';
+  ConfigHelper::installNewConfig($config_location, $config);
+
+  // Update user permissions.
+  update_user_rest_permissions();
+
+}
+
+/**
+ * Update user permissions.
+ */
+function update_user_rest_permissions(): void {
+  $config_factory = \Drupal::configFactory();
+
+  foreach (['user.role.anonymous', 'user.role.authenticated'] as $config) {
+    $role = $config_factory->getEditable($config);
+    $raw_data = $role->getRawData();
+    $raw_data['dependencies']['config'][] = 'rest.resource.helfi_global_mobile_menu';
+    $raw_data['dependencies']['module'][] = 'rest';
+    $raw_data['permissions'][] = 'restful get helfi_global_mobile_menu';
+    $role->setData($raw_data)->save(TRUE);
   }
 }

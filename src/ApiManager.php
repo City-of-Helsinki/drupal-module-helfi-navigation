@@ -244,9 +244,23 @@ class ApiManager {
 
     return match ($type) {
       'canonical' => $env->getUrl($langcode),
-      'js' => sprintf('%s/%s', $env->getUrl($langcode), ltrim($options['endpoint'], '/')),
+      'js' => sprintf(
+        '%s/%s',
+        $this->environmentResolver->getActiveEnvironment()->getUrl($langcode),
+        ltrim($options['endpoint'], '/')
+      ),
       'api' => sprintf('%s/%s', $env->getInternalAddress($langcode), ltrim($options['endpoint'], '/')),
     };
+  }
+
+  /**
+   * Is the system authorized to use the secured api endpoints.
+   *
+   * @return bool
+   *   Is the system authorized to use secured endpoints.
+   */
+  public function isAuthorized(): bool {
+    return (bool) $this->authorization;
   }
 
   /**

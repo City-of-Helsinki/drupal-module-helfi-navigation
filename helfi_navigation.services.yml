@@ -16,8 +16,8 @@ services:
       - '@helfi_api_base.environment_resolver'
       - '@logger.channel.helfi_navigation'
       - '@config.factory'
-  helfi_navigation.menu_updater:
-    class: Drupal\helfi_navigation\MenuUpdater
+  helfi_navigation.menu_manager:
+    class: Drupal\helfi_navigation\MainMenuManager
     arguments:
       - '@language_manager'
       - '@config.factory'
