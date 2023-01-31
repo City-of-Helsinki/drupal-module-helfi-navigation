@@ -10,7 +10,7 @@ declare(strict_types = 1);
 use Drupal\block\Entity\Block;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_platform_config\ConfigHelper;
+use Drupal\rest\Entity\RestResourceConfig;
 
 /**
  * Implements hook_install().
@@ -256,14 +256,23 @@ function helfi_navigation_update_9003() : void {
   if (!$module_handler->moduleExists('rest')) {
     Drupal::service('module_installer')->install(['rest']);
   }
-  if (!$module_handler->moduleExists('serialize')) {
+  if (!$module_handler->moduleExists('serialization')) {
     Drupal::service('module_installer')->install(['serialization']);
   }
 
-  // Install config.
-  $config_location = dirname(__FILE__) . '/config/install/';
-  $config = 'rest.resource.helfi_global_mobile_menu';
-  ConfigHelper::installNewConfig($config_location, $config);
+  if (!RestResourceConfig::load('helfi_global_mobile_menu')) {
+    RestResourceConfig::create([
+      'id' => 'helfi_global_mobile_menu',
+      'status' => TRUE,
+      'plugin_id' => 'helfi_global_mobile_menu',
+      'granularity' => 'resource',
+      'configuration' => [
+        'methods' => ['GET'],
+        'formats' => ['json'],
+        'authentication' => ['cookie'],
+      ],
+    ])->save();
+  }
 
   // Update user permissions.
   update_user_rest_permissions();
