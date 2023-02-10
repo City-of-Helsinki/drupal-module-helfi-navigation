@@ -156,8 +156,6 @@ class ApiManager {
     array $options = []
   ) : ApiResponse {
 
-    $options['curl'] = [CURLOPT_TCP_KEEPALIVE => TRUE];
-
     $endpoint = match ($menuId) {
       'main' => static::GLOBAL_MENU_ENDPOINT,
       default => sprintf('%s/%s', static::MENU_ENDPOINT, $menuId),
@@ -197,16 +195,22 @@ class ApiManager {
     ]);
   }
 
+
   /**
    * Gets the default request options.
    *
+   * @param string $environmentName
+   *   Environment name.
+   * @param string $method
+   *   Request method.
    * @return array
    *   The request options.
    */
-  private function getDefaultRequestOptions(string $environmentName) : array {
+  public function getDefaultRequestOptions(string $environmentName, string $method) : array {
     $options = ['timeout' => 15];
+    $options['curl'] = [CURLOPT_TCP_KEEPALIVE => TRUE];
 
-    if ($this->authorization !== NULL) {
+    if ($this->authorization !== NULL && $method !== 'GET') {
       $options['headers']['Authorization'] = sprintf('Basic %s', $this->authorization);
     }
 
@@ -294,7 +298,7 @@ class ApiManager {
 
     $url = $this->getUrl('api', $langcode, ['endpoint' => $endpoint]);
 
-    $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName));
+    $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName, $method));
 
     try {
       if ($this->previousException instanceof \Exception) {
@@ -303,6 +307,14 @@ class ApiManager {
         // Etusivu instance is not reachable.
         throw $this->previousException;
       }
+
+      // Removing authorization form GET requests allows requests to be cached.
+      if ($method === 'GET'
+        && array_key_exists('headers', $options)
+        && array_key_exists('Authorization', $options['headers'])) {
+        unset($options['headers']['Authorization']);
+      }
+
       $response = $this->httpClient->request($method, $url, $options);
 
       return new ApiResponse(\GuzzleHttp\json_decode($response->getBody()->getContents()));
