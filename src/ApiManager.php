@@ -156,6 +156,8 @@ class ApiManager {
     array $options = []
   ) : ApiResponse {
 
+    $options['curl'] = [CURLOPT_TCP_KEEPALIVE => TRUE];
+
     $endpoint = match ($menuId) {
       'main' => static::GLOBAL_MENU_ENDPOINT,
       default => sprintf('%s/%s', static::MENU_ENDPOINT, $menuId),
@@ -203,7 +205,6 @@ class ApiManager {
    */
   private function getDefaultRequestOptions(string $environmentName) : array {
     $options = ['timeout' => 15];
-    $options['curl'] = [CURLOPT_TCP_KEEPALIVE => TRUE];
 
     if ($this->authorization !== NULL) {
       $options['headers']['Authorization'] = sprintf('Basic %s', $this->authorization);
