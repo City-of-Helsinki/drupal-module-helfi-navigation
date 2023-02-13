@@ -189,10 +189,13 @@ class ApiManager {
     if (!$this->authorization) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
+
     $endpoint = sprintf('%s/%s', static::GLOBAL_MENU_ENDPOINT, $this->environmentResolver->getActiveEnvironment()->getId());
     return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
-    ]);
+      'headers' => ['Authorization' => sprintf('Basic %s', $this->authorization)],
+    ],
+    );
   }
 
   /**
@@ -202,17 +205,13 @@ class ApiManager {
    *   Environment name.
    * @param string $method
    *   Request method.
-   * 
+   *
    * @return array
    *   The request options.
    */
-  private function getDefaultRequestOptions(string $environmentName, string $method) : array {
+  private function getDefaultRequestOptions(string $environmentName) : array {
     $options = ['timeout' => 15];
     $options['curl'] = [CURLOPT_TCP_KEEPALIVE => TRUE];
-
-    if ($this->authorization !== NULL && $method !== 'GET') {
-      $options['headers']['Authorization'] = sprintf('Basic %s', $this->authorization);
-    }
 
     if (drupal_valid_test_ua()) {
       // Speed up mock tests by using very low request timeout value when
@@ -298,7 +297,7 @@ class ApiManager {
 
     $url = $this->getUrl('api', $langcode, ['endpoint' => $endpoint]);
 
-    $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName, $method));
+    $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName));
 
     try {
       if ($this->previousException instanceof \Exception) {
