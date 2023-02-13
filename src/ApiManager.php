@@ -195,7 +195,6 @@ class ApiManager {
     ]);
   }
 
-
   /**
    * Gets the default request options.
    *
@@ -203,6 +202,7 @@ class ApiManager {
    *   Environment name.
    * @param string $method
    *   Request method.
+   * 
    * @return array
    *   The request options.
    */
@@ -306,13 +306,6 @@ class ApiManager {
         // don't block the rendering process and cause the site to time-out when
         // Etusivu instance is not reachable.
         throw $this->previousException;
-      }
-
-      // Removing authorization form GET requests allows requests to be cached.
-      if ($method === 'GET'
-        && array_key_exists('headers', $options)
-        && array_key_exists('Authorization', $options['headers'])) {
-        unset($options['headers']['Authorization']);
       }
 
       $response = $this->httpClient->request($method, $url, $options);
