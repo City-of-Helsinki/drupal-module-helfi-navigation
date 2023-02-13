@@ -206,7 +206,7 @@ class ApiManager {
    * @return array
    *   The request options.
    */
-  public function getDefaultRequestOptions(string $environmentName, string $method) : array {
+  private function getDefaultRequestOptions(string $environmentName, string $method) : array {
     $options = ['timeout' => 15];
     $options['curl'] = [CURLOPT_TCP_KEEPALIVE => TRUE];
 
@@ -307,7 +307,6 @@ class ApiManager {
         // Etusivu instance is not reachable.
         throw $this->previousException;
       }
-
       $response = $this->httpClient->request($method, $url, $options);
 
       return new ApiResponse(\GuzzleHttp\json_decode($response->getBody()->getContents()));
