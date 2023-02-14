@@ -203,8 +203,6 @@ class ApiManager {
    *
    * @param string $environmentName
    *   Environment name.
-   * @param string $method
-   *   Request method.
    *
    * @return array
    *   The request options.
