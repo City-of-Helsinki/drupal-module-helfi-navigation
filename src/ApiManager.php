@@ -189,24 +189,26 @@ class ApiManager {
     if (!$this->authorization) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
+
     $endpoint = sprintf('%s/%s', static::GLOBAL_MENU_ENDPOINT, $this->environmentResolver->getActiveEnvironment()->getId());
     return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
+      'headers' => ['Authorization' => sprintf('Basic %s', $this->authorization)],
     ]);
   }
 
   /**
    * Gets the default request options.
    *
+   * @param string $environmentName
+   *   Environment name.
+   *
    * @return array
    *   The request options.
    */
   private function getDefaultRequestOptions(string $environmentName) : array {
     $options = ['timeout' => 15];
-
-    if ($this->authorization !== NULL) {
-      $options['headers']['Authorization'] = sprintf('Basic %s', $this->authorization);
-    }
+    $options['curl'] = [CURLOPT_TCP_KEEPALIVE => TRUE];
 
     if (drupal_valid_test_ua()) {
       // Speed up mock tests by using very low request timeout value when
