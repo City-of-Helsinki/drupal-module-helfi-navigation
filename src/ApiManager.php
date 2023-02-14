@@ -194,8 +194,7 @@ class ApiManager {
     return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
       'headers' => ['Authorization' => sprintf('Basic %s', $this->authorization)],
-    ],
-    );
+    ]);
   }
 
   /**
