@@ -50,7 +50,7 @@ class MainMenuManager {
       [
         'langcode' => $langcode,
         'site_name' => $this->getSiteName($langcode),
-        'menu_tree' => $this->build(),
+        'menu_tree' => $this->build($langcode),
       ]
     );
     if (!isset($response->data->status)) {
