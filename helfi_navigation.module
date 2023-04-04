@@ -9,8 +9,10 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
 
@@ -153,7 +155,7 @@ function helfi_navigation_cron() : void {
 /**
  * Implements hook_page_attachments().
  */
-function helfi_navigation_page_attachments(array &$attachments) {
+function helfi_navigation_page_attachments(array &$attachments) : void {
   $langcode = Drupal::languageManager()
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
     ->getId();
@@ -170,5 +172,53 @@ function helfi_navigation_page_attachments(array &$attachments) {
     ];
   }
   catch (\Exception) {
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for \Drupal\node\NodeForm.
+ */
+function helfi_navigation_form_node_form_alter(
+  array &$form,
+  FormStateInterface $form_state
+) :void {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $form_state->getFormObject()->getEntity();
+  $defaults = menu_ui_get_menu_link_defaults($node);
+
+  if ($defaults['entity_id']) {
+    $link = MenuLinkContent::load($defaults['entity_id']);
+
+    if ($link->hasTranslation($node->language()->getId())) {
+      $link = $link->getTranslation($node->language()->getId());
+    }
+    $defaults['content_translation_status'] = $link->get('content_translation_status')->value;
+  }
+
+  // Show menu link's 'published' field on node edit form.
+  $form['menu']['content_translation_status'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Published'),
+    '#description' => t('A flag indicating whether this menu link translation is published'),
+    '#default_value' => $defaults['content_translation_status'],
+  ];
+  $form['actions']['submit']['#submit'][] = 'helfi_navigation_form_node_form_submit';
+}
+
+/**
+ * A form submit callback for helfi_navigation_form_node_form_alter().
+ */
+function helfi_navigation_form_node_form_submit(array $form, FormStateInterface $formState) : void {
+  $values = $formState->getValue('menu');
+  $node = $formState->getFormObject()->getEntity();
+
+  if (!empty($values['entity_id'])) {
+    $link = MenuLinkContent::load($values['entity_id']);
+
+    if ($link->hasTranslation($node->language()->getId())) {
+      $link = $link->getTranslation($node->language()->getId());
+    }
+    $link->set('content_translation_status', $values['content_translation_status'])
+      ->save();
   }
 }

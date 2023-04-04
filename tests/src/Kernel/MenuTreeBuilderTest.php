@@ -89,7 +89,7 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     $tree = $this->getMenuTree('en');
     $this->assertTree($tree['sub_tree'], TRUE);
 
-    // Translate one subtree item to make sure it's not visible in
+    // Translate a subtree item to make sure it's not visible in
     // finnish, because the parent is not translated.
     $linkEntities['0d8a1366-4fcd-4dbc-bb75-854dedf28a1b']->addTranslation('fi')
       ->save();
@@ -119,6 +119,14 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     $this->assertEquals('fi-SV', $tree['sub_tree'][1]->attributes->lang);
     $tree = $this->getMenuTree('en');
     $this->assertEquals('en-US', $tree['sub_tree'][1]->attributes->lang);
+
+    // Unpublish a translated link and make sure it's not visible anymore.
+    $linkEntities['64a5a6d1-ffce-481b-b321-260d9cf66ad9']
+      ->getTranslation('fi')
+      ->set('content_translation_status', FALSE)
+      ->save();
+    $tree = $this->getMenuTree('fi');
+    $this->assertCount(1, $tree['sub_tree']);
   }
 
 }

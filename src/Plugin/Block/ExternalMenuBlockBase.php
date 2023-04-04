@@ -64,7 +64,6 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
    */
   public function getCacheContexts() : array {
     return [
-      'url.query_args',
       'url.path',
       'languages:language_content',
     ];

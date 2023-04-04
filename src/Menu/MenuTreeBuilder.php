@@ -139,8 +139,8 @@ final class MenuTreeBuilder {
 
       // Only show accessible links (and published).
       if (
-        ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) ||
-        !$link->isPublished()
+        !$link->get('content_translation_status')->value ||
+        ($element->access instanceof AccessResultInterface && !$element->access->isAllowed())
       ) {
         continue;
       }
