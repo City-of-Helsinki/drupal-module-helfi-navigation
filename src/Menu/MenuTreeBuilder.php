@@ -137,10 +137,11 @@ final class MenuTreeBuilder {
       /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
       $link = $link->getTranslation($langcode);
 
+      $translationPublished = (bool) $link->get('content_translation_status')->value;
       // Only show accessible links (and published).
       if (
-        ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) ||
-        !$link->isPublished()
+        !$translationPublished ||
+        ($element->access instanceof AccessResultInterface && !$element->access->isAllowed())
       ) {
         continue;
       }
