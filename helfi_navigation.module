@@ -199,6 +199,7 @@ function helfi_navigation_form_node_form_alter(
   $form['menu']['content_translation_status'] = [
     '#type' => 'checkbox',
     '#title' => t('Published'),
+    '#description' => t('A flag indicating whether this menu link translation is published'),
     '#default_value' => $defaults['content_translation_status'],
   ];
   $form['actions']['submit']['#submit'][] = 'helfi_navigation_form_node_form_submit';
