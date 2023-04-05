@@ -97,7 +97,7 @@ class MainMenuManager {
    *   Menu tree.
    */
   public function build(string $langcode = NULL): array {
-    $langcode = $langcode ?: $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+    $langcode = $langcode ?: $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId();
     $siteName = $this->getSiteName($langcode);
 
     $instanceUri = Url::fromRoute('<front>', options: [
