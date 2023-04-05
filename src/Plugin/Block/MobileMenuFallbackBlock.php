@@ -177,7 +177,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       // the front page or first level of the menu tree.
       // Create back and current/parent links accordingly.
       $url = $this->apiManager->getUrl('canonical',
-        $this->languageManager->getCurrentLanguage()->getId()
+        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId()
       );
 
       $menu_link_back = [
