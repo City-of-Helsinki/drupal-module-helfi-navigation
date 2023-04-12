@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\language\ConfigurableLanguageManagerInterface;
@@ -96,7 +97,7 @@ class MainMenuManager {
    *   Menu tree.
    */
   public function build(string $langcode = NULL): array {
-    $langcode = $langcode ?: $this->languageManager->getCurrentLanguage()->getId();
+    $langcode = $langcode ?: $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId();
     $siteName = $this->getSiteName($langcode);
 
     $instanceUri = Url::fromRoute('<front>', options: [

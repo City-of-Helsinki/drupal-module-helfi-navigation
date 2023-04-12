@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation\Plugin\Block;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Template\Attribute;
@@ -176,8 +177,9 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       // If the current menu link is not available, we're most likely browsing
       // the front page or first level of the menu tree.
       // Create back and current/parent links accordingly.
-      $url = $this->apiManager->getUrl('canonical',
-        $this->languageManager->getCurrentLanguage()->getId()
+      $url = $this->apiManager->getUrl(
+        'canonical',
+        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId()
       );
 
       $menu_link_back = [
