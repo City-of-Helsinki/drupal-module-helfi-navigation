@@ -34,3 +34,20 @@ A block extending `ExternalMenuBlock`-class handles:
 A menu block extending `ExternalMenuBlock`-class can also handle all other supported menus.
 Only main-navigation has syncing option. Other navigations are created in Etusivu-instance.
 
+## Local development
+
+- Setup local Etusivu-instance.
+  - run `drush upwd helfi-admin 123` to update admin password. it is used as api key in other instances.
+- Setup any other instance with helfi_navigation module enabled.
+  - Add following line to local.settings.php. Otherwise syncing global navigation won't work
+    - `$config['helfi_navigation.api']['key'] = base64_encode('helfi-admin:123');`
+
+### Steps after both instances are up and running.
+1. Edit and save menu on any instance with helfi_navigation module enabled.
+   - When adding new items, make sure both the menu link and the node are enabled. disabled content won't be synced.
+2. Run `drush cron`.
+   - After that you can run `docker compose logs app` to see possible exceptions or if menu sync cron succeeded.
+3. Go to Etusivu and run drush cr. The navigations should have been updated
+    based on the changes you made
+4. Instances should fetch the menus from Etusivu and update the related blocks after `drush cr` and page refresh.
+
