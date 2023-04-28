@@ -93,10 +93,17 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
 
     $menuTree = NULL;
 
+    // Currently only Finnish, English and Swedish have standard support.
+    // Other languages should default to English external menus for now.
+    $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+    if (!in_array($langcode, ['fi', 'en', 'sv'])) {
+      $langcode = 'en';
+    }
+
     try {
       $menuId = $this->getDerivativeId();
       $response = $this->apiManager->get(
-        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
+        $langcode,
         $menuId,
       );
       $menuTree = $this->menuTreeBuilder
