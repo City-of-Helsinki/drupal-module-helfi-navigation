@@ -188,7 +188,9 @@ function helfi_navigation_form_node_form_alter(
     'content_translation_status' => FALSE,
   ];
 
-  if ($defaults['entity_id'] && $link = MenuLinkContent::load($defaults['entity_id'])) {
+  if ($defaults['entity_id']) {
+    $link = MenuLinkContent::load($defaults['entity_id']);
+
     if ($link->hasTranslation($node->language()->getId())) {
       $link = $link->getTranslation($node->language()->getId());
     }
