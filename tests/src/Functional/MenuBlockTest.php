@@ -48,8 +48,12 @@ class MenuBlockTest extends BrowserTestBase {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
     }
     $this->config('language.negotiation')
-      ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv', 'es' => 'es'])
-      ->save();
+      ->set('url.prefixes', [
+        'en' => 'en',
+        'fi' => 'fi',
+        'sv' => 'sv',
+        'es' => 'es',
+      ])->save();
 
     NodeType::create([
       'type' => 'page',
