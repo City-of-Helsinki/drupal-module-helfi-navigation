@@ -184,7 +184,9 @@ function helfi_navigation_form_node_form_alter(
 ) :void {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $form_state->getFormObject()->getEntity();
-  $defaults = menu_ui_get_menu_link_defaults($node);
+  $defaults = menu_ui_get_menu_link_defaults($node) + [
+    'content_translation_status' => FALSE,
+  ];
 
   if ($defaults['entity_id']) {
     $link = MenuLinkContent::load($defaults['entity_id']);
