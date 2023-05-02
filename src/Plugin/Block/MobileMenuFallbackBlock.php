@@ -177,9 +177,16 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       // If the current menu link is not available, we're most likely browsing
       // the front page or first level of the menu tree.
       // Create back and current/parent links accordingly.
+      // Currently only Finnish, English and Swedish have standard support.
+      // Other languages should default to English external menus for now.
+      $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+      if (!in_array($langcode, ['fi', 'en', 'sv'])) {
+        $langcode = 'en';
+      }
+
       $url = $this->apiManager->getUrl(
         'canonical',
-        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId()
+        $langcode,
       );
 
       $menu_link_back = [
