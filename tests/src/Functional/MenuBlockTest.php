@@ -44,7 +44,7 @@ class MenuBlockTest extends BrowserTestBase {
   public function setUp() : void {
     parent::setUp();
 
-    foreach (['fi', 'sv'] as $langcode) {
+    foreach (['fi', 'sv', 'es'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
     }
     $this->config('language.negotiation')
