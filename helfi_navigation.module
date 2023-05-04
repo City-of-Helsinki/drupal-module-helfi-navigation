@@ -160,11 +160,11 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
     ->getId();
 
-  // Currently only Finnish, English and Swedish have standard support.
-  // Other languages should default to English external menus for now.
-  if (!in_array($langcode, ['fi', 'en', 'sv'])) {
-    $langcode = 'en';
-  }
+  /** @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver $defaultLanguageResolver */
+  $defaultLanguageResolver = Drupal::service('helfi_api_base.default_language_resolver');
+
+  // Languages without standard support should use fallback language in menu.
+  $langcode = $defaultLanguageResolver->getCurrentOrFallbackLanguage();
 
   /** @var \Drupal\helfi_navigation\ApiManager $apiManager */
   $apiManager = Drupal::service('helfi_navigation.api_manager');

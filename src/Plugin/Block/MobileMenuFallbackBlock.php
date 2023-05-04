@@ -7,12 +7,12 @@ namespace Drupal\helfi_navigation\Plugin\Block;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\helfi_navigation\ApiManager;
+use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,6 +74,13 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
   protected ApiManager $apiManager;
 
   /**
+   * Default language resolver.
+   *
+   * @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver
+   */
+  protected DefaultLanguageResolver $defaultLanguageResolver;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -89,6 +96,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $instance->pathMatcher = $container->get('path.matcher');
     $instance->languageManager = $container->get('language_manager');
     $instance->apiManager = $container->get('helfi_navigation.api_manager');
+    $instance->defaultLanguageResolver = $container->get('helfi_api_base.default_language_resolver');
     return $instance;
   }
 
@@ -177,12 +185,8 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       // If the current menu link is not available, we're most likely browsing
       // the front page or first level of the menu tree.
       // Create back and current/parent links accordingly.
-      // Currently only Finnish, English and Swedish have standard support.
-      // Other languages should default to English external menus for now.
-      $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
-      if (!in_array($langcode, ['fi', 'en', 'sv'])) {
-        $langcode = 'en';
-      }
+      // Languages without standard support should use fallback language in menu.
+      $langcode = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage();
 
       $url = $this->apiManager->getUrl(
         'canonical',
