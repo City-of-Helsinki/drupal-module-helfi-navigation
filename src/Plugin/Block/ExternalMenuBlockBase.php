@@ -13,7 +13,6 @@ use Drupal\helfi_navigation\ApiResponse;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
 /**
  * Base class for creating external menu blocks.
  */

@@ -185,7 +185,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       // If the current menu link is not available, we're most likely browsing
       // the front page or first level of the menu tree.
       // Create back and current/parent links accordingly.
-      // Languages without standard support should use fallback language in menu.
+      // Non-primary languages should use fallback language in menu.
       $langcode = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage();
 
       $url = $this->apiManager->getUrl(
