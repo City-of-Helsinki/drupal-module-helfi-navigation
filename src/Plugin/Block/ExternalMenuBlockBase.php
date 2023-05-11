@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
 use Drupal\helfi_navigation\ExternalMenuTreeBuilder;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\ApiResponse;
+use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -40,6 +40,13 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   protected LanguageManagerInterface $languageManager;
 
   /**
+   * Default language resolver.
+   *
+   * @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver
+   */
+  protected DefaultLanguageResolver $defaultLanguageResolver;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : static {
@@ -47,6 +54,7 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
     $instance->apiManager = $container->get('helfi_navigation.api_manager');
     $instance->menuTreeBuilder = $container->get('helfi_navigation.external_menu_tree_builder');
     $instance->languageManager = $container->get('language_manager');
+    $instance->defaultLanguageResolver = $container->get('helfi_api_base.default_language_resolver');
     return $instance;
   }
 
@@ -93,10 +101,13 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
 
     $menuTree = NULL;
 
+    // Languages without standard support should use fallback language in menu.
+    $langcode = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage();
+
     try {
       $menuId = $this->getDerivativeId();
       $response = $this->apiManager->get(
-        $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
+        $langcode,
         $menuId,
       );
       $menuTree = $this->menuTreeBuilder

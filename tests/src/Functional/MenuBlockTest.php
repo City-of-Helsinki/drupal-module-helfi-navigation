@@ -44,12 +44,16 @@ class MenuBlockTest extends BrowserTestBase {
   public function setUp() : void {
     parent::setUp();
 
-    foreach (['fi', 'sv'] as $langcode) {
+    foreach (['fi', 'sv', 'es'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
     }
     $this->config('language.negotiation')
-      ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
-      ->save();
+      ->set('url.prefixes', [
+        'en' => 'en',
+        'fi' => 'fi',
+        'sv' => 'sv',
+        'es' => 'es',
+      ])->save();
 
     NodeType::create([
       'type' => 'page',
@@ -71,6 +75,8 @@ class MenuBlockTest extends BrowserTestBase {
     // 1. Mega menu has only two levels of links.
     // 2. Block label is translated when a translation is provided.
     // 3. Link are translated.
+    // Also verify exception for non-primary languages:
+    // 4. On languages other than fi, sv, en the external menus use en versions.
     // These blocks and their content will be generated from fixtures/*.json
     // files.
     $expected = [
@@ -143,9 +149,32 @@ class MenuBlockTest extends BrowserTestBase {
           ],
         ],
       ],
+      'es' => [
+        'menus' => [
+          'External - Footer bottom navigation' => [
+            'Accessibility statement' => [],
+          ],
+          'External - Header language links' => [
+            'Selkokieli' => [],
+          ],
+          'External - Header top navigation' => [
+            'News' => [],
+          ],
+          'External - Mega menu' => [
+            'Urban environment and traffic' => [],
+            'Parking' => ['lang' => 'en-GB'],
+          ],
+          'City of Helsinki' => [
+            'Employment opportunities' => ['lang' => 'en-GB'],
+          ],
+          'Connect' => [
+            'Feedback' => [],
+          ],
+        ],
+      ],
     ];
 
-    foreach (['en', 'sv', 'fi'] as $language) {
+    foreach (['en', 'sv', 'fi', 'es'] as $language) {
       $this->drupalGet('/' . $language);
 
       ['menus' => $menus] = $expected[$language];
