@@ -1,0 +1,5 @@
+msgid ""
+msgstr ""
+
+msgid "A flag indicating whether this menu link translation is published"
+msgstr "Asetus määrittää onko tämän valikkolinkin käännös julkaistu"

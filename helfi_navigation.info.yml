@@ -8,3 +8,5 @@ dependencies:
   - drupal:menu_link_content
   - drupal:language
   - drupal:rest
+'interface translation project': helfi_navigation
+'interface translation server pattern': modules/contrib/helfi_navigation/translations/%language.po
