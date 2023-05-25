@@ -1,0 +1,5 @@
+msgid ""
+msgstr ""
+
+msgid "A flag indicating whether this menu link translation is published"
+msgstr "En flagga som indikerar om denna menylänköversättning är publicerad"
