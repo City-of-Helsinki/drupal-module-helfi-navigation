@@ -219,12 +219,15 @@ function helfi_navigation_form_node_form_alter(
 function helfi_navigation_form_node_form_submit(array $form, FormStateInterface $formState) : void {
   $values = $formState->getValue('menu');
   $node = $formState->getFormObject()->getEntity();
+  $langCode = $node->language()->getId();
 
   if (!empty($values['entity_id'])) {
-    $link = MenuLinkContent::load($values['entity_id']);
+    if (!$link = MenuLinkContent::load($values['entity_id'])) {
+      return;
+    }
 
-    if ($link->hasTranslation($node->language()->getId())) {
-      $link = $link->getTranslation($node->language()->getId());
+    if ($link->hasTranslation($langCode)) {
+      $link = $link->getTranslation($langCode);
     }
     $link->set('content_translation_status', $values['content_translation_status'])
       ->save();
