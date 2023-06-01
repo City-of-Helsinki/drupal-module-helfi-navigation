@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Menu;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
+use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
 use Drupal\menu_link_content\MenuLinkContentInterface;
@@ -35,11 +38,11 @@ final class MenuTreeBuilder {
    *   The event dispatcher.
    */
   public function __construct(
-    private EntityTypeManagerInterface $entityTypeManager,
-    private InternalDomainResolver $domainResolver,
-    private MenuLinkTreeInterface $menuTree,
-    private MenuLinkManagerInterface $menuLinkManager,
-    private EventDispatcherInterface $eventDispatcher
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly InternalDomainResolver $domainResolver,
+    private readonly MenuLinkTreeInterface $menuTree,
+    private readonly MenuLinkManagerInterface $menuLinkManager,
+    private readonly EventDispatcherInterface $eventDispatcher
   ) {
   }
 
@@ -122,26 +125,13 @@ final class MenuTreeBuilder {
     foreach ($menuItems as $element) {
       /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
       // @todo Do we want to show links other than MenuLinkContent?
-      if (!$link = $this->getEntity($element->link)) {
+      if (!$link = $this->getEntity($element->link, $langcode)) {
         continue;
       }
+      $this->evaluateEntityAccess($element);
 
-      // Handle only menu links with translations.
-      if (
-        !$link->hasTranslation($langcode) ||
-        !$link->isTranslatable()
-      ) {
-        continue;
-      }
-
-      /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
-      $link = $link->getTranslation($langcode);
-
-      // Only show accessible links (and published).
-      if (
-        !$link->get('content_translation_status')->value ||
-        ($element->access instanceof AccessResultInterface && !$element->access->isAllowed())
-      ) {
+      // Only show accessible links.
+      if ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) {
         continue;
       }
 
@@ -237,25 +227,68 @@ final class MenuTreeBuilder {
    *
    * @param \Drupal\Core\Menu\MenuLinkInterface $link
    *   The menu link.
+   * @param string $langcode
+   *   The langcode.
    *
    * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
-   *   NULL if entity not found and
-   *   a MenuLinkContentInterface if found.
+   *   NULL if a valid entity is not found and a MenuLinkContentInterface
+   *   if found.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  private function getEntity(MenuLinkInterface $link): ? MenuLinkContentInterface {
-    // MenuLinkContent::getEntity() has protected visibility and cannot be used
-    // to directly fetch the entity.
+  private function getEntity(MenuLinkInterface $link, string $langcode): ? MenuLinkContentInterface {
     $metadata = $link->getMetaData();
 
     if (empty($metadata['entity_id'])) {
       return NULL;
     }
-    return $this->entityTypeManager
+    /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $entity */
+    $entity = $this->entityTypeManager
       ->getStorage('menu_link_content')
       ->load($metadata['entity_id']);
+
+    if (!$entity || !$entity->isTranslatable() || !$entity->hasTranslation($langcode)) {
+      return NULL;
+    }
+    $entity = $entity->getTranslation($langcode);
+
+    if (!$entity->hasField('content_translation_status') || !$entity->get('content_translation_status')->value) {
+      return NULL;
+    }
+
+    return $entity;
+
+  }
+
+  /**
+   * Evaluates the access for link's target.
+   *
+   * @param \Drupal\Core\Menu\MenuLinkTreeElement $element
+   *   The element to check entity access for.
+   */
+  private function evaluateEntityAccess(MenuLinkTreeElement $element) : void {
+    // Attempt to fetch the entity type and id from link's route parameters.
+    // The route parameters should be an array containing entity type => id
+    // like: ['node' => '1'].
+    $routeParameters = $element->link->getRouteParameters();
+    $entityType = key($routeParameters);
+
+    if (!$this->entityTypeManager->hasDefinition($entityType)) {
+      return;
+    }
+    $storage = $this->entityTypeManager
+      ->getStorage($entityType);
+
+    if (!$entity = $storage->load($routeParameters[$entityType])) {
+      return;
+    }
+
+    // Disallow access if the anonymous user has no access to
+    // the target entity.
+    if (!$entity->access('view', new AnonymousUserSession())) {
+      $element->access = AccessResult::neutral();
+    }
   }
 
 }

@@ -34,7 +34,7 @@ services:
   helfi_navigation.anonymous_user:
     class: Drupal\Core\Session\AnonymousUserSession
   helfi_navigation.menu_tree_manipulators:
-    class: Drupal\helfi_navigation\Menu\MenuTreeManipulator
+    class: Drupal\Core\Menu\DefaultMenuTreeManipulator
     arguments:
       - '@access_manager'
       - '@helfi_navigation.anonymous_user'
