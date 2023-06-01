@@ -24,8 +24,8 @@ final class RedirectEventSubscriber implements EventSubscriberInterface {
    *   The config factory service.
    */
   public function __construct(
-    private RedirectRepository $repository,
-    private ConfigFactoryInterface $configFactory,
+    private readonly RedirectRepository $repository,
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
   }
 
@@ -35,7 +35,10 @@ final class RedirectEventSubscriber implements EventSubscriberInterface {
    * Gets all available redirects for given link and updates the URL
    * to use the redirect destination.
    *
-   * This is required by javascript navigation to build the active trail.
+   * Mobile navigation uses path to figure out the active trail, something
+   * like "if (path in menu link === current url path in browser)". Override
+   * the menu link path to match the path where user actually lands after
+   * clicking the link.
    *
    * @param \Drupal\helfi_navigation\Event\MenuTreeBuilderLink $event
    *   The event to respond to.
