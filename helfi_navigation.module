@@ -156,10 +156,6 @@ function helfi_navigation_cron() : void {
  * Implements hook_page_attachments().
  */
 function helfi_navigation_page_attachments(array &$attachments) : void {
-  $langcode = Drupal::languageManager()
-    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-    ->getId();
-
   /** @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver $defaultLanguageResolver */
   $defaultLanguageResolver = Drupal::service('helfi_api_base.default_language_resolver');
 
