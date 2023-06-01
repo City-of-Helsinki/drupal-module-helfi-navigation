@@ -124,7 +124,6 @@ final class MenuTreeBuilder {
 
     foreach ($menuItems as $element) {
       /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
-      // @todo Do we want to show links other than MenuLinkContent?
       if (!$link = $this->getEntity($element->link, $langcode)) {
         continue;
       }
@@ -248,6 +247,7 @@ final class MenuTreeBuilder {
       ->getStorage('menu_link_content')
       ->load($metadata['entity_id']);
 
+    // Skip untranslatable/untranslated menu links.
     if (!$entity || !$entity->isTranslatable() || !$entity->hasTranslation($langcode)) {
       return NULL;
     }
@@ -284,8 +284,10 @@ final class MenuTreeBuilder {
     if (!$entity = $storage->load($routeParameters[$entityType])) {
       return;
     }
-    // Disallow access if user has no access to the target entity.
     if (!$entity->access('view')) {
+      // Disallow access if user has no view access to the target entity.
+      // This updates the existing access result and will be evaluated in
+      // ::transform().
       $element->access = AccessResult::neutral()
         ->addCacheableDependency($entity);
     }
