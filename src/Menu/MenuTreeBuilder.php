@@ -223,7 +223,7 @@ final class MenuTreeBuilder {
   }
 
   /**
-   * Load entity with given menu link.
+   * Load MenuLinkContent entity for given menu link.
    *
    * @param \Drupal\Core\Menu\MenuLinkInterface $link
    *   The menu link.
@@ -253,7 +253,8 @@ final class MenuTreeBuilder {
     }
     $entity = $entity->getTranslation($langcode);
 
-    if (!$entity->hasField('content_translation_status') || !$entity->get('content_translation_status')->value) {
+    // Skip unpublished translations.
+    if (!$entity->get('content_translation_status')->value) {
       return NULL;
     }
 
