@@ -127,6 +127,18 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
       ->save();
     $tree = $this->getMenuTree('fi');
     $this->assertCount(1, $tree['sub_tree']);
+
+    // Unpublish all nodes and make sure they are not visible anymore.
+    foreach ($this->nodes as $node) {
+      $node->setUnpublished()
+        ->save();
+    }
+    // Rebuild the container to empty static entity cache.
+    $this->container->get('kernel')->rebuildContainer();
+
+    // Make sure no links are visible after the node was unpublished.
+    $tree = $this->getMenuTree('fi');
+    $this->assertCount(0, $tree['sub_tree']);
   }
 
 }

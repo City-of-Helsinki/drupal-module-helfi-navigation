@@ -30,6 +30,7 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('node');
+    $this->installSchema('node', ['node_access']);
 
     // We have a dependency to anonymous user when checking menu permissions
     // and might run into 'entity:user' context is required error when trying

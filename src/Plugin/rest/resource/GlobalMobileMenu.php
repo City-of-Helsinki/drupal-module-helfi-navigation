@@ -109,7 +109,7 @@ final class GlobalMobileMenu extends ResourceBase {
     $project_name = $environment->getId();
 
     // Create menu tree and add data to the local menu.
-    $menuTree = $this->menuManager->build();
+    $menuTree = $this->menuManager->build($langcode);
     $menuTree['is_injected'] = TRUE;
 
     // Commented lines are present in the api request,

@@ -12,7 +12,6 @@ use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
-use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
 use Drupal\menu_link_content\MenuLinkContentInterface;
@@ -79,7 +78,8 @@ final class MenuTreeBuilder {
     $tree = $this->menuTree->transform($tree, [
       // Sync menu links accessible to anonymous users and sort them
       // the same way core does.
-      ['callable' => 'helfi_navigation.menu_tree_manipulators:checkAccess'],
+      ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ]);
 
@@ -284,11 +284,10 @@ final class MenuTreeBuilder {
     if (!$entity = $storage->load($routeParameters[$entityType])) {
       return;
     }
-
-    // Disallow access if the anonymous user has no access to
-    // the target entity.
-    if (!$entity->access('view', new AnonymousUserSession())) {
-      $element->access = AccessResult::neutral();
+    // Disallow access if user has no access to the target entity.
+    if (!$entity->access('view')) {
+      $element->access = AccessResult::neutral()
+        ->addCacheableDependency($entity);
     }
   }
 

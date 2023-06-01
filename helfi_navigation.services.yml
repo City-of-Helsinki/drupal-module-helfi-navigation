@@ -23,6 +23,7 @@ services:
       - '@config.factory'
       - '@helfi_navigation.api_manager'
       - '@helfi_navigation.menu_tree_builder'
+      - '@account_switcher'
   helfi_navigation.menu_tree_builder:
     class: Drupal\helfi_navigation\Menu\MenuTreeBuilder
     arguments:
@@ -31,14 +32,6 @@ services:
       - '@menu.link_tree'
       - '@plugin.manager.menu.link'
       - '@event_dispatcher'
-  helfi_navigation.anonymous_user:
-    class: Drupal\Core\Session\AnonymousUserSession
-  helfi_navigation.menu_tree_manipulators:
-    class: Drupal\Core\Menu\DefaultMenuLinkTreeManipulators
-    arguments:
-      - '@access_manager'
-      - '@helfi_navigation.anonymous_user'
-      - '@entity_type.manager'
   helfi_navigation.cache_warmer:
     class: Drupal\helfi_navigation\CacheWarmer
     arguments:

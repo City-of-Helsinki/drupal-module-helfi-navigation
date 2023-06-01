@@ -16,6 +16,13 @@ use Drupal\node\NodeInterface;
 trait MenuLinkTrait {
 
   /**
+   * An array of nodes.
+   *
+   * @var \Drupal\node\NodeInterface[]
+   */
+  protected array $nodes = [];
+
+  /**
    * Creates a new test node.
    *
    * @return \Drupal\node\NodeInterface
@@ -31,6 +38,7 @@ trait MenuLinkTrait {
       'path' => ['alias' => '/test-node-page', 'langcode' => 'en'],
     ]);
     $node->save();
+    $this->nodes[] = $node;
 
     return $node;
   }
