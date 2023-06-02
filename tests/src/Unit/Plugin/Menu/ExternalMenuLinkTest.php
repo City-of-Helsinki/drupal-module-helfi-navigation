@@ -56,6 +56,7 @@ class ExternalMenuLinkTest extends UnitTestCase {
 
   /**
    * @covers ::updateLink
+   * @covers ::getTitle
    */
   public function testUpdateLink() : void {
     $link = new ExternalMenuLink([], '', ['title' => '123']);
