@@ -145,14 +145,7 @@ final class ExternalMenuTreeBuilder {
     if (!isset($item->parentId)) {
       $item->parentId = NULL;
     }
-
-    if (!isset($item->external)) {
-      $item->external = $this->domainResolver->isExternal($item->url);
-    }
-
-    if (isset($item->description)) {
-      $link_definition['description'] = $item->description;
-    }
+    $item->external = $this->domainResolver->isExternal($item->url);
 
     if (isset($item->weight)) {
       $link_definition['weight'] = $item->weight;
