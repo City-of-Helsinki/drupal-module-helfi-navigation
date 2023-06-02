@@ -17,6 +17,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TransferException;
+use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -34,7 +35,7 @@ class ApiManager {
    *
    * @var null|string
    */
-  private ?string $authorization;
+  private ?string $authorization = NULL;
 
   /**
    * The previous exception.
@@ -67,14 +68,13 @@ class ApiManager {
    *   The config factory.
    */
   public function __construct(
-    private TimeInterface $time,
-    private CacheBackendInterface $cache,
-    private ClientInterface $httpClient,
-    private EnvironmentResolverInterface $environmentResolver,
-    private LoggerInterface $logger,
-    ConfigFactoryInterface $configFactory
+    private readonly TimeInterface $time,
+    private readonly CacheBackendInterface $cache,
+    private readonly ClientInterface $httpClient,
+    private readonly EnvironmentResolverInterface $environmentResolver,
+    private readonly LoggerInterface $logger,
+    private readonly ConfigFactoryInterface $configFactory
   ) {
-    $this->authorization = $configFactory->get('helfi_navigation.api')->get('key');
   }
 
   /**
@@ -186,14 +186,14 @@ class ApiManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function update(string $langcode, array $data) : ApiResponse {
-    if (!$this->authorization) {
+    if (!$this->hasAuthorization()) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
 
     $endpoint = sprintf('%s/%s', static::GLOBAL_MENU_ENDPOINT, $this->environmentResolver->getActiveEnvironment()->getId());
     return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
-      'headers' => ['Authorization' => sprintf('Basic %s', $this->authorization)],
+      'headers' => ['Authorization' => sprintf('Basic %s', $this->getAuthorization())],
     ]);
   }
 
@@ -261,8 +261,23 @@ class ApiManager {
    * @return bool
    *   Is the system authorized to use secured endpoints.
    */
-  public function isAuthorized(): bool {
-    return (bool) $this->authorization;
+  public function hasAuthorization(): bool {
+    return (bool) $this->getAuthorization();
+  }
+
+  /**
+   * Gets the authorization.
+   *
+   * @return string|null
+   *   The authorization token.
+   */
+  public function getAuthorization() : ?string {
+    if (!$this->authorization) {
+      $this->authorization = $this->configFactory
+        ->get('helfi_navigation.api')
+        ->get('key');
+    }
+    return $this->authorization;
   }
 
   /**
@@ -305,7 +320,7 @@ class ApiManager {
       }
       $response = $this->httpClient->request($method, $url, $options);
 
-      return new ApiResponse(\GuzzleHttp\json_decode($response->getBody()->getContents()));
+      return new ApiResponse(Utils::jsonDecode($response->getBody()->getContents()));
     }
     catch (\Exception $e) {
       if ($e instanceof GuzzleException) {
@@ -332,7 +347,7 @@ class ApiManager {
             sprintf('[%s]. Attempted to use mock data, but the mock file "%s" was not found for "%s" endpoint.', $e->getMessage(), basename($fileName), $endpoint)
           );
         }
-        return new ApiResponse(\GuzzleHttp\json_decode(file_get_contents($fileName)));
+        return new ApiResponse(Utils::jsonDecode(file_get_contents($fileName)));
       }
       // Log the error and re-throw the exception.
       $this->logger->error('Request failed with error: ' . $e->getMessage());

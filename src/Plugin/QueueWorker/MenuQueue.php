@@ -25,32 +25,33 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
    *
    * @var \Drupal\helfi_navigation\MainMenuManager
    */
-  private MainMenuManager $menuManager;
+  private MainMenuManager $mainMenuManager;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
-    $instance->menuManager = $container->get('helfi_navigation.menu_manager');
+    $instance->mainMenuManager = $container->get('helfi_navigation.menu_manager');
     return $instance;
   }
 
   /**
    * Process queue item.
    *
-   * @param string $langcode
+   * @param string $data
    *   Data of the processable language code.
    *
    * @throws \Exception
    *   Throws exception if language code is not set.
    */
-  public function processItem($langcode) {
-    if (!is_string($langcode)) {
+  public function processItem($data) : void {
+    // Data is a langcode, like 'fi' or 'en'.
+    if (!is_string($data)) {
       return;
     }
     try {
-      $this->menuManager->sync($langcode);
+      $this->mainMenuManager->sync($data);
     }
     catch (\Throwable) {
       // The failed sync will be logged by ApiManager.

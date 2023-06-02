@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_navigation\Menu;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
+use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
@@ -35,11 +37,11 @@ final class MenuTreeBuilder {
    *   The event dispatcher.
    */
   public function __construct(
-    private EntityTypeManagerInterface $entityTypeManager,
-    private InternalDomainResolver $domainResolver,
-    private MenuLinkTreeInterface $menuTree,
-    private MenuLinkManagerInterface $menuLinkManager,
-    private EventDispatcherInterface $eventDispatcher
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly InternalDomainResolver $domainResolver,
+    private readonly MenuLinkTreeInterface $menuTree,
+    private readonly MenuLinkManagerInterface $menuLinkManager,
+    private readonly EventDispatcherInterface $eventDispatcher
   ) {
   }
 
@@ -76,7 +78,8 @@ final class MenuTreeBuilder {
     $tree = $this->menuTree->transform($tree, [
       // Sync menu links accessible to anonymous users and sort them
       // the same way core does.
-      ['callable' => 'helfi_navigation.menu_tree_manipulators:checkAccess'],
+      ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ]);
 
@@ -121,27 +124,13 @@ final class MenuTreeBuilder {
 
     foreach ($menuItems as $element) {
       /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
-      // @todo Do we want to show links other than MenuLinkContent?
-      if (!$link = $this->getEntity($element->link)) {
+      if (!$link = $this->getEntity($element->link, $langcode)) {
         continue;
       }
+      $this->evaluateEntityAccess($element);
 
-      // Handle only menu links with translations.
-      if (
-        !$link->hasTranslation($langcode) ||
-        !$link->isTranslatable()
-      ) {
-        continue;
-      }
-
-      /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
-      $link = $link->getTranslation($langcode);
-
-      // Only show accessible links (and published).
-      if (
-        !$link->get('content_translation_status')->value ||
-        ($element->access instanceof AccessResultInterface && !$element->access->isAllowed())
-      ) {
+      // Only show accessible links.
+      if ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) {
         continue;
       }
 
@@ -233,29 +222,75 @@ final class MenuTreeBuilder {
   }
 
   /**
-   * Load entity with given menu link.
+   * Load MenuLinkContent entity for given menu link.
    *
    * @param \Drupal\Core\Menu\MenuLinkInterface $link
    *   The menu link.
+   * @param string $langcode
+   *   The langcode.
    *
    * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
-   *   NULL if entity not found and
-   *   a MenuLinkContentInterface if found.
+   *   NULL if a valid entity is not found and a MenuLinkContentInterface
+   *   if found.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  private function getEntity(MenuLinkInterface $link): ? MenuLinkContentInterface {
-    // MenuLinkContent::getEntity() has protected visibility and cannot be used
-    // to directly fetch the entity.
+  private function getEntity(MenuLinkInterface $link, string $langcode): ? MenuLinkContentInterface {
     $metadata = $link->getMetaData();
 
     if (empty($metadata['entity_id'])) {
       return NULL;
     }
-    return $this->entityTypeManager
+    /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $entity */
+    $entity = $this->entityTypeManager
       ->getStorage('menu_link_content')
       ->load($metadata['entity_id']);
+
+    // Skip untranslatable/untranslated menu links.
+    if (!$entity || !$entity->isTranslatable() || !$entity->hasTranslation($langcode)) {
+      return NULL;
+    }
+    $entity = $entity->getTranslation($langcode);
+
+    // Skip unpublished translations.
+    if (!$entity->get('content_translation_status')->value) {
+      return NULL;
+    }
+
+    return $entity;
+
+  }
+
+  /**
+   * Evaluates the access for link's target.
+   *
+   * @param \Drupal\Core\Menu\MenuLinkTreeElement $element
+   *   The element to check entity access for.
+   */
+  private function evaluateEntityAccess(MenuLinkTreeElement $element) : void {
+    // Attempt to fetch the entity type and id from link's route parameters.
+    // The route parameters should be an array containing entity type => id
+    // like: ['node' => '1'].
+    $routeParameters = $element->link->getRouteParameters();
+    $entityType = key($routeParameters);
+
+    if (!$this->entityTypeManager->hasDefinition($entityType)) {
+      return;
+    }
+    $storage = $this->entityTypeManager
+      ->getStorage($entityType);
+
+    if (!$entity = $storage->load($routeParameters[$entityType])) {
+      return;
+    }
+    if (!$entity->access('view')) {
+      // Disallow access if user has no view access to the target entity.
+      // This updates the existing access result and will be evaluated in
+      // ::transform().
+      $element->access = AccessResult::neutral()
+        ->addCacheableDependency($entity);
+    }
   }
 
 }

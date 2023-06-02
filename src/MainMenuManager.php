@@ -5,7 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Session\AccountSwitcherInterface;
+use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\language\ConfigurableLanguageManagerInterface;
@@ -26,12 +27,15 @@ class MainMenuManager {
    *   The api manager.
    * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
    *   The menu tree builder.
+   * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
+   *   The account switcher service.
    */
   public function __construct(
-    private ConfigurableLanguageManagerInterface $languageManager,
-    private ConfigFactoryInterface $config,
-    private ApiManager $apiManager,
-    private MenuTreeBuilder $menuTreeBuilder,
+    private readonly ConfigurableLanguageManagerInterface $languageManager,
+    private readonly ConfigFactoryInterface $config,
+    private readonly ApiManager $apiManager,
+    private readonly MenuTreeBuilder $menuTreeBuilder,
+    private readonly AccountSwitcherInterface $accountSwitcher,
   ) {
   }
 
@@ -41,11 +45,13 @@ class MainMenuManager {
    * @param string $langcode
    *   The langcode.
    *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \GuzzleHttp\Exception\GuzzleException
+   * @throws \InvalidArgumentException
    */
   public function sync(string $langcode): bool {
+    // Sync menu as an anonymous user to make sure no sensitive
+    // links are synced.
+    $this->accountSwitcher->switchTo(new AnonymousUserSession());
     $response = $this->apiManager->update(
       $langcode,
       [
@@ -54,6 +60,8 @@ class MainMenuManager {
         'menu_tree' => $this->build($langcode),
       ]
     );
+    $this->accountSwitcher->switchBack();
+
     if (!isset($response->data->status)) {
       throw new \InvalidArgumentException('Failed to parse entity published state.');
     }
@@ -95,9 +103,10 @@ class MainMenuManager {
    *
    * @return mixed
    *   Menu tree.
+   *
+   * @throws \InvalidArgumentException
    */
-  public function build(string $langcode = NULL): array {
-    $langcode = $langcode ?: $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId();
+  public function build(string $langcode): array {
     $siteName = $this->getSiteName($langcode);
 
     $instanceUri = Url::fromRoute('<front>', options: [
