@@ -34,7 +34,7 @@ class ApiManager {
    *
    * @var null|string
    */
-  private ?string $authorization;
+  private ?string $authorization = NULL;
 
   /**
    * The previous exception.
@@ -67,14 +67,13 @@ class ApiManager {
    *   The config factory.
    */
   public function __construct(
-    private TimeInterface $time,
-    private CacheBackendInterface $cache,
-    private ClientInterface $httpClient,
-    private EnvironmentResolverInterface $environmentResolver,
-    private LoggerInterface $logger,
-    ConfigFactoryInterface $configFactory
+    private readonly TimeInterface $time,
+    private readonly CacheBackendInterface $cache,
+    private readonly ClientInterface $httpClient,
+    private readonly EnvironmentResolverInterface $environmentResolver,
+    private readonly LoggerInterface $logger,
+    private readonly ConfigFactoryInterface $configFactory
   ) {
-    $this->authorization = $configFactory->get('helfi_navigation.api')->get('key');
   }
 
   /**
@@ -186,14 +185,14 @@ class ApiManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function update(string $langcode, array $data) : ApiResponse {
-    if (!$this->authorization) {
+    if (!$this->hasAuthorization()) {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
 
     $endpoint = sprintf('%s/%s', static::GLOBAL_MENU_ENDPOINT, $this->environmentResolver->getActiveEnvironment()->getId());
     return $this->makeRequest('POST', $endpoint, $langcode, [
       'json' => $data,
-      'headers' => ['Authorization' => sprintf('Basic %s', $this->authorization)],
+      'headers' => ['Authorization' => sprintf('Basic %s', $this->getAuthorization())],
     ]);
   }
 
@@ -261,8 +260,23 @@ class ApiManager {
    * @return bool
    *   Is the system authorized to use secured endpoints.
    */
-  public function isAuthorized(): bool {
-    return (bool) $this->authorization;
+  public function hasAuthorization(): bool {
+    return (bool) $this->getAuthorization();
+  }
+
+  /**
+   * Gets the authorization.
+   *
+   * @return string|null
+   *   The authorization token.
+   */
+  public function getAuthorization() : ?string {
+    if (!$this->authorization) {
+      $this->authorization = $this->configFactory
+        ->get('helfi_navigation.api')
+        ->get('key');
+    }
+    return $this->authorization;
   }
 
   /**

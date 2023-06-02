@@ -104,6 +104,8 @@ class MainMenuManager {
    *
    * @return mixed
    *   Menu tree.
+   *
+   * @throws \InvalidArgumentException
    */
   public function build(string $langcode): array {
     $siteName = $this->getSiteName($langcode);
