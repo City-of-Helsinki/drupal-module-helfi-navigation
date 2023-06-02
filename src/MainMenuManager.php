@@ -45,9 +45,8 @@ class MainMenuManager {
    * @param string $langcode
    *   The langcode.
    *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \GuzzleHttp\Exception\GuzzleException
+   * @throws \InvalidArgumentException
    */
   public function sync(string $langcode): bool {
     // Sync menu as an anonymous user to make sure no sensitive
