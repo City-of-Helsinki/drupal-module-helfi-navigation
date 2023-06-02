@@ -32,8 +32,8 @@ final class ExternalMenuTreeBuilder {
    *   The request stack.
    */
   public function __construct(
-    private InternalDomainResolver $domainResolver,
-    private RequestStack $requestStack,
+    private readonly InternalDomainResolver $domainResolver,
+    private readonly RequestStack $requestStack,
   ) {
   }
 

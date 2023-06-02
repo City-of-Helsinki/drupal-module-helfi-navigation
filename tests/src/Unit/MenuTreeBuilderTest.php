@@ -11,6 +11,7 @@ use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -18,6 +19,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @group helfi_navigation
  */
 class MenuTreeBuilderTest extends UnitTestCase {
+
+  use ProphecyTrait;
 
   /**
    * Tests root element validation.
