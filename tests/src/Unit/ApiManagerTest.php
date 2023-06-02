@@ -139,6 +139,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::makeRequest
    * @covers ::getDefaultRequestOptions
    * @covers ::getUrl
+   * @covers ::hasAuthorization
+   * @covers ::getAuthorization
    * @covers \Drupal\helfi_navigation\ApiResponse::__construct
    */
   public function testUpdateMainMenu() : void {

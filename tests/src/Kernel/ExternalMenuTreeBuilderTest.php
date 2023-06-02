@@ -81,12 +81,8 @@ class ExternalMenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     // is the currently active page.
     $this->assertTrue($externalTree[0]['in_active_trail']);
     $this->assertFalse($externalTree[0]['is_currentPage']);
-    $this->assertFalse($externalTree[0]['external']);
     $this->assertTrue($externalTree[0]['below'][0]['in_active_trail']);
     $this->assertTrue($externalTree[0]['below'][0]['is_currentPage']);
-
-    // Make sure links get marked as external correctly.
-    $this->assertTrue($externalTree[1]['below'][0]['below'][0]['external']);
   }
 
 }

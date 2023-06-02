@@ -86,7 +86,7 @@ class GlobalMobileMenuTest extends MenuTreeBuilderTestBase {
    */
   public function testEndpointWithLocalModifications() : void {
     $this->grantRestfulPermissions();
-    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Test);
+    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
     $this->config('system.site')
       ->set('name', Project::ASUMINEN)
       ->save();

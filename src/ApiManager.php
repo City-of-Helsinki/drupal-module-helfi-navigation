@@ -17,6 +17,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TransferException;
+use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -319,7 +320,7 @@ class ApiManager {
       }
       $response = $this->httpClient->request($method, $url, $options);
 
-      return new ApiResponse(\GuzzleHttp\json_decode($response->getBody()->getContents()));
+      return new ApiResponse(Utils::jsonDecode($response->getBody()->getContents()));
     }
     catch (\Exception $e) {
       if ($e instanceof GuzzleException) {
@@ -346,7 +347,7 @@ class ApiManager {
             sprintf('[%s]. Attempted to use mock data, but the mock file "%s" was not found for "%s" endpoint.', $e->getMessage(), basename($fileName), $endpoint)
           );
         }
-        return new ApiResponse(\GuzzleHttp\json_decode(file_get_contents($fileName)));
+        return new ApiResponse(Utils::jsonDecode(file_get_contents($fileName)));
       }
       // Log the error and re-throw the exception.
       $this->logger->error('Request failed with error: ' . $e->getMessage());
