@@ -10,6 +10,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\CacheWarmer;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests cache warmer.
@@ -18,6 +19,8 @@ use Prophecy\Argument;
  * @group helfi_navigation
  */
 class CacheWarmerTest extends KernelTestBase {
+
+  use ProphecyTrait;
 
   /**
    * The shared temp store factory.
