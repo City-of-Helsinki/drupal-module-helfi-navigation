@@ -50,7 +50,7 @@ abstract class MenuBlockBase extends SystemMenuBlock {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function getMaxDepth(): int {
     $max_depth = $this->getConfiguration()['depth'];
