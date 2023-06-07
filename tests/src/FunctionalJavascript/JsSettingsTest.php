@@ -5,9 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_navigation\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 
 /**
  * Tests drupal settings.
@@ -15,6 +16,8 @@ use Drupal\language\Entity\ConfigurableLanguage;
  * @group helfi_navigation
  */
 class JsSettingsTest extends WebDriverTestBase {
+
+  use EnvironmentResolverTrait;
 
   /**
    * {@inheritdoc}
@@ -39,10 +42,7 @@ class JsSettingsTest extends WebDriverTestBase {
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
     }
-    $config = $this->config('helfi_api_base.environment_resolver.settings');
-    $config->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, 'local');
-    $config->set(EnvironmentResolver::PROJECT_NAME_KEY, Project::ASUMINEN);
-    $config->save();
+    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
 
     $this->config('language.negotiation')
       ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])

@@ -4,12 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_navigation\Functional;
 
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 
 /**
  * Tests menu blocks.
@@ -17,6 +18,8 @@ use Drupal\Tests\BrowserTestBase;
  * @group helfi_navigation
  */
 class MenuBlockTest extends BrowserTestBase {
+
+  use EnvironmentResolverTrait;
 
   /**
    * {@inheritdoc}
@@ -59,10 +62,7 @@ class MenuBlockTest extends BrowserTestBase {
       'type' => 'page',
     ])->save();
 
-    $config = $this->config('helfi_api_base.environment_resolver.settings');
-    $config->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, 'local');
-    $config->set(EnvironmentResolver::PROJECT_NAME_KEY, Project::ASUMINEN);
-    $config->save();
+    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
 
     _helfi_navigation_generate_blocks('stark', 'content', TRUE);
   }

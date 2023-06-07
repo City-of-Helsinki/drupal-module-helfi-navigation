@@ -6,9 +6,10 @@ namespace Drupal\Tests\helfi_navigation\Kernel;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\TempStore\SharedTempStoreFactory;
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\CacheWarmer;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -20,6 +21,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
  */
 class CacheWarmerTest extends KernelTestBase {
 
+  use EnvironmentResolverTrait;
   use ProphecyTrait;
 
   /**
@@ -36,10 +38,7 @@ class CacheWarmerTest extends KernelTestBase {
     parent::setUp();
 
     $this->populateConfiguration('Test');
-    $config = $this->config('helfi_api_base.environment_resolver.settings');
-    $config->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, 'local');
-    $config->set(EnvironmentResolver::PROJECT_NAME_KEY, Project::ASUMINEN);
-    $config->save();
+    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
     $this->sharedTempStore = $this->container->get('tempstore.shared');
   }
 
