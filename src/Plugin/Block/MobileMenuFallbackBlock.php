@@ -7,7 +7,7 @@ namespace Drupal\helfi_navigation\Plugin\Block;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Http\RequestStack;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -15,7 +15,6 @@ use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a fallback mobile navigation menu block.
@@ -46,11 +45,11 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
   private ConfigFactoryInterface $configFactory;
 
   /**
-   * The current request.
+   * The request stack.
    *
-   * @var \Symfony\Component\HttpFoundation\Request
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  private Request $currentRequest;
+  private RequestStack $requestStack;
 
   /**
    * The path matcher service.
@@ -60,25 +59,27 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
   private PathMatcherInterface $pathMatcher;
 
   /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected LanguageManagerInterface $languageManager;
-
-  /**
    * The global navigation service.
    *
    * @var \Drupal\helfi_navigation\ApiManager
    */
-  protected ApiManager $apiManager;
+  private ApiManager $apiManager;
 
   /**
    * Default language resolver.
    *
    * @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver
    */
-  protected DefaultLanguageResolver $defaultLanguageResolver;
+  private DefaultLanguageResolver $defaultLanguageResolver;
+
+  /**
+   * A flag indicating whether to filter out untranslated links or not.
+   *
+   * This requires 'menu_block_current_language' module.
+   *
+   * @var bool
+   */
+  private bool $filterByLanguage = FALSE;
 
   /**
    * {@inheritdoc}
@@ -92,11 +93,11 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->entityTypeManager = $container->get('entity_type.manager');
     $instance->configFactory = $container->get('config.factory');
-    $instance->currentRequest = $container->get('request_stack')->getCurrentRequest();
+    $instance->requestStack = $container->get('request_stack');
     $instance->pathMatcher = $container->get('path.matcher');
-    $instance->languageManager = $container->get('language_manager');
     $instance->apiManager = $container->get('helfi_navigation.api_manager');
     $instance->defaultLanguageResolver = $container->get('helfi_api_base.default_language_resolver');
+    $instance->filterByLanguage = $container->has('menu_block_current_language_tree_manipulator');
     return $instance;
   }
 
@@ -107,7 +108,6 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
    *   Returns the render array.
    */
   public function build() : array {
-
     ['max_depth' => $depth, 'expand_all_items' => $expand] = $this->getOptions();
     // Adjust the menu tree parameters based on the block's configuration.
     $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters('main');
@@ -144,10 +144,19 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     // Load the menu tree with.
     $tree = $this->menuTree->load('main', $parameters);
     $manipulators = [
+      ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ];
 
+    // Filter untranslated menu links if 'menu_block_current_language' module is
+    // enabled.
+    if ($this->filterByLanguage) {
+      $manipulators[] = [
+        'callable' => 'menu_block_current_language_tree_manipulator::filterLanguages',
+        'args' => [['menu_link_content']],
+      ];
+    }
     // Get the grandparent link for the fallback menu.
     $grand_parents = array_slice($active_trail, 2);
     $grand_parent_link_id = reset($grand_parents);
@@ -339,7 +348,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
    *   Returns an array of menu link content title and URL object.
    */
   protected function createRenderArrayFromMenuLinkContent(MenuLinkContentInterface $link): array {
-    $path = parse_url($this->currentRequest->getUri(), PHP_URL_PATH);
+    $path = parse_url($this->requestStack->getCurrentRequest()?->getUri(), PHP_URL_PATH);
     $linkPath = parse_url($link->getUrlObject()->toString(), PHP_URL_PATH);
 
     return [
