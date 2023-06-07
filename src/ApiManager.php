@@ -306,7 +306,7 @@ class ApiManager {
       }
       $response = $this->httpClient->request($method, $url, $options);
 
-      return new ApiResponse(Utils::json_decode($response->getBody()->getContents()));
+      return new ApiResponse(Utils::jsonDecode($response->getBody()->getContents()));
     }
     catch (\Exception $e) {
       if ($e instanceof GuzzleException) {
