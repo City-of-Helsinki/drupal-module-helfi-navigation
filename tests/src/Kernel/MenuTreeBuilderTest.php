@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
+use Prophecy\PhpUnit\ProphecyTrait;
+
 /**
  * Tests menu tree builder.
  *
@@ -11,6 +13,8 @@ namespace Drupal\Tests\helfi_navigation\Kernel;
  * @group helfi_navigation
  */
 class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
+
+  use ProphecyTrait;
 
   /**
    * Tests menu tree without root object.
