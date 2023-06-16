@@ -11,9 +11,12 @@ use Drupal\Core\File\Exception\FileNotExistsException;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Vault\AuthorizationToken;
+use Drupal\helfi_api_base\Vault\VaultManager;
+use Drupal\helfi_navigation\ApiAuthorization;
 use Drupal\helfi_navigation\ApiManager;
-use Drupal\helfi_navigation\CacheValue;
 use Drupal\helfi_navigation\ApiResponse;
+use Drupal\helfi_navigation\CacheValue;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
@@ -123,11 +126,12 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       $environmentResolver,
       $logger,
-      $this->getConfigFactoryStub([
-        'helfi_navigation.api' => [
-          'key' => $apiKey,
-        ],
-      ]),
+      new ApiAuthorization(
+        $this->getConfigFactoryStub([]),
+        new VaultManager([
+          new AuthorizationToken(ApiAuthorization::VAULT_MANAGER_KEY, '123'),
+        ])
+      ),
     );
   }
 
@@ -142,6 +146,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::hasAuthorization
    * @covers ::getAuthorization
    * @covers \Drupal\helfi_navigation\ApiResponse::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testUpdateMainMenu() : void {
     $requests = [];
@@ -173,6 +179,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    * @covers \Drupal\helfi_navigation\ApiResponse::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testGetExternalMenu() : void {
     $requests = [];
@@ -204,6 +212,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    * @covers \Drupal\helfi_navigation\ApiResponse::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testGetMainMenu() : void {
     $requests = [];
@@ -234,6 +244,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    * @covers \Drupal\helfi_navigation\ApiResponse::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testStaleCacheOnRequestFailure() : void {
     $requests = [];
@@ -270,6 +282,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    * @covers \Drupal\helfi_navigation\ApiResponse::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testStaleCacheUpdate() : void {
     $time = time();
@@ -310,6 +324,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
    * @covers ::getUrl
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testRequestLoggingException() : void {
     $this->expectException(GuzzleException::class);
@@ -334,6 +350,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
    * @covers ::getUrl
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testMockFallbackException() : void {
     $this->expectException(FileNotExistsException::class);
@@ -362,6 +380,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    * @covers \Drupal\helfi_navigation\ApiResponse::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testMockFallback() : void {
     // Use logger to verify that mock file is actually used.
@@ -391,6 +411,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::cache
    * @covers ::getDefaultRequestOptions
    * @covers ::getUrl
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testFastRequestFailure() : void {
     // Override environment name so we don't fallback to mock responses.
@@ -432,6 +454,8 @@ class ApiManagerTest extends UnitTestCase {
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    * @covers \Drupal\helfi_navigation\ApiResponse::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testCacheBypass() : void {
     $requests = [];

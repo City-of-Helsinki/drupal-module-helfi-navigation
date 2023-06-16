@@ -7,7 +7,6 @@ namespace Drupal\helfi_navigation;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigException;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\File\Exception\FileNotExistsException;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
@@ -29,13 +28,6 @@ class ApiManager {
   public const MENU_ENDPOINT = '/api/v1/menu';
 
   use CacheKeyTrait;
-
-  /**
-   * The authorization token.
-   *
-   * @var null|string
-   */
-  private ?string $authorization = NULL;
 
   /**
    * The previous exception.
@@ -64,8 +56,8 @@ class ApiManager {
    *   EnvironmentResolver helper class.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config factory.
+   * @param \Drupal\helfi_navigation\ApiAuthorization $apiAuthorization
+   *   The API authorization service.
    */
   public function __construct(
     private readonly TimeInterface $time,
@@ -73,7 +65,7 @@ class ApiManager {
     private readonly ClientInterface $httpClient,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly LoggerInterface $logger,
-    private readonly ConfigFactoryInterface $configFactory
+    private readonly ApiAuthorization $apiAuthorization
   ) {
   }
 
@@ -272,12 +264,7 @@ class ApiManager {
    *   The authorization token.
    */
   public function getAuthorization() : ?string {
-    if (!$this->authorization) {
-      $this->authorization = $this->configFactory
-        ->get('helfi_navigation.api')
-        ->get('key');
-    }
-    return $this->authorization;
+    return $this->apiAuthorization->getAuthorization();
   }
 
   /**

@@ -11,8 +11,8 @@ use Drupal\Core\Http\RequestStack;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
-use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
+use Drupal\helfi_navigation\ApiManager;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
