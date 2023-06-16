@@ -11,6 +11,9 @@ use Drupal\Core\File\Exception\FileNotExistsException;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Vault\AuthorizationToken;
+use Drupal\helfi_api_base\Vault\VaultManager;
+use Drupal\helfi_navigation\ApiAuthorization;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\CacheValue;
 use Drupal\helfi_navigation\ApiResponse;
@@ -123,11 +126,12 @@ class ApiManagerTest extends UnitTestCase {
       $client,
       $environmentResolver,
       $logger,
-      $this->getConfigFactoryStub([
-        'helfi_navigation.api' => [
-          'key' => $apiKey,
-        ],
-      ]),
+      new ApiAuthorization(
+        $this->getConfigFactoryStub([]),
+        new VaultManager([
+          new AuthorizationToken(ApiAuthorization::VAULT_MANAGER_KEY, '123'),
+        ])
+      ),
     );
   }
 
