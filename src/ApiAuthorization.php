@@ -35,13 +35,13 @@ final class ApiAuthorization {
    *   The authorization token.
    */
   public function getAuthorization() : ?string {
-    // Attempt to fetch API keys from vault.
     if ($authorization = $this->vaultManager->get(self::VAULT_MANAGER_KEY)) {
       return $authorization->data();
     }
 
-    // This is deprecated and will be removed at some point.
-    // @todo remove this.
+    // Provide a BC layer to fetch API keys from previously used
+    // configuration.
+    // @todo remove this once all projects have migrated to Vault.
     return $this->configFactory->get('helfi_navigation.api')
       ?->get('key');
   }
