@@ -6,9 +6,9 @@ namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\helfi_navigation\Plugin\Menu\ExternalMenuLink;
-use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
