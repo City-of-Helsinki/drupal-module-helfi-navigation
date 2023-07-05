@@ -1,5 +1,8 @@
 msgid ""
 msgstr ""
 
-msgid "A flag indicating whether this menu link translation is published"
-msgstr "En flagga som indikerar om denna menylänköversättning är publicerad"
+msgid "Published in the main menu"
+msgstr "Publicerats i huvudmenyn"
+
+msgid "The selection will publish the page in hel.fi’s main and mobile menu. Set the selection as Published when you choose Provide a menu link from above. The page will not show up in the main menu or mobile menu without this selection."
+msgstr "Valet publicerar sidan i huvudmenyn och mobilmenyn på hela hel.fi. Välj publicerats när du väljer Ange en menylänk ovan. Sidan visas inte i huvudmenyn eller mobilmenyn utan detta val."
