@@ -1,5 +1,8 @@
 msgid ""
 msgstr ""
 
-msgid "A flag indicating whether this menu link translation is published"
-msgstr "Asetus määrittää onko tämän valikkolinkin käännös julkaistu"
+msgid "Published in the main menu"
+msgstr "Julkaistu päävalikossa"
+
+msgid "The selection will publish the page in hel.fi’s main and mobile menu. Set the selection as Published when you choose Provide a menu link from above. The page will not show up in the main menu or mobile menu without this selection."
+msgstr "Valinta julkaisee sivun koko hel.fin pää- ja mobiilivalikkoon. Aseta valinta julkaistu-tilaan, kun valitset yltä Näytä sivusto valikossa. Sivu ei näy päävalikossa eikä mobiilivalikossa ilman tätä valintaa."

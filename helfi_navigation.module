@@ -201,8 +201,8 @@ function helfi_navigation_form_node_form_alter(
   // Show menu link's 'published' field on node edit form.
   $form['menu']['content_translation_status'] = [
     '#type' => 'checkbox',
-    '#title' => t('Published'),
-    '#description' => t('A flag indicating whether this menu link translation is published'),
+    '#title' => t('Published in the main menu'),
+    '#description' => t('The selection will publish the page in hel.fi’s main and mobile menu. Set the selection as Published when you choose Provide a menu link from above. The page will not show up in the main menu or mobile menu without this selection.'),
     '#default_value' => $defaults['content_translation_status'],
   ];
   $form['actions']['submit']['#submit'][] = 'helfi_navigation_form_node_form_submit';
