@@ -192,6 +192,13 @@ final class ExternalMenuTreeBuilder {
     $currentPath = parse_url($request->getUri(), PHP_URL_PATH);
     $linkPath = parse_url($item->url->getUri(), PHP_URL_PATH);
 
+    // Subdomain cannot be in active trail.
+    $host = parse_url($item->url->getUri(), PHP_URL_HOST);
+    $host = str_replace('www.', '', $host);
+    if (explode('.',$host)[0] != 'hel') {
+      return FALSE;
+    }
+
     // We don't care about the domain when comparing URLs because the
     // site might be served from multiple different domains.
     if ($linkPath === $currentPath) {
