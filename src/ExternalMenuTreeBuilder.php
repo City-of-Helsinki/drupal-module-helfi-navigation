@@ -195,7 +195,7 @@ final class ExternalMenuTreeBuilder {
     // Subdomain cannot be in active trail.
     $host = parse_url($item->url->getUri(), PHP_URL_HOST);
     $host = str_replace('www.', '', $host);
-    if (explode('.',$host)[0] != 'hel') {
+    if (explode('.', $host)[0] != 'hel') {
       return FALSE;
     }
 
