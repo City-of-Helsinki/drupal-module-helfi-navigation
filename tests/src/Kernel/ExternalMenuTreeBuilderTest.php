@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\helfi_navigation\ExternalMenuTreeBuilder;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -19,6 +20,16 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class ExternalMenuTreeBuilderTest extends MenuTreeBuilderTestBase {
 
   use ProphecyTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function register(ContainerBuilder $container) : void {
+    $container->setParameter('helfi_api_base.internal_domains', [
+      'localhost',
+    ]);
+    parent::register($container);
+  }
 
   /**
    * Constructs a new external menu tree.
