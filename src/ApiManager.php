@@ -20,7 +20,7 @@ use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
 
 /**
- * Service class for global navigation related functions.
+ * Service class for global navigation-related functions.
  */
 class ApiManager {
 
@@ -58,6 +58,8 @@ class ApiManager {
    *   Logger channel.
    * @param \Drupal\helfi_navigation\ApiAuthorization $apiAuthorization
    *   The API authorization service.
+   * @param int $requestTimeout
+   *   The request timeout.
    */
   public function __construct(
     private readonly TimeInterface $time,
@@ -65,7 +67,8 @@ class ApiManager {
     private readonly ClientInterface $httpClient,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly LoggerInterface $logger,
-    private readonly ApiAuthorization $apiAuthorization
+    private readonly ApiAuthorization $apiAuthorization,
+    private readonly int $requestTimeout,
   ) {
   }
 
@@ -99,7 +102,7 @@ class ApiManager {
     $value = ($cache = $this->cache->get($key)) ? $cache->data : NULL;
 
     // Attempt to re-fetch the data in case cache does not exist, cache has
-    // expired or bypass cache is set to true.
+    // expired, or bypass cache is set to true.
     if (
       ($value instanceof CacheValue && $value->hasExpired($this->time->getRequestTime())) ||
       $this->bypassCache ||
@@ -128,7 +131,7 @@ class ApiManager {
   }
 
   /**
-   * Makes a request to fetch external menu from Etusivu instance.
+   * Makes a request to fetch an external menu from Etusivu instance.
    *
    * @param string $langcode
    *   The langcode.
@@ -138,7 +141,7 @@ class ApiManager {
    *   The request options.
    *
    * @return \Drupal\helfi_navigation\ApiResponse
-   *   The JSON object representing external menu.
+   *   The JSON object representing the external menu.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
@@ -165,7 +168,7 @@ class ApiManager {
   }
 
   /**
-   * Updates the main menu for currently active project.
+   * Updates the main menu for the currently active project.
    *
    * @param string $langcode
    *   The langcode.
@@ -194,25 +197,23 @@ class ApiManager {
    *
    * @param string $environmentName
    *   Environment name.
+   * @param array $options
+   *   The optional options.
    *
    * @return array
    *   The request options.
    */
-  private function getDefaultRequestOptions(string $environmentName) : array {
-    $options = ['timeout' => 15];
-    $options['curl'] = [CURLOPT_TCP_KEEPALIVE => TRUE];
-
-    if (drupal_valid_test_ua()) {
-      // Speed up mock tests by using very low request timeout value when
-      // running tests.
-      $options['timeout'] = 1;
-    }
+  private function getRequestOptions(string $environmentName, array $options = []) : array {
+    $default = [
+      'timeout' => $this->requestTimeout,
+      'curl' => [CURLOPT_TCP_KEEPALIVE => TRUE],
+    ];
 
     if ($environmentName === 'local') {
       // Disable SSL verification in local environment.
-      $options['verify'] = FALSE;
+      $default['verify'] = FALSE;
     }
-    return $options;
+    return array_merge_recursive($options, $default);
   }
 
   /**
@@ -296,7 +297,7 @@ class ApiManager {
 
     $url = $this->getUrl('api', $langcode, ['endpoint' => $endpoint]);
 
-    $options = array_merge_recursive($options, $this->getDefaultRequestOptions($activeEnvironmentName));
+    $options = $this->getRequestOptions($activeEnvironmentName, $options);
 
     try {
       if ($this->previousException instanceof \Exception) {

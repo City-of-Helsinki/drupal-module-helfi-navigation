@@ -1,3 +1,5 @@
+parameters:
+  helfi_navigation.request_timeout: 15
 services:
   logger.channel.helfi_navigation:
     parent: logger.channel_base
@@ -16,6 +18,7 @@ services:
       - '@helfi_api_base.environment_resolver'
       - '@logger.channel.helfi_navigation'
       - '@helfi_navigation.api_authorization'
+      - '%helfi_navigation.request_timeout%'
   helfi_navigation.menu_manager:
     class: Drupal\helfi_navigation\MainMenuManager
     arguments:

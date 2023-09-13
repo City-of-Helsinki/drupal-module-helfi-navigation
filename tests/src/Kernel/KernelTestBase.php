@@ -63,6 +63,8 @@ abstract class KernelTestBase extends ApiKernelTestBase {
    * {@inheritdoc}
    */
   public function register(ContainerBuilder $container) {
+    $container->setParameter('helfi_navigation.request_timeout', 1);
+
     parent::register($container);
 
     // Core's KernelTestBase removes service_collector tags from
