@@ -158,7 +158,7 @@ final class ExternalMenuTreeBuilder {
       'attributes' => new Attribute($item->attributes ?? []),
       'title' => $item->name,
       'id' => $item->id,
-      'parent_id' => $item->parentId,
+      'parent_id' => $item->parentId ?? NULL,
       'is_expanded' => $expand_all_items || !empty($item->expanded),
       'in_active_trail' => $inActiveTrail,
       'is_currentPage' => $inActiveTrail,
