@@ -93,34 +93,34 @@ function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) 
  * Implements hook_ENTITY_TYPE_update().
  */
 function helfi_navigation_menu_update(MenuInterface $entity) : void {
-  _helfi_navigation_queue_item($entity->id(), $entity->language()->getId());
+  _helfi_navigation_queue_item($entity->id(), $entity->language()->getId(), 'update');
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $entity) : void {
-  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId());
+  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId(), 'update');
 }
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
  */
 function helfi_navigation_menu_link_content_insert(MenuLinkContentInterface $entity) : void {
-  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId());
+  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId(), 'insert');
 }
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
  */
 function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $entity) : void {
-  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId());
+  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId(), 'delete');
 }
 
 /**
  * Create menu update queue item.
  */
-function _helfi_navigation_queue_item(string $menuName, string $langcode) : void {
+function _helfi_navigation_queue_item(string $menuName, string $langcode, string $action) : void {
   if (!\Drupal::config('helfi_navigation.api')->get('key')) {
     return;
   }
@@ -128,7 +128,7 @@ function _helfi_navigation_queue_item(string $menuName, string $langcode) : void
 
   static $items = [];
 
-  $key = sprintf('%s:%s', $menuName, $langcode);
+  $key = sprintf('%s:%s:%s', $menuName, $langcode, $action);
 
   // Queue item once per request.
   if (!isset($items[$key])) {
