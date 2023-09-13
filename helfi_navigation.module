@@ -93,62 +93,48 @@ function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) 
  * Implements hook_ENTITY_TYPE_update().
  */
 function helfi_navigation_menu_update(MenuInterface $entity) : void {
-  if ($entity->id() === 'main') {
-    _helfi_navigation_queue_item();
-  }
+  _helfi_navigation_queue_item($entity->id(), $entity->language()->getId());
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $entity) : void {
-  if ($entity->getMenuName() === 'main') {
-    _helfi_navigation_queue_item();
-  }
+  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId());
 }
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
  */
 function helfi_navigation_menu_link_content_insert(MenuLinkContentInterface $entity) : void {
-  if ($entity->getMenuName() === 'main') {
-    _helfi_navigation_queue_item();
-  }
+  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId());
 }
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
  */
 function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $entity) : void {
-  if ($entity->getMenuName() === 'main') {
-    _helfi_navigation_queue_item();
-  }
+  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId());
 }
 
 /**
  * Create menu update queue item.
  */
-function _helfi_navigation_queue_item() : void {
+function _helfi_navigation_queue_item(string $menuName, string $langcode) : void {
   if (!\Drupal::config('helfi_navigation.api')->get('key')) {
     return;
   }
   $queue = Drupal::queue('helfi_navigation_menu_queue');
 
-  // Queue items only when queue is empty.
-  if ($queue->numberOfItems() === 0) {
-    foreach (\Drupal::languageManager()->getLanguages() as $language) {
-      $queue->createItem($language->getId());
-    }
-  }
-}
+  static $items = [];
 
-/**
- * Implements hook_cron().
- */
-function helfi_navigation_cron() : void {
-  /** @var \Drupal\helfi_navigation\CacheWarmer $warmer */
-  $warmer = Drupal::service('helfi_navigation.cache_warmer');
-  $warmer->warm();
+  $key = sprintf('%s:%s', $menuName, $langcode);
+
+  // Queue item once per request.
+  if (!isset($items[$key])) {
+    $queue->createItem(['menu' => $menuName, 'language' => $langcode]);
+    $items[$key] = $key;
+  }
 }
 
 /**

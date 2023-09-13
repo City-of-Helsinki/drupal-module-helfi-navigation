@@ -162,7 +162,7 @@ class ApiManager {
         new CacheValue(
           $this->makeRequest('GET', $endpoint, $langcode, $options),
           $this->time->getRequestTime(),
-          ['external_menu:%s:%s', $menuId, $langcode],
+          [sprintf('external_menu:%s:%s', $menuId, $langcode)],
         )
     )->value;
   }

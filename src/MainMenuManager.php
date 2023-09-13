@@ -40,7 +40,7 @@ class MainMenuManager {
   }
 
   /**
-   * Sends main menu tree to frontpage instance.
+   * Sends the main menu tree to Etusivu instance.
    *
    * @param string $langcode
    *   The langcode.
@@ -49,7 +49,7 @@ class MainMenuManager {
    * @throws \InvalidArgumentException
    */
   public function sync(string $langcode): bool {
-    // Sync menu as an anonymous user to make sure no sensitive
+    // Sync the menu as an anonymous user to make sure no sensitive
     // links are synced.
     $this->accountSwitcher->switchTo(new AnonymousUserSession());
     $response = $this->apiManager->update(
