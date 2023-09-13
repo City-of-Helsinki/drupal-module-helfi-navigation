@@ -141,10 +141,6 @@ final class ExternalMenuTreeBuilder {
 
     // Parse the URL.
     $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
-
-    if (!isset($item->parentId)) {
-      $item->parentId = NULL;
-    }
     $item->external = $this->domainResolver->isExternal($item->url);
 
     if (isset($item->weight)) {
