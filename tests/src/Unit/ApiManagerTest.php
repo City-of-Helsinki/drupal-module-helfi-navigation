@@ -132,6 +132,7 @@ class ApiManagerTest extends UnitTestCase {
           new AuthorizationToken(ApiAuthorization::VAULT_MANAGER_KEY, '123'),
         ])
       ),
+      1,
     );
   }
 
