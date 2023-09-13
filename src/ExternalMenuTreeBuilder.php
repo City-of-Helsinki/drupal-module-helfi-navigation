@@ -183,7 +183,11 @@ final class ExternalMenuTreeBuilder {
    *   Returns true or false.
    */
   private function inActiveTrail(object $item): bool {
-    if ($item->url->isRouted() && $item->url->getRouteName() === '<nolink>') {
+    if (
+      $item->url->isRouted() &&
+      $item->url->getRouteName() === '<nolink>' ||
+      $item->external
+    ) {
       return FALSE;
     }
     if (!$request = $this->requestStack->getCurrentRequest()) {

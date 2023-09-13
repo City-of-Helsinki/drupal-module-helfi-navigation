@@ -35,6 +35,22 @@
         "weight": 0,
         "sub_tree": [
           {
+            "url": "https://paatokset.hel.fi/en/urban-environment-and-traffic/cycling",
+            "id": "menu_link_content:df660188-d56f-4cb4-9539-32945792da18",
+            "name": "Decisions",
+            "parentId": "base:health_and_social_services",
+            "attributes": {},
+            "external": true,
+            "hasItems": false,
+            "expanded": false,
+            "parents": [
+              "menu_link_content:df660188-d56f-4cb4-9539-32945792da18",
+              "base:health_and_social_services"
+            ],
+            "weight": -49,
+            "sub_tree": []
+          },
+          {
             "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking",
             "id": "menu_link_content:7c9ddcc2-4d07-4785-8940-046b4cb85fb4",
             "name": "Parking",
