@@ -142,7 +142,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::update
    * @covers ::__construct
    * @covers ::makeRequest
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::getUrl
    * @covers ::hasAuthorization
    * @covers ::getAuthorization
@@ -175,7 +175,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::cache
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
@@ -208,7 +208,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::makeRequest
    * @covers ::cache
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
@@ -240,7 +240,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::get
    * @covers ::__construct
    * @covers ::cache
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
@@ -278,7 +278,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::get
    * @covers ::__construct
    * @covers ::cache
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
@@ -323,7 +323,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::get
    * @covers ::__construct
    * @covers ::cache
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
    * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
@@ -349,7 +349,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::get
    * @covers ::__construct
    * @covers ::cache
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
    * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
@@ -377,7 +377,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::get
    * @covers ::__construct
    * @covers ::cache
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::__construct
    * @covers \Drupal\helfi_navigation\ApiResponse::__construct
@@ -410,7 +410,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::get
    * @covers ::__construct
    * @covers ::cache
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
    * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
@@ -449,7 +449,7 @@ class ApiManagerTest extends UnitTestCase {
    * @covers ::get
    * @covers ::__construct
    * @covers ::cache
-   * @covers ::getDefaultRequestOptions
+   * @covers ::getRequestOptions
    * @covers ::withBypassCache
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\CacheValue::hasExpired
