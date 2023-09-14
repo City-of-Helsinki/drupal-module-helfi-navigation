@@ -44,7 +44,7 @@ Only main-navigation has syncing option. Other navigations are created in Etusiv
     $config['helfi_api_base.api_accounts']['vault'][] = [
       'id' => 'helfi_navigation',
       'plugin' => 'authorization_token',
-      'data' => base64_decode('helfi-admin:123'),
+      'data' => base64_encode('helfi-admin:123'),
     ];
       ```
 
