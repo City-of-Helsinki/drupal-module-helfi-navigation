@@ -121,7 +121,7 @@ function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $ent
  * Create menu update queue item.
  */
 function _helfi_navigation_queue_item(string $menuName, string $langcode, string $action) : void {
-  if (!\Drupal::config('helfi_navigation.api')->get('key')) {
+  if (!\Drupal::service('helfi_navigation.api_authorization')->getAuthorization()) {
     return;
   }
   $queue = Drupal::queue('helfi_navigation_menu_queue');
