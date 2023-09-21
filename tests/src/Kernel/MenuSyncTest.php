@@ -48,7 +48,7 @@ class MenuSyncTest extends KernelTestBase {
   public function testQueueNoApiKey() : void {
     $queue = $this->getQueue();
 
-    _helfi_navigation_queue_item('main', 'fi', 'insert');
+    _helfi_navigation_queue_item();
     $this->assertEquals(0, $queue->numberOfItems());
   }
 
@@ -59,9 +59,8 @@ class MenuSyncTest extends KernelTestBase {
     $this->config('helfi_navigation.api')->set('key', '123')->save();
     $queue = $this->getQueue();
 
-    _helfi_navigation_queue_item('main', 'fi', 'insert');
-    _helfi_navigation_queue_item('main', 'fi', 'insert');
-    $this->assertEquals(1, $queue->numberOfItems());
+    _helfi_navigation_queue_item();
+    $this->assertEquals(3, $queue->numberOfItems());
   }
 
   /**
@@ -90,15 +89,15 @@ class MenuSyncTest extends KernelTestBase {
 
     // Make sure entity insert queues items.
     $link = $this->createTestLink(['link' => ['uri' => 'internal:/']]);
-    $this->assertQueueCount(1);
+    $this->assertQueueCount(3);
 
     // Make sure entity update queues items.
     $link->save();
-    $this->assertQueueCount(1);
+    $this->assertQueueCount(3);
 
     // Make sure entity delete.
     $link->delete();
-    $this->assertQueueCount(1);
+    $this->assertQueueCount(3);
   }
 
   /**

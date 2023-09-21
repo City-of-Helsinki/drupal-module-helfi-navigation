@@ -93,48 +93,62 @@ function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) 
  * Implements hook_ENTITY_TYPE_update().
  */
 function helfi_navigation_menu_update(MenuInterface $entity) : void {
-  _helfi_navigation_queue_item($entity->id(), $entity->language()->getId(), 'update');
+  if ($entity->id() === 'main') {
+    _helfi_navigation_queue_item();
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function helfi_navigation_menu_link_content_update(MenuLinkContentInterface $entity) : void {
-  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId(), 'update');
+  if ($entity->getMenuName() === 'main') {
+    _helfi_navigation_queue_item();
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
  */
 function helfi_navigation_menu_link_content_insert(MenuLinkContentInterface $entity) : void {
-  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId(), 'insert');
+  if ($entity->getMenuName() === 'main') {
+    _helfi_navigation_queue_item();
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
  */
 function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $entity) : void {
-  _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId(), 'delete');
+  if ($entity->getMenuName() === 'main') {
+    _helfi_navigation_queue_item();
+  }
 }
 
 /**
  * Create menu update queue item.
  */
-function _helfi_navigation_queue_item(string $menuName, string $langcode, string $action) : void {
-  if (!\Drupal::service('helfi_navigation.api_authorization')->getAuthorization()) {
+function _helfi_navigation_queue_item() : void {
+  if (!\Drupal::config('helfi_navigation.api')->get('key')) {
     return;
   }
   $queue = Drupal::queue('helfi_navigation_menu_queue');
 
-  static $items = [];
-
-  $key = sprintf('%s:%s:%s', $menuName, $langcode, $action);
-
-  // Queue item once per request.
-  if (!isset($items[$key])) {
-    $queue->createItem(['menu' => $menuName, 'language' => $langcode]);
-    $items[$key] = $key;
+  // Queue items only when queue is empty.
+  if ($queue->numberOfItems() === 0) {
+    foreach (\Drupal::languageManager()->getLanguages() as $language) {
+      $queue->createItem($language->getId());
+    }
   }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function helfi_navigation_cron() : void {
+  /** @var \Drupal\helfi_navigation\CacheWarmer $warmer */
+  $warmer = Drupal::service('helfi_navigation.cache_warmer');
+  $warmer->warm();
 }
 
 /**

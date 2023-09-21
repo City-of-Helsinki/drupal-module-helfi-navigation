@@ -30,7 +30,7 @@ final class MenuTreeBuilder {
    * @param \Drupal\helfi_api_base\Link\InternalDomainResolver $domainResolver
    *   The internal domain resolver.
    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuTree
-   *   The 'menu link tree builder' service.
+   *   The menu link tree builder service.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menuLinkManager
    *   The menu link manager.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
@@ -157,7 +157,7 @@ final class MenuTreeBuilder {
 
       $urlObject = $link->getUrlObject();
 
-      // Make sure the url object retains the language information.
+      // Make sure url object retains the language information.
       if (!$urlObject->getOption('language')) {
         $urlObject->setOptions(['language' => $link->language()]);
       }
@@ -269,9 +269,9 @@ final class MenuTreeBuilder {
    *   The element to check entity access for.
    */
   private function evaluateEntityAccess(MenuLinkTreeElement $element) : void {
-    // Attempt to fetch the entity type, and id from link's route parameters.
-    // The route parameters should be an array containing an entity type => id
-    // key pairs, like: ['node' => '1'].
+    // Attempt to fetch the entity type and id from link's route parameters.
+    // The route parameters should be an array containing entity type => id
+    // like: ['node' => '1'].
     $routeParameters = $element->link->getRouteParameters();
     $entityType = key($routeParameters);
 

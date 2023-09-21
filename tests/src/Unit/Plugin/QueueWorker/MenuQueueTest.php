@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_navigation\Unit\Plugin\QueueWorker;
 
-use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
-use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Drupal\helfi_navigation\MainMenuManager;
 use Drupal\helfi_navigation\Plugin\QueueWorker\MenuQueue;
 use Drupal\Tests\UnitTestCase;
@@ -34,10 +32,6 @@ class MenuQueueTest extends UnitTestCase {
   public function getSut(ObjectProphecy $menuManager) : MenuQueue {
     $container = new ContainerBuilder();
     $container->set('helfi_navigation.menu_manager', $menuManager->reveal());
-    $pubSubManager = $this->prophesize(PubSubManagerInterface::class);
-    $pubSubManager->sendMessage(Argument::any())->willReturn($pubSubManager->reveal());
-    $cacheTagInvalidator = new CacheTagInvalidator($pubSubManager->reveal());
-    $container->set('helfi_api_base.cache_tag_invalidator', $cacheTagInvalidator);
     return MenuQueue::create($container, [], '', []);
   }
 
@@ -63,8 +57,7 @@ class MenuQueueTest extends UnitTestCase {
     $menuManager->sync(Argument::any())
       ->shouldBeCalled()
       ->willThrow(new \InvalidArgumentException());
-    $this->getSut($menuManager)
-      ->processItem(['menu' => 'main', 'language' => 'fi']);
+    $this->getSut($menuManager)->processItem('fi');
   }
 
 }

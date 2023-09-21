@@ -6,7 +6,6 @@ namespace Drupal\helfi_navigation\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
-use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Drupal\helfi_navigation\MainMenuManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -29,56 +28,33 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
   private MainMenuManager $mainMenuManager;
 
   /**
-   * The cache tag invalidator service.
-   *
-   * @var \Drupal\helfi_api_base\Cache\CacheTagInvalidator
-   */
-  private CacheTagInvalidator $cacheTagInvalidator;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->mainMenuManager = $container->get('helfi_navigation.menu_manager');
-    $instance->cacheTagInvalidator = $container->get('helfi_api_base.cache_tag_invalidator');
     return $instance;
   }
 
   /**
    * Process queue item.
    *
-   * @param array|mixed $data
-   *   The queue data. Should contain 'menu' and 'language'.
+   * @param string $data
+   *   Data of the processable language code.
    *
    * @throws \Exception
    *   Throws exception if language code is not set.
    */
   public function processItem($data) : void {
-    if (!isset($data['menu'], $data['language'])) {
+    // Data is a langcode, like 'fi' or 'en'.
+    if (!is_string($data)) {
       return;
     }
-    ['menu' => $menuName, 'language' => $language] = $data;
-
-    $this->cacheTagInvalidator->invalidateTags([
-      // These are used by the menu block itself and local Global mobile menu
-      // REST API endpoint.
-      sprintf('config:system.menu.%s', $menuName),
-      sprintf('external_menu_block:%s', $menuName),
-      // This is used by ApiManager service to cache the API response
-      // locally.
-      sprintf('external_menu:%s:%s', $menuName, $language),
-      // This is used by REST API collection endpoint on Etusivu.
-      'config:rest.resource.helfi_global_menu_collection',
-    ]);
-
-    if ($menuName === 'main') {
-      try {
-        $this->mainMenuManager->sync($language);
-      }
-      catch (\Throwable) {
-        // The failed sync will be logged by ApiManager.
-      }
+    try {
+      $this->mainMenuManager->sync($data);
+    }
+    catch (\Throwable) {
+      // The failed sync will be logged by ApiManager.
     }
   }
 
