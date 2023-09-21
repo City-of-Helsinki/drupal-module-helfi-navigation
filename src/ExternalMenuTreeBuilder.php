@@ -141,6 +141,10 @@ final class ExternalMenuTreeBuilder {
 
     // Parse the URL.
     $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
+
+    if (!isset($item->parentId)) {
+      $item->parentId = NULL;
+    }
     $item->external = $this->domainResolver->isExternal($item->url);
 
     if (isset($item->weight)) {
@@ -158,7 +162,7 @@ final class ExternalMenuTreeBuilder {
       'attributes' => new Attribute($item->attributes ?? []),
       'title' => $item->name,
       'id' => $item->id,
-      'parent_id' => $item->parentId ?? NULL,
+      'parent_id' => $item->parentId,
       'is_expanded' => $expand_all_items || !empty($item->expanded),
       'in_active_trail' => $inActiveTrail,
       'is_currentPage' => $inActiveTrail,

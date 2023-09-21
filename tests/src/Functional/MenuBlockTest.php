@@ -65,7 +65,6 @@ class MenuBlockTest extends BrowserTestBase {
     $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
 
     _helfi_navigation_generate_blocks('stark', 'content', TRUE);
-    $this->setContainerParameter('helfi_navigation.request_timeout', 1);
   }
 
   /**
