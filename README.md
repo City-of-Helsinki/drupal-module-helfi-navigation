@@ -40,7 +40,13 @@ Only main-navigation has syncing option. Other navigations are created in Etusiv
   - run `drush upwd helfi-admin 123` to update admin password. it is used as api key in other instances.
 - Setup any other instance with helfi_navigation module enabled.
   - Add following line to local.settings.php. Otherwise syncing global navigation won't work
-    - `$config['helfi_navigation.api']['key'] = base64_encode('helfi-admin:123');`
+    ```php
+    $config['helfi_api_base.api_accounts']['vault'][] = [
+      'id' => 'helfi_navigation',
+      'plugin' => 'authorization_token',
+      'data' => base64_encode('helfi-admin:123'),
+    ];
+      ```
 
 ### Steps after both instances are up and running.
 1. Edit and save menu on any instance with helfi_navigation module enabled.
