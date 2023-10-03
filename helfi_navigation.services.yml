@@ -32,7 +32,6 @@ services:
       - '@menu.link_tree'
       - '@plugin.manager.menu.link'
       - '@event_dispatcher'
-      - '@language_manager'
   helfi_navigation.cache_warmer:
     class: Drupal\helfi_navigation\CacheWarmer
     arguments:
@@ -40,7 +39,6 @@ services:
       - '@language_manager'
       - '@cache_tags.invalidator'
       - '@helfi_navigation.api_manager'
-
   helfi_navigation.api_authorization:
     class: Drupal\helfi_navigation\ApiAuthorization
     arguments:

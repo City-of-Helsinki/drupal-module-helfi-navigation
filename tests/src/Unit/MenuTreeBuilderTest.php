@@ -47,8 +47,7 @@ class MenuTreeBuilderTest extends UnitTestCase {
       new InternalDomainResolver(),
       $menuTree->reveal(),
       $this->prophesize(MenuLinkManagerInterface::class)->reveal(),
-      $this->prophesize(EventDispatcherInterface::class)->reveal(),
-      $this->prophesize(LanguageManagerInterface::class)->reveal(),
+      $this->prophesize(EventDispatcherInterface::class)->reveal()
     );
     $menuTreeBuilder->build('main', 'en', $rootElement);
   }

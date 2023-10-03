@@ -36,16 +36,13 @@ final class MenuTreeBuilder {
    *   The menu link manager.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   The event dispatcher.
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly InternalDomainResolver $domainResolver,
     private readonly MenuLinkTreeInterface $menuTree,
     private readonly MenuLinkManagerInterface $menuLinkManager,
-    private readonly EventDispatcherInterface $eventDispatcher,
-    private readonly LanguageManagerInterface $languageManager
+    private readonly EventDispatcherInterface $eventDispatcher
   ) {
   }
 
@@ -131,7 +128,7 @@ final class MenuTreeBuilder {
       if (!$link = $this->getEntity($element->link, $langcode)) {
         continue;
       }
-      $this->evaluateEntityAccess($element);
+      $this->evaluateEntityAccess($element, $langcode);
 
       // Only show accessible links.
       if ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) {
@@ -272,7 +269,7 @@ final class MenuTreeBuilder {
    * @param \Drupal\Core\Menu\MenuLinkTreeElement $element
    *   The element to check entity access for.
    */
-  private function evaluateEntityAccess(MenuLinkTreeElement $element) : void {
+  private function evaluateEntityAccess(MenuLinkTreeElement $element, string $langcode ) : void {
     // Attempt to fetch the entity type and id from link's route parameters.
     // The route parameters should be an array containing entity type => id
     // like: ['node' => '1'].
@@ -288,6 +285,9 @@ final class MenuTreeBuilder {
     if (!$entity = $storage->load($routeParameters[$entityType])) {
       return;
     }
+
+    $entity = $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode) : $entity;
+
     if (!$entity->access('view')) {
       // Disallow access if user has no view access to the target entity.
       // This updates the existing access result and will be evaluated in
@@ -295,22 +295,6 @@ final class MenuTreeBuilder {
       $element->access = AccessResult::neutral()
         ->addCacheableDependency($entity);
     }
-
-    $currentLanguage = $this->languageManager
-      ->getCurrentLanguage()
-      ->getId();
-    if ($entity->hasTranslation($currentLanguage)) {
-      $translation = $entity->getTranslation($currentLanguage);
-      if (!$translation->isPublished()) {
-        $element->access = AccessResult::neutral()
-          ->addCacheableDependency($entity);
-      }
-    }
-    else {
-      $element->access = AccessResult::neutral()
-        ->addCacheableDependency($entity);
-    }
-
   }
 
 }
