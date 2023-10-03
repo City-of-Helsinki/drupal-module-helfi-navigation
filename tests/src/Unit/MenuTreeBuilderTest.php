@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_navigation\Unit;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
@@ -47,6 +48,7 @@ class MenuTreeBuilderTest extends UnitTestCase {
       $menuTree->reveal(),
       $this->prophesize(MenuLinkManagerInterface::class)->reveal(),
       $this->prophesize(EventDispatcherInterface::class)->reveal(),
+      $this->prophesize(LanguageManagerInterface::class)->reveal(),
     );
     $menuTreeBuilder->build('main', 'en', $rootElement);
   }
