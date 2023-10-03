@@ -32,6 +32,7 @@ services:
       - '@menu.link_tree'
       - '@plugin.manager.menu.link'
       - '@event_dispatcher'
+      - '@language_manager'
   helfi_navigation.cache_warmer:
     class: Drupal\helfi_navigation\CacheWarmer
     arguments:

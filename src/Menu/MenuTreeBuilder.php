@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation\Menu;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
@@ -35,13 +36,16 @@ final class MenuTreeBuilder {
    *   The menu link manager.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
+   * @param \Drupal\Core\Language\LanguageManagerInterface $eventDispatcher
+   *   The event dispatcher.
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly InternalDomainResolver $domainResolver,
     private readonly MenuLinkTreeInterface $menuTree,
     private readonly MenuLinkManagerInterface $menuLinkManager,
-    private readonly EventDispatcherInterface $eventDispatcher
+    private readonly EventDispatcherInterface $eventDispatcher,
+    private readonly LanguageManagerInterface $languageManager
   ) {
   }
 
@@ -291,6 +295,21 @@ final class MenuTreeBuilder {
       $element->access = AccessResult::neutral()
         ->addCacheableDependency($entity);
     }
+
+    $currentLanguage = $this->languageManager
+      ->getCurrentLanguage()
+      ->getId();
+    if ($entity->hasTranslation($currentLanguage)) {
+      $translation = $entity->getTranslation($currentLanguage);
+      if (!$translation->isPublished()) {
+        $element->access = AccessResult::neutral()
+          ->addCacheableDependency($entity);
+      }
+    } else {
+      $element->access = AccessResult::neutral()
+        ->addCacheableDependency($entity);
+    }
+
   }
 
 }
