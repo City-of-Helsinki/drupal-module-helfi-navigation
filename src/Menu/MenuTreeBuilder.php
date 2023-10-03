@@ -268,7 +268,7 @@ final class MenuTreeBuilder {
    * @param \Drupal\Core\Menu\MenuLinkTreeElement $element
    *   The element to check entity access for.
    * @param string $langcode
-   *    Menu tree language.
+   *   Menu tree language.
    */
   private function evaluateEntityAccess(MenuLinkTreeElement $element, string $langcode) : void {
     // Attempt to fetch the entity type and id from link's route parameters.
