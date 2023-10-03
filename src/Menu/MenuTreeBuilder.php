@@ -36,7 +36,7 @@ final class MenuTreeBuilder {
    *   The menu link manager.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $eventDispatcher
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The event dispatcher.
    */
   public function __construct(
@@ -305,7 +305,8 @@ final class MenuTreeBuilder {
         $element->access = AccessResult::neutral()
           ->addCacheableDependency($entity);
       }
-    } else {
+    }
+    else {
       $element->access = AccessResult::neutral()
         ->addCacheableDependency($entity);
     }
