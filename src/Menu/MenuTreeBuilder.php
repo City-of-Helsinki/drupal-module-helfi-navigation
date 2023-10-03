@@ -7,7 +7,6 @@ namespace Drupal\helfi_navigation\Menu;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
@@ -268,8 +267,10 @@ final class MenuTreeBuilder {
    *
    * @param \Drupal\Core\Menu\MenuLinkTreeElement $element
    *   The element to check entity access for.
+   * @param string $langcode
+   *    Menu tree language.
    */
-  private function evaluateEntityAccess(MenuLinkTreeElement $element, string $langcode ) : void {
+  private function evaluateEntityAccess(MenuLinkTreeElement $element, string $langcode) : void {
     // Attempt to fetch the entity type and id from link's route parameters.
     // The route parameters should be an array containing entity type => id
     // like: ['node' => '1'].

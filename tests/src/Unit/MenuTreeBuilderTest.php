@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_navigation\Unit;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
