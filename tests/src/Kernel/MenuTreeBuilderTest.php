@@ -143,6 +143,37 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     // Make sure no links are visible after the node was unpublished.
     $tree = $this->getMenuTree('fi');
     $this->assertCount(0, $tree['sub_tree']);
+
+    // Enable all english node translations.
+    foreach($this->nodes as $node) {
+      if ($node->hasTranslation('en')) {
+        $translation = $node->getTranslation('en');
+        $translation->setPublished()->save();
+      }
+    }
+
+    // Rebuild the container to empty static entity cache.
+    $this->container->get('kernel')->rebuildContainer();
+
+    // Make sure english nodes are enabled.
+    $tree = $this->getMenuTree('en');
+    $this->assertCount(3, $tree['sub_tree']);
+
+    // Disable all english node translations.
+    foreach($this->nodes as $node) {
+      if ($node->hasTranslation('en')) {
+        $translation = $node->getTranslation('en');
+        $translation->setUnpublished()->save();
+      }
+    }
+
+    // Rebuild the container to empty static entity cache.
+    $this->container->get('kernel')->rebuildContainer();
+
+    // Make sure english nodes disappear.
+    $tree = $this->getMenuTree('en');
+    $this->assertCount(2, $tree['sub_tree']);
+
   }
 
 }
