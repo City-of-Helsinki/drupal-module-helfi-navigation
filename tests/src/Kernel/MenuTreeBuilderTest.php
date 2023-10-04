@@ -145,7 +145,7 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     $this->assertCount(0, $tree['sub_tree']);
 
     // Enable all english node translations.
-    foreach($this->nodes as $node) {
+    foreach ($this->nodes as $node) {
       if ($node->hasTranslation('en')) {
         $translation = $node->getTranslation('en');
         $translation->setPublished()->save();
