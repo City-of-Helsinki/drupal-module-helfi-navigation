@@ -12,6 +12,7 @@ The master repository for all menus is `Etusivu`-instance
 - Fetch aggregated main-navigation from Etusivu-instance.
 - Fetch global header and footer navigations from Etusivu-instance.
 - Render Fetched navigations with blocks.
+- Custom REST-endpoint for mobile navigation: `/api/v1/global-mobile-menu`
 
 ### Main-navigation syncing
 
@@ -51,3 +52,8 @@ Only main-navigation has syncing option. Other navigations are created in Etusiv
     based on the changes you made
 4. Instances should fetch the menus from Etusivu and update the related blocks after `drush cr` and page refresh.
 
+## Changes not updating to the global mobile menu?
+The global mobile navigation API can be found from `/api/v1/global-mobile-menu` path so check if your changes are
+visible there. If they are, the problem is probably caused by caches. The global mobile menu is cached for 24 hours by
+the browser. You can clear this cache on Chrome by opening developer tools and on the `Network` tab select the
+`Disable cache` checkbox and reload the page.

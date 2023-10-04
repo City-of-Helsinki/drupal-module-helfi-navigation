@@ -39,7 +39,6 @@ services:
       - '@language_manager'
       - '@cache_tags.invalidator'
       - '@helfi_navigation.api_manager'
-
   helfi_navigation.api_authorization:
     class: Drupal\helfi_navigation\ApiAuthorization
     arguments:
