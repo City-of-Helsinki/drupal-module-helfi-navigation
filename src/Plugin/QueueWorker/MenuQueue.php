@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation\Plugin\QueueWorker;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\MainMenuManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -58,19 +59,9 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
     if (!isset($data['menu'], $data['language'])) {
       return;
     }
-    ['menu' => $menuName, 'language' => $language] = $data;
+    sleep(10);
 
-    $this->cacheTagInvalidator->invalidateTags([
-      // These are used by the menu block itself and local Global mobile menu
-      // REST API endpoint.
-      sprintf('config:system.menu.%s', $menuName),
-      sprintf('external_menu_block:%s', $menuName),
-      // This is used by ApiManager service to cache the API response
-      // locally.
-      sprintf('external_menu:%s:%s', $menuName, $language),
-      // This is used by REST API collection endpoint on Etusivu.
-      'config:rest.resource.helfi_global_menu_collection',
-    ]);
+    ['menu' => $menuName, 'language' => $language] = $data;
 
     if ($menuName === 'main') {
       try {
@@ -80,6 +71,21 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
         // The failed sync will be logged by ApiManager.
       }
     }
+
+    $this->cacheTagInvalidator->invalidateTags([
+      // These are used by the menu block itself and local Global mobile menu
+      // REST API endpoint.
+      sprintf('config:system.menu.%s', $menuName),
+      sprintf('external_menu_block:%s', $menuName),
+      // This is used by ApiManager service to cache the API response
+      // locally.
+      sprintf('external_menu:%s:%s', $menuName, $language),
+    ]);
+    $this->cacheTagInvalidator->invalidateTags([
+      // This is used by REST API collection endpoint on Etusivu.
+      'config:rest.resource.helfi_global_menu_collection',
+    ], [Project::ETUSIVU]);
+
   }
 
 }
