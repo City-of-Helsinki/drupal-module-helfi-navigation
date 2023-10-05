@@ -59,7 +59,6 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
     if (!isset($data['menu'], $data['language'])) {
       return;
     }
-    sleep(10);
 
     ['menu' => $menuName, 'language' => $language] = $data;
 
