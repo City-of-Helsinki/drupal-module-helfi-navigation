@@ -127,7 +127,7 @@ final class MenuTreeBuilder {
       if (!$link = $this->getEntity($element->link, $langcode)) {
         continue;
       }
-      $this->evaluateEntityAccess($element);
+      $this->evaluateEntityAccess($element, $langcode);
 
       // Only show accessible links.
       if ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) {
@@ -267,11 +267,13 @@ final class MenuTreeBuilder {
    *
    * @param \Drupal\Core\Menu\MenuLinkTreeElement $element
    *   The element to check entity access for.
+   * @param string $langcode
+   *   Menu tree language.
    */
-  private function evaluateEntityAccess(MenuLinkTreeElement $element) : void {
-    // Attempt to fetch the entity type, and id from link's route parameters.
-    // The route parameters should be an array containing an entity type => id
-    // key pairs, like: ['node' => '1'].
+  private function evaluateEntityAccess(MenuLinkTreeElement $element, string $langcode) : void {
+    // Attempt to fetch the entity type and id from link's route parameters.
+    // The route parameters should be an array containing entity type => id
+    // like: ['node' => '1'].
     $routeParameters = $element->link->getRouteParameters();
     $entityType = key($routeParameters);
 
@@ -284,6 +286,9 @@ final class MenuTreeBuilder {
     if (!$entity = $storage->load($routeParameters[$entityType])) {
       return;
     }
+
+    $entity = $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode) : $entity;
+
     if (!$entity->access('view')) {
       // Disallow access if user has no view access to the target entity.
       // This updates the existing access result and will be evaluated in
