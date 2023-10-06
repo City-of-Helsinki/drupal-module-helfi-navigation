@@ -30,7 +30,7 @@ final class MenuTreeBuilder {
    * @param \Drupal\helfi_api_base\Link\InternalDomainResolver $domainResolver
    *   The internal domain resolver.
    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menuTree
-   *   The menu link tree builder service.
+   *   The 'menu link tree builder' service.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menuLinkManager
    *   The menu link manager.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
@@ -157,7 +157,7 @@ final class MenuTreeBuilder {
 
       $urlObject = $link->getUrlObject();
 
-      // Make sure url object retains the language information.
+      // Make sure the url object retains the language information.
       if (!$urlObject->getOption('language')) {
         $urlObject->setOptions(['language' => $link->language()]);
       }
