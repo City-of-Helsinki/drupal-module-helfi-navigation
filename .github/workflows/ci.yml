@@ -7,6 +7,7 @@ name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
   BROWSERTEST_OUTPUT_DIRECTORY: 'public/sites/simpletest'
+  SIMPLETEST_BASE_URL: http://app:8888
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -15,6 +16,7 @@ jobs:
         php-versions: ['8.1', '8.2']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
+      options: --hostname app
 
     services:
       chromium:

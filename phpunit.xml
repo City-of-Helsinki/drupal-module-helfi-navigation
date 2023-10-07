@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
-  colors="true"
-  cacheResultFile=".phpunit.cache/test-results"
-  executionOrder="depends,defects"
-  forceCoversAnnotation="true"
-  beStrictAboutTestsThatDoNotTestAnything="true"
-  beStrictAboutOutputDuringTests="true"
-  beStrictAboutChangesToGlobalState="true"
-  beStrictAboutCoversAnnotation="true"
-  printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
-  failOnRisky="true"
-  failOnWarning="true"
-  verbose="true">
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         colors="true"
+         cacheResultFile=".phpunit.cache/test-results"
+         executionOrder="depends,defects"
+         forceCoversAnnotation="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutChangesToGlobalState="true"
+         beStrictAboutCoversAnnotation="true"
+         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+         failOnRisky="true"
+         failOnWarning="true"
+         failOnSkipped="true"
+         verbose="true">
 <php>
   <!-- Set error reporting to E_ALL. -->
   <ini name="error_reporting" value="32767"/>
