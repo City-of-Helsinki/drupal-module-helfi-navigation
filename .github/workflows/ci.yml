@@ -17,6 +17,10 @@ jobs:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
 
     services:
+      chromium:
+        # @todo Update this to newer version once minkphp supports Selenium 4.
+        # @see https://github.com/minkphp/MinkSelenium2Driver/pull/372
+        image: selenium/standalone-chrome:106.0
       db:
         image: mariadb
         env:
@@ -71,7 +75,7 @@ jobs:
       - name: Start services
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
-          vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
+          vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
 
       - name: Run PHPUnit tests
