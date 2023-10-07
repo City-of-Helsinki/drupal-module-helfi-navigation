@@ -16,7 +16,6 @@ jobs:
         php-versions: ['8.1', '8.2']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
-      options: --hostname app
 
     services:
       chromium:
@@ -37,6 +36,11 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
+
+      - name: Debug
+        run: |
+          hostname
+          exit 1
 
       - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
