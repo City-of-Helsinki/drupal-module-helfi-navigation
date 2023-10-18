@@ -210,7 +210,10 @@ function helfi_navigation_form_node_form_submit(array $form, FormStateInterface 
     if ($link->hasTranslation($langCode)) {
       $link = $link->getTranslation($langCode);
     }
-    $link->set('content_translation_status', $values['content_translation_status'])
-      ->save();
+
+    if (isset($values['content_translation_status'])) {
+      $link->set('content_translation_status', $values['content_translation_status'])
+        ->save();
+    }
   }
 }
