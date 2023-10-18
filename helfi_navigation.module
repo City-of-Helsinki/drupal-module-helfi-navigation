@@ -211,6 +211,7 @@ function helfi_navigation_form_node_form_submit(array $form, FormStateInterface 
       $link = $link->getTranslation($langCode);
     }
 
+    // User needs Administer menus and menu links -permission for this field to exist.
     if (isset($values['content_translation_status'])) {
       $link->set('content_translation_status', $values['content_translation_status'])
         ->save();
