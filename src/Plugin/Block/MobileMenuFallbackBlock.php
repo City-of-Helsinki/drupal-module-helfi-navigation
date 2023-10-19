@@ -100,7 +100,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
    * @return array
    *   The parent links.
    */
-  private function buildParentLinks(MenuLinkInterface $activeLink, array $parents) : array {
+  private function buildParentLinks(?MenuLinkInterface $activeLink, array $parents) : array {
     $langcode = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage();
     $url = $this->apiManager->getUrl(
       'canonical',
@@ -130,7 +130,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       $parentLinks[] = [
         'title' => $link->getTitle(),
         'url' => $link->getUrlObject(),
-        'is_currentPage' => $activeLink->getPluginId() === $id,
+        'is_currentPage' => $activeLink?->getPluginId() === $id,
       ];
     }
 
@@ -147,21 +147,27 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     // Adjust the menu tree parameters based on the block's configuration.
     $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters('main');
     $parameters->expandedParents = [];
+
+    $parents = [];
+    $root = '';
+
     // Get active menu link, aka. current menu link.
-    $activeMenuLink = $this->menuActiveTrail->getActiveLink('main');
-    $parents = $this->menuLinkManager->getParentIds($activeMenuLink->getPluginId());
+    if ($activeMenuLink = $this->menuActiveTrail->getActiveLink('main')) {
+      $parents = $this->menuLinkManager->getParentIds($activeMenuLink->getPluginId());
 
-    // Default root to the closest parent whenever possible.
-    $root = array_key_first($parents);
+      // Default root to the closest parent whenever possible.
+      $root = array_key_first($parents);
 
-    // If the currently active link has no children, we must start
-    // one parent further down.
-    if (!$this->menuLinkManager->getChildIds($activeMenuLink->getPluginId())) {
-      $root = next($parents);
-      reset($parents);
+      // If the currently active link has no children, we must start
+      // one parent further down.
+      if (!$this->menuLinkManager->getChildIds($activeMenuLink->getPluginId())) {
+        $root = next($parents);
+        reset($parents);
 
-      // Remove the currently active link from parents when it has no children.
-      $parents = array_filter($parents, fn (string $id) => $id !== $activeMenuLink->getPluginId());
+        // Remove the currently active link from parents when it has no
+        // children.
+        $parents = array_filter($parents, fn (string $id) => $id !== $activeMenuLink->getPluginId());
+      }
     }
     $parameters->setMaxDepth(2);
     $parameters->setRoot($root)->setMinDepth(1);
