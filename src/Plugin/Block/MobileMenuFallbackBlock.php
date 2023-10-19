@@ -5,21 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Http\RequestStack;
-use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
-use Drupal\Core\Menu\MenuLinkTree;
-use Drupal\Core\Menu\MenuLinkTreeElement;
-use Drupal\Core\Menu\MenuTreeParameters;
-use Drupal\Core\Menu\MenuTreeStorageInterface;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\helfi_navigation\ApiManager;
-use Drupal\menu_link_content\MenuLinkContentInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -63,6 +54,12 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
    * @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver
    */
   private DefaultLanguageResolver $defaultLanguageResolver;
+
+  /**
+   * The menu link manager.
+   *
+   * @var \Drupal\Core\Menu\MenuLinkManagerInterface
+   */
   private MenuLinkManagerInterface $menuLinkManager;
 
   /**
@@ -93,6 +90,15 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     return $instance;
   }
 
+  /**
+   * Builds the parent links.
+   *
+   * @param array $parents
+   *   The parent IDs.
+   *
+   * @return array
+   *   The parent links.
+   */
   private function buildParentLinks(array $parents) : array {
     $langcode = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage();
     $url = $this->apiManager->getUrl(
