@@ -94,6 +94,8 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
   /**
    * Builds the parent links.
    *
+   * @param \Drupal\Core\Menu\MenuLinkInterface|null $activeLink
+   *   The currently active menu link.
    * @param array $parents
    *   The parent IDs.
    *
