@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Template\Attribute;
@@ -99,7 +100,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
    * @return array
    *   The parent links.
    */
-  private function buildParentLinks(array $parents) : array {
+  private function buildParentLinks(MenuLinkInterface $activeLink, array $parents) : array {
     $langcode = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage();
     $url = $this->apiManager->getUrl(
       'canonical',
@@ -129,6 +130,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       $parentLinks[] = [
         'title' => $link->getTitle(),
         'url' => $link->getUrlObject(),
+        'is_currentPage' => $activeLink->getPluginId() === $id,
       ];
     }
 
@@ -181,7 +183,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $tree = $this->menuTree->transform($tree, $manipulators);
     $build = $this->menuTree->build($tree);
 
-    [$menu_link_back, $menu_link_current_or_parent] = $this->buildParentLinks($parents);
+    [$menu_link_back, $menu_link_current_or_parent] = $this->buildParentLinks($activeMenuLink, $parents);
 
     $build['#theme'] = 'menu__external_menu__fallback';
     $build['#menu_link_back'] = $menu_link_back;
