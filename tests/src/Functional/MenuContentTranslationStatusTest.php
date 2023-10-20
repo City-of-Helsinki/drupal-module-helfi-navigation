@@ -79,7 +79,7 @@ class MenuContentTranslationStatusTest extends BrowserTestBase {
 
     // Make sure we can translate the menu link.
     $this->getSession()->getPage()->clickLink('Translate');
-    $this->getSession()->getPage()->find('css', 'a[href="/fi/node/1/translations/add/en/fi"]')->click();
+    $this->getSession()->getPage()->find('css', 'a[href="/fi/node/1/translations/add/en/fi"]')?->click();
 
     $this->submitForm([
       'title[0][value]' => 'Title fi',
@@ -89,7 +89,7 @@ class MenuContentTranslationStatusTest extends BrowserTestBase {
     ], 'Save (this translation)');
 
     $this->getSession()->getPage()->clickLink('Edit');
-    $this->assertStringStartsWith('/fi', parse_url($this->getSession()->getCurrentUrl(), PHP_URL_PATH));
+    $this->assertStringStartsWith('/fi', (string) parse_url($this->getSession()->getCurrentUrl(), PHP_URL_PATH));
     $this->assertSession()->fieldValueEquals('menu[title]', 'Link title fi');
     $this->assertSession()->fieldValueEquals('menu[content_translation_status]', '1');
 

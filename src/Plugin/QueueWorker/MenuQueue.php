@@ -49,14 +49,14 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
   /**
    * Process queue item.
    *
-   * @param array|mixed $data
+   * @param mixed $data
    *   The queue data. Should contain 'menu' and 'language'.
    *
    * @throws \Exception
    *   Throws exception if language code is not set.
    */
   public function processItem($data) : void {
-    if (!isset($data['menu'], $data['language'])) {
+    if (!is_array($data) || !isset($data['menu'], $data['language'])) {
       return;
     }
 

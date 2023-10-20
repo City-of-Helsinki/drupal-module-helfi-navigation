@@ -83,10 +83,10 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
    * @param \Drupal\helfi_navigation\ApiResponse $response
    *   The API response.
    *
-   * @return mixed
+   * @return array
    *   The external menu tree.
    */
-  abstract protected function getTreeFromResponse(ApiResponse $response) : mixed;
+  abstract protected function getTreeFromResponse(ApiResponse $response) : array;
 
   /**
    * {@inheritdoc}
@@ -105,7 +105,7 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
     $langcode = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage();
 
     try {
-      $menuId = $this->getDerivativeId();
+      $menuId = (string) $this->getDerivativeId();
       $response = $this->apiManager->get(
         $langcode,
         $menuId,

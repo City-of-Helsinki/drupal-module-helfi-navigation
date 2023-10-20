@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
@@ -80,7 +81,7 @@ function helfi_navigation_entity_base_field_info(EntityTypeInterface $entity_typ
 /**
  * Implements hook_preprocess_HOOK().
  */
-function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) : void {
+function helfi_navigation_preprocess_menu__external_menu__fallback(array &$variables) : void {
   if (is_array($variables['items']) && !empty($variables['items'])) {
     foreach ($variables['items'] as &$menu_link) {
       $menu_link['next_url'] = clone $menu_link['url'];
@@ -93,7 +94,7 @@ function helfi_navigation_preprocess_menu__external_menu__fallback(&$variables) 
  * Implements hook_ENTITY_TYPE_update().
  */
 function helfi_navigation_menu_update(MenuInterface $entity) : void {
-  _helfi_navigation_queue_item($entity->id(), $entity->language()->getId(), 'update');
+  _helfi_navigation_queue_item((string) $entity->id(), $entity->language()->getId(), 'update');
 }
 
 /**
@@ -169,6 +170,7 @@ function helfi_navigation_form_node_form_alter(
   array &$form,
   FormStateInterface $form_state
 ) :void {
+  assert($form_state->getFormObject() instanceof EntityFormInterface);
   /** @var \Drupal\node\NodeInterface $node */
   $node = $form_state->getFormObject()->getEntity();
   $defaults = menu_ui_get_menu_link_defaults($node) + [
@@ -178,10 +180,12 @@ function helfi_navigation_form_node_form_alter(
   if ($defaults['entity_id']) {
     $link = MenuLinkContent::load($defaults['entity_id']);
 
-    if ($link->hasTranslation($node->language()->getId())) {
+    if ($link && $link->hasTranslation($node->language()->getId())) {
       $link = $link->getTranslation($node->language()->getId());
     }
-    $defaults['content_translation_status'] = $link->get('content_translation_status')->value;
+    $defaults['content_translation_status'] = $link?->get('content_translation_status')
+      ->first()
+      ?->getString();
   }
 
   // Show menu link's 'published' field on node edit form.
@@ -197,9 +201,12 @@ function helfi_navigation_form_node_form_alter(
 /**
  * A form submit callback for helfi_navigation_form_node_form_alter().
  */
-function helfi_navigation_form_node_form_submit(array $form, FormStateInterface $formState) : void {
-  $values = $formState->getValue('menu');
-  $node = $formState->getFormObject()->getEntity();
+function helfi_navigation_form_node_form_submit(array $form, FormStateInterface $form_state) : void {
+  /** @var array $values */
+  $values = $form_state->getValue('menu');
+  assert($form_state->getFormObject() instanceof EntityFormInterface);
+
+  $node = $form_state->getFormObject()->getEntity();
   $langCode = $node->language()->getId();
 
   if (!empty($values['entity_id'])) {

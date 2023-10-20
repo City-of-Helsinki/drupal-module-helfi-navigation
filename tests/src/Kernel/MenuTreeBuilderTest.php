@@ -137,8 +137,10 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
       $node->setUnpublished()
         ->save();
     }
+    /** @var \Drupal\Core\DrupalKernelInterface $kernel */
+    $kernel = $this->container->get('kernel');
     // Rebuild the container to empty static entity cache.
-    $this->container->get('kernel')->rebuildContainer();
+    $kernel->rebuildContainer();
 
     // Make sure no links are visible after the node was unpublished.
     $tree = $this->getMenuTree('fi');
@@ -153,7 +155,7 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     }
 
     // Rebuild the container to empty static entity cache.
-    $this->container->get('kernel')->rebuildContainer();
+    $kernel->rebuildContainer();
 
     // Make sure english nodes are enabled.
     $tree = $this->getMenuTree('en');
@@ -168,7 +170,7 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     }
 
     // Rebuild the container to empty static entity cache.
-    $this->container->get('kernel')->rebuildContainer();
+    $kernel->rebuildContainer();
 
     // Make sure english nodes disappear.
     $tree = $this->getMenuTree('en');

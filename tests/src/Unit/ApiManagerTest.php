@@ -44,9 +44,9 @@ class ApiManagerTest extends UnitTestCase {
   /**
    * The cache.
    *
-   * @var null|\Drupal\Core\Cache\CacheBackendInterface
+   * @var \Drupal\Core\Cache\CacheBackendInterface
    */
-  private ?CacheBackendInterface $cache;
+  private CacheBackendInterface $cache;
 
   /**
    * The default environment resolver config.
@@ -74,7 +74,7 @@ class ApiManagerTest extends UnitTestCase {
    * @param int $expectedTime
    *   The expected time.
    *
-   * @return \Prophecy\Prophecy\ObjectProphecy
+   * @return \Prophecy\Prophecy\ObjectProphecy<TimeInterface>
    *   The mock.
    */
   private function getTimeMock(int $expectedTime) : ObjectProphecy {
@@ -115,10 +115,12 @@ class ApiManagerTest extends UnitTestCase {
     if (!$logger) {
       $logger = $this->prophesize(LoggerInterface::class)->reveal();
     }
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config */
+    $config = $this->getConfigFactoryStub([
+      'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
+    ]);
     if (!$environmentResolver) {
-      $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
-        'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
-      ]));
+      $environmentResolver = new EnvironmentResolver('', $config);
     }
     return new ApiManager(
       $time,
@@ -127,7 +129,7 @@ class ApiManagerTest extends UnitTestCase {
       $environmentResolver,
       $logger,
       new ApiAuthorization(
-        $this->getConfigFactoryStub([]),
+        $config,
         new VaultManager([
           new AuthorizationToken(ApiAuthorization::VAULT_MANAGER_KEY, '123'),
         ])
@@ -153,7 +155,7 @@ class ApiManagerTest extends UnitTestCase {
   public function testUpdateMainMenu() : void {
     $requests = [];
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
-      new Response(200, body: json_encode(['key' => 'value'])),
+      new Response(200, body: (string) json_encode(['key' => 'value'])),
     ]);
     $sut = $this->getSut(
       $client,
@@ -186,8 +188,8 @@ class ApiManagerTest extends UnitTestCase {
   public function testGetExternalMenu() : void {
     $requests = [];
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
-      new Response(200, body: json_encode([])),
-      new Response(200, body: json_encode(['key' => 'value'])),
+      new Response(200, body: (string) json_encode([])),
+      new Response(200, body: (string) json_encode(['key' => 'value'])),
     ]);
     $sut = $this->getSut($client);
 
@@ -219,8 +221,8 @@ class ApiManagerTest extends UnitTestCase {
   public function testGetMainMenu() : void {
     $requests = [];
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
-      new Response(200, body: json_encode([])),
-      new Response(200, body: json_encode(['key' => 'value'])),
+      new Response(200, body: (string) json_encode([])),
+      new Response(200, body: (string) json_encode(['key' => 'value'])),
     ]);
     $sut = $this->getSut($client);
     // Test empty and non-empty response.
@@ -291,7 +293,7 @@ class ApiManagerTest extends UnitTestCase {
 
     // Expired cache object.
     $cacheValue = new CacheValue(
-      (object) ['value' => 1],
+      new ApiResponse(['value' => 1]),
       $time - (CacheValue::TTL + 10),
       [],
     );
@@ -300,7 +302,7 @@ class ApiManagerTest extends UnitTestCase {
 
     $requests = [];
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
-      new Response(200, body: json_encode(['value' => 'value'])),
+      new Response(200, body: (string) json_encode(['value' => 'value'])),
     ]);
     $sut = $this->getSut(
       $client,
@@ -309,10 +311,12 @@ class ApiManagerTest extends UnitTestCase {
     $response = $sut->get('en', 'main');
     $this->assertInstanceOf(ApiResponse::class, $response);
     // Make sure cache was updated.
+    $this->assertInstanceOf(\stdClass::class, $response->data);
     $this->assertEquals('value', $response->data->value);
     // Re-fetch the data to make sure we still get updated data and make sure
     // no further HTTP requests are made.
     $response = $sut->get('en', 'main');
+    $this->assertInstanceOf(\stdClass::class, $response->data);
     $this->assertEquals('value', $response->data->value);
   }
 
@@ -461,8 +465,8 @@ class ApiManagerTest extends UnitTestCase {
   public function testCacheBypass() : void {
     $requests = [];
     $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
-      new Response(200, body: json_encode(['value' => 1])),
-      new Response(200, body: json_encode(['value' => 2])),
+      new Response(200, body: (string) json_encode(['value' => 1])),
+      new Response(200, body: (string) json_encode(['value' => 2])),
     ]);
     $sut = $this->getSut(
       $client,
@@ -470,11 +474,13 @@ class ApiManagerTest extends UnitTestCase {
     // Make sure cache is used for all requests.
     for ($i = 0; $i < 3; $i++) {
       $response = $sut->get('en', 'main');
+      $this->assertInstanceOf(\stdClass::class, $response->data);
       $this->assertEquals(1, $response->data->value);
     }
     // Make sure cache is bypassed when configured so and the cached content
     // is updated.
     $response = $sut->withBypassCache()->get('en', 'main');
+    $this->assertInstanceOf(\stdClass::class, $response->data);
     $this->assertEquals(2, $response->data->value);
 
     // withBypassCache() method creates a clone of ApiManager instance to ensure
@@ -483,6 +489,7 @@ class ApiManagerTest extends UnitTestCase {
     // if cache was bypassed here.
     for ($i = 0; $i < 3; $i++) {
       $response = $sut->get('en', 'main');
+      $this->assertInstanceOf(\stdClass::class, $response->data);
       $this->assertEquals(2, $response->data->value);
     }
   }

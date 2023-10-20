@@ -117,7 +117,7 @@ final class ExternalMenuTreeBuilder {
   /**
    * Create link from menu tree item.
    *
-   * @param object $item
+   * @param \stdClass $item
    *   Menu tree item.
    * @param string $menu
    *   Menu name.
@@ -128,19 +128,19 @@ final class ExternalMenuTreeBuilder {
    *   A menu link.
    */
   private function createLink(
-    object $item,
+    \stdClass $item,
     string $menu,
     bool $expand_all_items
   ): array {
     $link_definition = [
       'menu_name' => $menu,
       'options' => [],
-      'title' => $item->name,
+      'title' => $item->name ?? '',
       'provider' => 'helfi_navigation',
     ];
 
-    // Parse the URL.
-    $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
+    $item->url = isset($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
+
     $item->external = $this->domainResolver->isExternal($item->url);
 
     if (isset($item->weight)) {
@@ -172,13 +172,13 @@ final class ExternalMenuTreeBuilder {
   /**
    * Check if current menu link item is in active trail.
    *
-   * @param object $item
+   * @param \stdClass $item
    *   Menu link item.
    *
    * @return bool
    *   Returns true or false.
    */
-  private function inActiveTrail(object $item): bool {
+  private function inActiveTrail(\stdClass $item): bool {
     if (
       $item->url->isRouted() &&
       $item->url->getRouteName() === '<nolink>' ||

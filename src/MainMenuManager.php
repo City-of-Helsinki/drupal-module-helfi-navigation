@@ -89,10 +89,10 @@ class MainMenuManager {
         ->getOriginal('name', FALSE);
     }
 
-    if (!$siteName) {
+    if (!$siteName || !is_scalar($siteName)) {
       throw new \InvalidArgumentException('Missing "system.site[name]" configuration.');
     }
-    return $siteName;
+    return (string) $siteName;
   }
 
   /**
@@ -101,7 +101,7 @@ class MainMenuManager {
    * @param string $langcode
    *   Language code.
    *
-   * @return mixed
+   * @return array
    *   Menu tree.
    *
    * @throws \InvalidArgumentException

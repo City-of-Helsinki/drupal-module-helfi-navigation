@@ -27,9 +27,9 @@ class CacheWarmerTest extends KernelTestBase {
   /**
    * The shared temp store factory.
    *
-   * @var \Drupal\Core\TempStore\SharedTempStoreFactory|null
+   * @var \Drupal\Core\TempStore\SharedTempStoreFactory
    */
-  protected ?SharedTempStoreFactory $sharedTempStore;
+  protected SharedTempStoreFactory $sharedTempStore;
 
   /**
    * {@inheritdoc}

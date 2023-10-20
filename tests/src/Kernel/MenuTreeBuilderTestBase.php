@@ -40,8 +40,7 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
       'uid' => 0,
     ])->save();
 
-    Role::load(RoleInterface::ANONYMOUS_ID)
-      ->grantPermission('access content')
+    Role::load(RoleInterface::ANONYMOUS_ID)?->grantPermission('access content')
       ->save();
   }
 

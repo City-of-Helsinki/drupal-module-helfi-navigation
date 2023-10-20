@@ -30,6 +30,9 @@ final class MainNavigationMenuBlock extends ExternalMenuBlockBase {
   protected function getTreeFromResponse(ApiResponse $response): array {
     $tree = [];
 
+    if (!is_array($response->data)) {
+      return [];
+    }
     foreach ($response->data as $item) {
       if (!isset($item->menu_tree)) {
         continue;

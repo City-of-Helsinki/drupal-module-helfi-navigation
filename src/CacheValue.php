@@ -14,7 +14,7 @@ final class CacheValue {
   /**
    * Constructs a new instance.
    *
-   * @param object $value
+   * @param \Drupal\helfi_navigation\ApiResponse $value
    *   The cache data.
    * @param int $created
    *   The created date.
@@ -22,7 +22,7 @@ final class CacheValue {
    *   The cache tags.
    */
   public function __construct(
-    public object $value,
+    public ApiResponse $value,
     public int $created,
     public array $tags,
   ) {

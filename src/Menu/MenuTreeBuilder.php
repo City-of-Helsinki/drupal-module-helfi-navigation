@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation\Menu;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
@@ -147,10 +148,8 @@ final class MenuTreeBuilder {
 
       // Include all parent ids for given menu links.
       if ($parents = $this->menuLinkManager->getParentIds($link->getPluginId())) {
-        $parents = array_keys($parents);
-
         // Add first level root item as parent as well.
-        if (!isset($parents[$rootId]) && $rootId) {
+        if ($rootId && !isset($parents[$rootId])) {
           $parents[] = $rootId;
         }
       }
@@ -275,7 +274,7 @@ final class MenuTreeBuilder {
     // The route parameters should be an array containing entity type => id
     // like: ['node' => '1'].
     $routeParameters = $element->link->getRouteParameters();
-    $entityType = key($routeParameters);
+    $entityType = (string) key($routeParameters);
 
     if (!$this->entityTypeManager->hasDefinition($entityType)) {
       return;
@@ -287,6 +286,9 @@ final class MenuTreeBuilder {
       return;
     }
 
+    if (!$entity instanceof TranslatableInterface) {
+      return;
+    }
     $entity = $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode) : $entity;
 
     if (!$entity->access('view')) {

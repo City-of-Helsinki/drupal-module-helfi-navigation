@@ -32,35 +32,35 @@ final class GlobalMobileMenu extends ResourceBase {
    *
    * @var \Drupal\helfi_navigation\ApiManager
    */
-  private readonly ApiManager $apiManager;
+  private ApiManager $apiManager;
 
   /**
-   * The language manager service..
+   * The language manager service.
    *
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */
-  private readonly LanguageManagerInterface $languageManager;
+  private LanguageManagerInterface $languageManager;
 
   /**
    * The config factory service.
    *
    * @var \Drupal\Core\Config\ConfigFactory
    */
-  private readonly ConfigFactory $configFactory;
+  private ConfigFactory $configFactory;
 
   /**
    * The environment resolver service.
    *
    * @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
    */
-  private readonly EnvironmentResolverInterface $environmentResolver;
+  private EnvironmentResolverInterface $environmentResolver;
 
   /**
    * The menu manager service.
    *
    * @var \Drupal\helfi_navigation\MainMenuManager
    */
-  private readonly MainMenuManager $mainMenuManager;
+  private MainMenuManager $mainMenuManager;
 
   /**
    * {@inheritdoc}
@@ -161,7 +161,7 @@ final class GlobalMobileMenu extends ResourceBase {
    *   Normalized data array.
    */
   private function normalizeResponseData(array|object $data): array {
-    return json_decode(json_encode($data), TRUE);
+    return (array) json_decode((string) json_encode($data), TRUE);
   }
 
 }
