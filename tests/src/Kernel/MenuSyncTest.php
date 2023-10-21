@@ -152,7 +152,7 @@ class MenuSyncTest extends KernelTestBase {
   /**
    * A data provider for testConfigTranslation().
    *
-   * @return array
+   * @return \string[][]
    *   The data.
    */
   public function configTranslationData() : array {
@@ -171,7 +171,7 @@ class MenuSyncTest extends KernelTestBase {
     $apiManager = $this->createMock(ApiManager::class);
     $apiManager->expects($this->once())
       ->method('update')
-      ->willReturn(new ApiResponse((object) []));
+      ->willReturn(new ApiResponse([]));
     $this->container->set('helfi_navigation.api_manager', $apiManager);
 
     $this->expectException(\InvalidArgumentException::class);

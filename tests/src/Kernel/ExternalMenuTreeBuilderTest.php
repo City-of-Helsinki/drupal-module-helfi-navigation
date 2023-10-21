@@ -34,13 +34,13 @@ class ExternalMenuTreeBuilderTest extends MenuTreeBuilderTestBase {
   /**
    * Constructs a new external menu tree.
    *
-   * @param \Prophecy\Prophecy\ObjectProphecy<RequestStack> $requestStack
+   * @param \Prophecy\Prophecy\ObjectProphecy $requestStack
    *   The request stack mock.
    *
-   * @return array|null
+   * @return array
    *   The external menu tree.
    */
-  private function getExternalMenuTree(ObjectProphecy $requestStack) : ?array {
+  private function getExternalMenuTree(ObjectProphecy $requestStack) : array {
     $this->createLinks();
 
     $options = [
@@ -51,7 +51,7 @@ class ExternalMenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     ];
     $tree = $this->getMenuTree('en');
     // Convert to stdClass.
-    $tree = (object) json_decode((string) json_encode($tree));
+    $tree = json_decode(json_encode($tree));
 
     $externalMenuTreeBuilder = new ExternalMenuTreeBuilder(
       $this->container->get('helfi_api_base.internal_domain_resolver'),
@@ -88,7 +88,6 @@ class ExternalMenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     $requestStack->getCurrentRequest()->willReturn($request->reveal());
 
     $externalTree = $this->getExternalMenuTree($requestStack);
-    $this->assertIsArray($externalTree);
     // Make sure parent is marked in active trail as well when the child item
     // is the currently active page.
     $this->assertTrue($externalTree[0]['in_active_trail']);

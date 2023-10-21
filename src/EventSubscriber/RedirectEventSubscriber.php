@@ -61,10 +61,8 @@ final class RedirectEventSubscriber implements EventSubscriberInterface {
     // URL is then normalized to '/{langcode}', '/', or in case helfi_proxy is
     // enabled, to '/{langcode}/{proxy_prefix}'.
     if ($url->isRouted() && $url->getRouteName() === '<front>') {
-      /** @var string[] $page */
       $page = $this->configFactory->get('system.site')
         ->get('page');
-
       if (isset($page['front'])) {
         $candidates[] = $page['front'];
       }

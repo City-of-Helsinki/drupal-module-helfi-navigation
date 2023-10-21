@@ -56,13 +56,13 @@ abstract class KernelTestBase extends ApiKernelTestBase {
       ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
       ->save();
 
-    $this->container->get('kernel')->rebuildContainer();
+    \Drupal::service('kernel')->rebuildContainer();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function register(ContainerBuilder $container) : void {
+  public function register(ContainerBuilder $container) {
     $container->setParameter('helfi_navigation.request_timeout', 1);
 
     parent::register($container);

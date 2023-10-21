@@ -10,13 +10,12 @@ declare(strict_types = 1);
 use Drupal\block\Entity\Block;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\rest\Entity\RestResourceConfig;
 
 /**
  * Implements hook_install().
  */
-function helfi_navigation_install(bool $is_syncing) : void {
+function helfi_navigation_install($is_syncing) : void {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if ($is_syncing) {
@@ -196,7 +195,6 @@ function _helfi_navigation_generate_blocks(string $theme, ?string $region = NULL
       unset($config['translations']);
 
       foreach (['fi', 'sv'] as $lang_code) {
-        assert(\Drupal::languageManager() instanceof ConfigurableLanguageManagerInterface);
         /** @var \Drupal\language\Config\LanguageConfigOverride $config_translation */
         $config_translation = \Drupal::languageManager()
           ->getLanguageConfigOverride($lang_code, "block.block.$id");
@@ -218,7 +216,7 @@ function _helfi_navigation_generate_blocks(string $theme, ?string $region = NULL
 /**
  * Implements hook_uninstall().
  */
-function helfi_navigation_uninstall() : void {
+function helfi_navigation_uninstall($is_syncing) {
   // Delete Menu queue.
   $queue = \Drupal::queue('helfi_navigation_menu_queue');
   $queue->deleteQueue();

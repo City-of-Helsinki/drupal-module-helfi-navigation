@@ -25,7 +25,7 @@ class MenuQueueTest extends UnitTestCase {
   /**
    * Constructs a new menu queue object.
    *
-   * @param \Prophecy\Prophecy\ObjectProphecy<MainMenuManager> $menuManager
+   * @param \Prophecy\Prophecy\ObjectProphecy $menuManager
    *   The mocked menu manager.
    *
    * @return \Drupal\helfi_navigation\Plugin\QueueWorker\MenuQueue

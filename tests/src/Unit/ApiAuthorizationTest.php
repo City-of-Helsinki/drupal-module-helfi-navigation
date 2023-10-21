@@ -26,10 +26,8 @@ class ApiAuthorizationTest extends UnitTestCase {
     $vaultManager = new VaultManager([
       new AuthorizationToken(ApiAuthorization::VAULT_MANAGER_KEY, '123'),
     ]);
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config */
-    $config = $this->getConfigFactoryStub([]);
     $sut = new ApiAuthorization(
-      $config,
+      $this->getConfigFactoryStub([]),
       $vaultManager,
     );
     $this->assertEquals('123', $sut->getAuthorization());
@@ -40,10 +38,8 @@ class ApiAuthorizationTest extends UnitTestCase {
    * @covers ::getAuthorization
    */
   public function testEmptyAuthorization() : void {
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config */
-    $config = $this->getConfigFactoryStub(['helfi_navigation.api' => []]);
     $sut = new ApiAuthorization(
-      $config,
+      $this->getConfigFactoryStub([]),
       new VaultManager([]),
     );
     $this->assertNull($sut->getAuthorization());
@@ -54,10 +50,8 @@ class ApiAuthorizationTest extends UnitTestCase {
    * @covers ::getAuthorization
    */
   public function testFallbackConfigAuthorization() : void {
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config */
-    $config = $this->getConfigFactoryStub(['helfi_navigation.api' => ['key' => '123']]);
     $sut = new ApiAuthorization(
-      $config,
+      $this->getConfigFactoryStub(['helfi_navigation.api' => ['key' => '123']]),
       new VaultManager([]),
     );
     $this->assertEquals('123', $sut->getAuthorization());

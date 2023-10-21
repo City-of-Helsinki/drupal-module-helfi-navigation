@@ -65,7 +65,7 @@ class MenuBlockTest extends BrowserTestBase {
     $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
 
     _helfi_navigation_generate_blocks('stark', 'content', TRUE);
-    $this->setContainerParameter('helfi_navigation.request_timeout', '1');
+    $this->setContainerParameter('helfi_navigation.request_timeout', 1);
   }
 
   /**
@@ -188,7 +188,7 @@ class MenuBlockTest extends BrowserTestBase {
 
           // Test lang attributes.
           foreach ($attributes as $key => $value) {
-            $this->assertEquals($value, $item?->getAttribute($key));
+            $this->assertEquals($value, $item->getAttribute($key));
           }
         }
       }

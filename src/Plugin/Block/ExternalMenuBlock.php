@@ -22,7 +22,7 @@ final class ExternalMenuBlock extends ExternalMenuBlockBase {
    * {@inheritdoc}
    */
   protected function getTreeFromResponse(ApiResponse $response) : array {
-    return (array) $response->data;
+    return $response->data;
   }
 
 }

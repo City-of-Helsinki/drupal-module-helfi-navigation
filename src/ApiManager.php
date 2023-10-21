@@ -85,26 +85,22 @@ class ApiManager {
   }
 
   /**
-   * Gets the cached data for the given menu and language.
+   * Gets the cached data for given menu and language.
    *
    * @param string $key
-   *   The cache key.
+   *   The  cache key.
    * @param callable $callback
    *   The callback to handle requests.
    *
-   * @return \Drupal\helfi_navigation\CacheValue
-   *   The cache.
+   * @return object|null
+   *   The cache or null.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  private function cache(string $key, callable $callback) : CacheValue {
+  private function cache(string $key, callable $callback) : ? CacheValue {
     $exception = new TransferException();
-    $value = NULL;
+    $value = ($cache = $this->cache->get($key)) ? $cache->data : NULL;
 
-    if ($cache = $this->cache->get($key)) {
-      assert($cache instanceof \stdClass);
-      $value = $cache->data;
-    }
     // Attempt to re-fetch the data in case cache does not exist, cache has
     // expired, or bypass cache is set to true.
     if (
@@ -162,7 +158,7 @@ class ApiManager {
 
     $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
 
-    return $this->cache($key, fn() : CacheValue =>
+    return $this->cache($key, fn() =>
         new CacheValue(
           $this->makeRequest('GET', $endpoint, $langcode, $options),
           $this->time->getRequestTime(),
@@ -232,8 +228,6 @@ class ApiManager {
    *
    * @return string
    *   The URL.
-   *
-   * @throws \Throwable
    */
   public function getUrl(string $type, string $langcode, array $options = []) : string {
     $activeEnvironmentName = $this->environmentResolver
@@ -275,22 +269,6 @@ class ApiManager {
   }
 
   /**
-   * Decodes the given response.
-   *
-   * @param string $response
-   *   The response string.
-   *
-   * @return \Drupal\helfi_navigation\ApiResponse
-   *   The response.
-   */
-  private function decodeResponse(string $response) : ApiResponse {
-    $data = Utils::jsonDecode($response);
-    assert($data instanceof \stdClass);
-
-    return new ApiResponse($data);
-  }
-
-  /**
    * Makes a request based on parameters and returns the response.
    *
    * @param string $method
@@ -328,10 +306,9 @@ class ApiManager {
         // Etusivu instance is not reachable.
         throw $this->previousException;
       }
-      $response = $this->httpClient->request($method, $url, $options)
-        ->getBody()
-        ->getContents();
-      return $this->decodeResponse($response);
+      $response = $this->httpClient->request($method, $url, $options);
+
+      return new ApiResponse(Utils::jsonDecode($response->getBody()->getContents()));
     }
     catch (\Exception $e) {
       if ($e instanceof GuzzleException) {
@@ -358,7 +335,7 @@ class ApiManager {
             sprintf('[%s]. Attempted to use mock data, but the mock file "%s" was not found for "%s" endpoint.', $e->getMessage(), basename($fileName), $endpoint)
           );
         }
-        return $this->decodeResponse((string) file_get_contents($fileName));
+        return new ApiResponse(Utils::jsonDecode(file_get_contents($fileName)));
       }
       // Log the error and re-throw the exception.
       $this->logger->error('Request failed with error: ' . $e->getMessage());

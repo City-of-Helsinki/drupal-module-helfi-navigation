@@ -136,7 +136,6 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       ];
     }
 
-    // We only show the last two parents.
     return array_slice($parentLinks, -2);
   }
 
@@ -147,12 +146,14 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
    *   Returns the render array.
    */
   public function build() : array {
+    // Adjust the menu tree parameters based on the block's configuration.
     $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters('main');
     $parameters->expandedParents = [];
 
     $parents = [];
     $root = '';
 
+    // Get active menu link, aka. current menu link.
     if ($activeMenuLink = $this->menuActiveTrail->getActiveLink('main')) {
       $parents = $this->menuLinkManager->getParentIds($activeMenuLink->getPluginId());
 
@@ -160,17 +161,14 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       $root = array_key_first($parents);
 
       // If the currently active link has no children, we must start
-      // one parent further down, so we render the whole child tree
-      // instead of just one link.
+      // one parent further down.
       if (!$this->menuLinkManager->getChildIds($activeMenuLink->getPluginId())) {
         $root = next($parents);
         reset($parents);
 
         // Remove the currently active link from parents when it has no
         // children.
-        if (isset($parents[$activeMenuLink->getPluginId()])) {
-          unset($parents[$activeMenuLink->getPluginId()]);
-        }
+        $parents = array_filter($parents, fn (string $id) => $id !== $activeMenuLink->getPluginId());
       }
     }
     $parameters->setMaxDepth(2);
@@ -178,6 +176,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
 
     $tree = $this->menuTree->load('main', $parameters);
     $manipulators = [
+      ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ];
@@ -197,6 +196,18 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $build['#theme'] = 'menu__external_menu__fallback';
     $build['#menu_link_back'] = $menu_link_back;
     $build['#menu_link_current_or_parent'] = $menu_link_current_or_parent;
+    $build['#cache'] = [
+      'contexts' => [
+        'url',
+        'route.menu_active_trails:main',
+      ],
+      'tags' => [
+        'config:system.menu.main',
+      ],
+    ];
+    if ($this->pathMatcher->isFrontPage()) {
+      $build['#cache']['contexts'][] = 'url.path.is_front';
+    }
 
     return $build;
   }

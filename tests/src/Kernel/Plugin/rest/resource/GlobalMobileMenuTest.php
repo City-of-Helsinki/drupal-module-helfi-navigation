@@ -48,7 +48,7 @@ class GlobalMobileMenuTest extends MenuTreeBuilderTestBase {
    */
   private function grantRestfulPermissions() : void {
     Role::load(RoleInterface::ANONYMOUS_ID)
-      ?->grantPermission('restful get helfi_global_mobile_menu');
+      ->grantPermission('restful get helfi_global_mobile_menu');
   }
 
   /**
@@ -93,8 +93,7 @@ class GlobalMobileMenuTest extends MenuTreeBuilderTestBase {
 
     $request = $this->getMockedRequest('/api/v1/global-mobile-menu');
     $response = $this->processRequest($request);
-    /** @var array $array */
-    $array = json_decode((string) $response->getContent(), TRUE);
+    $array = json_decode($response->getContent(), TRUE);
 
     // Make sure 'is_injected' property is set, indicating that
     // local navigation is appended into API response.
@@ -110,10 +109,9 @@ class GlobalMobileMenuTest extends MenuTreeBuilderTestBase {
   public function testEndpointPassthrough() : void {
     $request = $this->getMockedRequest('/api/v1/global-mobile-menu');
     $response = $this->processRequest($request);
-    /** @var array $array */
-    $array = json_decode((string) $response->getContent(), TRUE);
+    $array = json_decode($response->getContent(), TRUE);
 
-    // Make sure the Asuminen project has no navigation since
+    // Make sure Asuminen project has no navigation since
     // we just return the API response from global menu
     // endpoint without any modifications.
     $this->assertArrayNotHasKey(Project::ASUMINEN, $array);
