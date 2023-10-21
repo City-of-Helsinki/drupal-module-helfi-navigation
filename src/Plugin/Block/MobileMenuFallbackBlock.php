@@ -176,7 +176,6 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
 
     $tree = $this->menuTree->load('main', $parameters);
     $manipulators = [
-      ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
       ['callable' => 'menu.default_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ];
