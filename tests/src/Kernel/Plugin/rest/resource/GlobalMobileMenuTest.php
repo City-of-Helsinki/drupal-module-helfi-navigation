@@ -2,12 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_navigation\Kernel;
+namespace Drupal\Tests\helfi_navigation\Kernel\Plugin\rest\Resource;
 
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\Tests\helfi_navigation\Kernel\MenuTreeBuilderTestBase;
 use Drupal\user\Entity\Role;
 use Drupal\user\RoleInterface;
 use Prophecy\PhpUnit\ProphecyTrait;

@@ -117,7 +117,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       [
         'is_currentPage' => $this->pathMatcher->isFrontPage(),
         'attributes' => new Attribute(),
-        'title' => $this->configFactory->get('system.site')->get('name') ?? $this->t('Front page'),
+        'title' => $this->configFactory->get('system.site')->get('name'),
         'url' => Url::fromRoute('<front>'),
       ],
     ];

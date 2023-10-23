@@ -30,7 +30,7 @@ trait MenuLinkTrait {
    */
   protected function createNodeWithAlias() : NodeInterface {
     if (!NodeType::load('page')) {
-      NodeType::create(['type' => 'page']);
+      NodeType::create(['type' => 'page'])->save();
     }
     $node = Node::create([
       'title' => 'Test',

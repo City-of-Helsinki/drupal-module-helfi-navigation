@@ -53,7 +53,12 @@ abstract class KernelTestBase extends ApiKernelTestBase {
     $this->setupLanguages();
 
     $this->config('language.negotiation')
-      ->set('url.prefixes', ['en' => 'en', 'fi' => 'fi', 'sv' => 'sv'])
+      ->set('url.prefixes', [
+        'en' => 'en',
+        'fi' => 'fi',
+        'sv' => 'sv',
+        'es' => 'es',
+      ])
       ->save();
 
     \Drupal::service('kernel')->rebuildContainer();
