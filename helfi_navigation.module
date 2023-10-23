@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
@@ -169,6 +170,7 @@ function helfi_navigation_form_node_form_alter(
   array &$form,
   FormStateInterface $form_state
 ) :void {
+  assert($form_state->getFormObject() instanceof EntityFormInterface);
   /** @var \Drupal\node\NodeInterface $node */
   $node = $form_state->getFormObject()->getEntity();
   $defaults = menu_ui_get_menu_link_defaults($node) + [
@@ -197,9 +199,11 @@ function helfi_navigation_form_node_form_alter(
 /**
  * A form submit callback for helfi_navigation_form_node_form_alter().
  */
-function helfi_navigation_form_node_form_submit(array $form, FormStateInterface $formState) : void {
-  $values = $formState->getValue('menu');
-  $node = $formState->getFormObject()->getEntity();
+function helfi_navigation_form_node_form_submit(array $form, FormStateInterface $form_state) : void {
+  assert($form_state->getFormObject() instanceof EntityFormInterface);
+
+  $values = $form_state->getValue('menu');
+  $node = $form_state->getFormObject()->getEntity();
   $langCode = $node->language()->getId();
 
   if (!empty($values['entity_id'])) {

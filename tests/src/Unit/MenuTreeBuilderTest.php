@@ -54,7 +54,7 @@ class MenuTreeBuilderTest extends UnitTestCase {
   /**
    * The data provider for root element exception test.
    *
-   * @return \object[][]
+   * @return array
    *   The data.
    */
   public function rootElementExceptionData() : array {

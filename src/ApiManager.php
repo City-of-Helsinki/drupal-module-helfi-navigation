@@ -92,7 +92,7 @@ class ApiManager {
    * @param callable $callback
    *   The callback to handle requests.
    *
-   * @return object|null
+   * @return \Drupal\helfi_navigation\CacheValue|null
    *   The cache or null.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException

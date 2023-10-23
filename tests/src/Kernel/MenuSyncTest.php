@@ -152,7 +152,7 @@ class MenuSyncTest extends KernelTestBase {
   /**
    * A data provider for testConfigTranslation().
    *
-   * @return \string[][]
+   * @return array
    *   The data.
    */
   public function configTranslationData() : array {
