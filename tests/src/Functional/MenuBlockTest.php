@@ -11,6 +11,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\Tests\helfi_navigation\Traits\MenuLinkTrait;
 
 /**
  * Tests menu blocks.
@@ -20,6 +21,7 @@ use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 class MenuBlockTest extends BrowserTestBase {
 
   use EnvironmentResolverTrait;
+  use MenuLinkTrait;
 
   /**
    * {@inheritdoc}
@@ -72,6 +74,7 @@ class MenuBlockTest extends BrowserTestBase {
    * Make sure menu block can be placed.
    */
   public function testExternalMenuBlock() : void {
+    $this->createLinks();
     // Verify that:
     // 1. Mega menu has only two levels of links.
     // 2. Block label is translated when a translation is provided.

@@ -101,7 +101,7 @@ class MainMenuManager {
    * @param string $langcode
    *   Language code.
    *
-   * @return mixed
+   * @return array
    *   Menu tree.
    *
    * @throws \InvalidArgumentException

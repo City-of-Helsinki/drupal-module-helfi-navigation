@@ -56,7 +56,7 @@ jobs:
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
           composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/$MODULE_NAME -W
+          composer require drupal/menu_block_current_language drupal/$MODULE_NAME -W
           # We use COMPOSER_MIRROR_PATH_REPOS=1 to mirror local repository
           # instead of symlinking it to prevent code coverage issues with
           # phpunit. Copy .git folder manually so codecov can generate line by
@@ -71,8 +71,11 @@ jobs:
 
       - name: Run PHPCS
         working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,module,inc,install,test,info
+        run: vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal,DrupalPractice --extensions=php,module,install
+
+      - name: Run phpstan
+        working-directory: ${{ env.DRUPAL_ROOT }}
+        run: vendor/bin/phpstan analyze -c $MODULE_FOLDER/phpstan.neon $MODULE_FOLDER
 
       - name: Start services
         working-directory: ${{ env.DRUPAL_ROOT }}

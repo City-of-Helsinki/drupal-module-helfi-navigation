@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation\Menu;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
@@ -287,6 +288,9 @@ final class MenuTreeBuilder {
       return;
     }
 
+    if (!$entity instanceof TranslatableInterface) {
+      return;
+    }
     $entity = $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode) : $entity;
 
     if (!$entity->access('view')) {

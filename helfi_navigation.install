@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Drupal\block\Entity\Block;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\rest\Entity\RestResourceConfig;
 
 /**
@@ -165,6 +166,8 @@ function _helfi_navigation_get_block_configuration() : array {
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function _helfi_navigation_generate_blocks(string $theme, ?string $region = NULL, bool $labelDisplay = FALSE) : void {
+  assert(\Drupal::languageManager() instanceof ConfigurableLanguageManagerInterface);
+
   $default_config = [
     'settings' => [
       'label_display' => $labelDisplay,

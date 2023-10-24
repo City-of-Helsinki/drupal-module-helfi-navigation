@@ -309,10 +309,12 @@ class ApiManagerTest extends UnitTestCase {
     $response = $sut->get('en', 'main');
     $this->assertInstanceOf(ApiResponse::class, $response);
     // Make sure cache was updated.
+    $this->assertInstanceOf(\stdClass::class, $response->data);
     $this->assertEquals('value', $response->data->value);
     // Re-fetch the data to make sure we still get updated data and make sure
     // no further HTTP requests are made.
     $response = $sut->get('en', 'main');
+    $this->assertInstanceOf(\stdClass::class, $response->data);
     $this->assertEquals('value', $response->data->value);
   }
 
@@ -470,11 +472,13 @@ class ApiManagerTest extends UnitTestCase {
     // Make sure cache is used for all requests.
     for ($i = 0; $i < 3; $i++) {
       $response = $sut->get('en', 'main');
+      $this->assertInstanceOf(\stdClass::class, $response->data);
       $this->assertEquals(1, $response->data->value);
     }
     // Make sure cache is bypassed when configured so and the cached content
     // is updated.
     $response = $sut->withBypassCache()->get('en', 'main');
+    $this->assertInstanceOf(\stdClass::class, $response->data);
     $this->assertEquals(2, $response->data->value);
 
     // withBypassCache() method creates a clone of ApiManager instance to ensure
@@ -483,6 +487,7 @@ class ApiManagerTest extends UnitTestCase {
     // if cache was bypassed here.
     for ($i = 0; $i < 3; $i++) {
       $response = $sut->get('en', 'main');
+      $this->assertInstanceOf(\stdClass::class, $response->data);
       $this->assertEquals(2, $response->data->value);
     }
   }
