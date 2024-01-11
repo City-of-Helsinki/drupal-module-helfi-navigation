@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
-use Drupal\helfi_navigation\ApiResponse;
+use Drupal\helfi_api_base\ApiClient\ApiResponse;
 
 /**
  * Provides an external menu block for global main navigation.

@@ -6,9 +6,9 @@ namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\helfi_navigation\ApiManager;
-use Drupal\helfi_navigation\ApiResponse;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
 use Drupal\helfi_navigation\ExternalMenuTreeBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -80,7 +80,7 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   /**
    * Gets the external menu tree.
    *
-   * @param \Drupal\helfi_navigation\ApiResponse $response
+   * @param \Drupal\helfi_api_base\ApiClient\ApiResponse $response
    *   The API response.
    *
    * @return mixed
