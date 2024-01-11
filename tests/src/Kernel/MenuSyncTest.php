@@ -6,8 +6,8 @@ namespace Drupal\Tests\helfi_navigation\Kernel;
 
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Queue\QueueInterface;
+use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_navigation\ApiManager;
-use Drupal\helfi_navigation\ApiResponse;
 use Drupal\helfi_navigation\MainMenuManager;
 use Drupal\Tests\helfi_navigation\Traits\MenuLinkTrait;
 use Prophecy\PhpUnit\ProphecyTrait;
