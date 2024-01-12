@@ -1,6 +1,5 @@
 parameters:
   helfi_navigation.request_timeout: 15
-  helfi_navigation.vault_key: 'helfi_navigation'
 services:
   logger.channel.helfi_navigation:
     parent: logger.channel_base
@@ -10,13 +9,17 @@ services:
     arguments:
       - '@helfi_api_base.internal_domain_resolver'
       - '@request_stack'
-  helfi_navigation.api_manager:
+  helfi_navigation.api_client:
     parent: helfi_api_base.api_client_base
-    class: Drupal\helfi_navigation\ApiManager
     arguments:
       - '@logger.channel.helfi_navigation'
-      - '@helfi_navigation.api_authorization'
       - { timeout: '%helfi_navigation.request_timeout%' }
+  helfi_navigation.api_manager:
+    class: Drupal\helfi_navigation\ApiManager
+    arguments:
+      - '@helfi_navigation.api_client'
+      - '@helfi_api_base.environment_resolver'
+      - '@helfi_navigation.api_authorization'
   helfi_navigation.menu_manager:
     class: Drupal\helfi_navigation\MainMenuManager
     arguments:
@@ -41,7 +44,7 @@ services:
       - '@cache_tags.invalidator'
       - '@helfi_navigation.api_manager'
   helfi_navigation.api_authorization:
-    parent: helfi_api_base.vault_authorizer
+    class: Drupal\helfi_navigation\ApiAuthorization
     arguments:
-      - '%helfi_navigation.vault_key%'
-      - 'helfi_navigation.api:key'
+      - '@config.factory'
+      - '@helfi_api_base.vault_manager'

@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Utility\Error;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
@@ -159,7 +160,11 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
       ],
     ];
   }
-  catch (\Exception) {
+  catch (\Exception $e) {
+    /** @var \Psr\Log\LoggerInterface $logger */
+    $logger = Drupal::service('logger.channel.helfi_navigation');
+
+    Error::logException($logger, $e);
   }
 }
 

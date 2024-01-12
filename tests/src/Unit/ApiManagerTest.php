@@ -7,23 +7,22 @@ namespace Drupal\Tests\helfi_navigation\Unit;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\MemoryBackend;
+use Drupal\Core\Config\ConfigException;
+use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
-use Drupal\helfi_api_base\ApiClient\CacheValue;
-use Drupal\helfi_api_base\ApiClient\VaultAuthorizer;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Vault\AuthorizationToken;
 use Drupal\helfi_api_base\Vault\VaultManager;
+use Drupal\helfi_navigation\ApiAuthorization;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -78,34 +77,63 @@ class ApiManagerTest extends UnitTestCase {
   }
 
   /**
-   * Constructs a new api manager instance.
+   * Create a new api client mock object.
    *
-   * @param \GuzzleHttp\ClientInterface $client
+   * @param \GuzzleHttp\ClientInterface $httpClient
    *   The http client.
    * @param \Drupal\Component\Datetime\TimeInterface|null $time
    *   The time prophecy.
-   * @param \Psr\Log\LoggerInterface|null $logger
-   *   The logger.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface|null $environmentResolver
    *   The environment resolver.
+   *
+   * @return \Drupal\helfi_api_base\ApiClient\ApiClient
+   *   The api client.
+   */
+  private function getApiClientMock(
+      ClientInterface $httpClient,
+      TimeInterface $time = NULL,
+      EnvironmentResolverInterface $environmentResolver = NULL,
+  ): ApiClient {
+    if (!$time) {
+      $time = $this->getTimeMock(time())->reveal();
+    }
+
+    if (!$environmentResolver) {
+      $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
+        'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
+      ]));
+    }
+
+    $logger = $this->prophesize(LoggerInterface::class)->reveal();
+
+    return new ApiClient(
+      $httpClient,
+      $this->cache,
+      $time,
+      $environmentResolver,
+      $logger,
+    );
+  }
+
+  /**
+   * Constructs a new api manager instance.
+   *
+   * @param \Drupal\helfi_api_base\ApiClient\ApiClient $client
+   *   The http client.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface|null $environmentResolver
+   *   The environment resolver.
+   * @param string|null $apiKey
+   *   The api key.
    *
    * @return \Drupal\helfi_navigation\ApiManager
    *   The api manager instance.
    */
   private function getSut(
-    ClientInterface $client,
-    TimeInterface $time = NULL,
-    LoggerInterface $logger = NULL,
+    ApiClient $client,
     EnvironmentResolverInterface $environmentResolver = NULL,
+    ?string $apiKey = '123',
   ) : ApiManager {
 
-    if (!$time) {
-      $time = $this->getTimeMock(time())->reveal();
-    }
-
-    if (!$logger) {
-      $logger = $this->prophesize(LoggerInterface::class)->reveal();
-    }
     if (!$environmentResolver) {
       $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
         'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
@@ -113,134 +141,123 @@ class ApiManagerTest extends UnitTestCase {
     }
     return new ApiManager(
       $client,
-      $this->cache,
-      $time,
       $environmentResolver,
-      $logger,
-      new VaultAuthorizer(
-        $this->getConfigFactoryStub([]),
-        new VaultManager([
-          new AuthorizationToken('test_vault_key', '123'),
-        ]),
-        'test_vault_key'
+      new ApiAuthorization(
+        $this->getConfigFactoryStub(),
+        new VaultManager($apiKey ? [
+          new AuthorizationToken(ApiAuthorization::VAULT_MANAGER_KEY, $apiKey),
+        ] : []),
       ),
     );
   }
 
   /**
-   * Tests updateMainMenu().
+   * Tests missing api key.
    *
+   * @covers ::__construct
    * @covers ::update
    * @covers ::getUrl
+   * @covers ::hasAuthorization
+   * @covers ::getAuthorization
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
+   */
+  public function testMissingApiKey() : void {
+    $this->expectException(ConfigException::class);
+    $httpClient = $this->createMockHttpClient([]);
+    $sut = $this->getSut($this->getApiClientMock($httpClient), apiKey: NULL);
+    $sut->update('fi', ['key' => 'value']);
+  }
+
+  /**
+   * Tests updateMainMenu().
+   *
+   * @covers ::__construct
+   * @covers ::update
+   * @covers ::getUrl
+   * @covers ::hasAuthorization
+   * @covers ::getAuthorization
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::getAuthorization
    */
   public function testUpdateMainMenu() : void {
     $requests = [];
-    $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+    $httpClient = $this->createMockHistoryMiddlewareHttpClient($requests, [
       new Response(200, body: json_encode(['key' => 'value'])),
     ]);
-    $sut = $this->getSut($client);
+
+    $sut = $this->getSut($this->getApiClientMock($httpClient));
     $sut->update('fi', ['key' => 'value']);
 
     $this->assertCount(1, $requests);
-    // Make sure SSL verification is disabled on local.
-    $this->assertFalse($requests[0]['options']['verify']);
     // Make sure Authorization header was set.
-    $this->assertNotEmpty($requests[0]['request']->getHeader('Authorization')[0]);
+    $this->assertEquals('Basic 123', $requests[0]['request']->getHeader('Authorization')[0]);
   }
 
   /**
    * Tests main menu.
    *
+   * @covers ::__construct
    * @covers ::get
-   * @covers ::doGet
    * @covers ::getUrl
-   * @covers ::getCacheMaxAge
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
    */
   public function testGetMainMenu() : void {
     $requests = [];
-    $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+    $httpClient = $this->createMockHistoryMiddlewareHttpClient($requests, [
       new Response(200, body: json_encode([])),
       new Response(200, body: json_encode(['key' => 'value'])),
     ]);
-    $sut = $this->getSut($client);
+    $sut = $this->getSut($this->getApiClientMock($httpClient));
     // Test empty and non-empty response.
     for ($i = 0; $i < 2; $i++) {
       $response = $sut->get('fi', 'main');
       $this->assertInstanceOf(ApiResponse::class, $response);
-      $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
     }
     // Make sure cache is used (request queue should be empty).
     $sut->get('fi', 'main');
   }
 
   /**
-   * Tests that stale cache will be returned in case request fails.
+   * Make sure cache can be bypassed when configured so.
    *
    * @covers ::get
-   * @covers ::doGet
+   * @covers ::__construct
+   * @covers ::withBypassCache
    * @covers ::getUrl
+   * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
    */
-  public function testStaleCacheOnRequestFailure() : void {
+  public function testCacheBypass() : void {
     $requests = [];
-    $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
-      new RequestException('Test', $this->prophesize(RequestInterface::class)->reveal()),
-    ]);
-
-    $time = time();
-    // Expired cache object.
-    $cacheValue = new CacheValue(
-      new ApiResponse((object) ['value' => 1]),
-      $time - 10,
-      [],
-    );
-    $this->cache->set('external_menu:main:fi', $cacheValue);
-
-    $sut = $this->getSut(
-      $client,
-      $this->getTimeMock($time)->reveal(),
-    );
-    $response = $sut->get('fi', 'main');
-    $this->assertInstanceOf(ApiResponse::class, $response);
-  }
-
-  /**
-   * Tests that stale cache can be updated.
-   *
-   * @covers ::get
-   * @covers ::doGet
-   * @covers ::getUrl
-   * @covers ::getCacheMaxAge
-   */
-  public function testStaleCacheUpdate() : void {
-    $time = time();
-
-    // Expired cache object.
-    $cacheValue = new CacheValue(
-      new ApiResponse((object) ['value' => 1]),
-      $time - 10,
-      [],
-    );
-    // Populate cache with expired cache value object.
-    $this->cache->set('external_menu:main:en', $cacheValue);
-
-    $requests = [];
-    $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
-      new Response(200, body: json_encode(['value' => 'value'])),
+    $httpClient = $this->createMockHistoryMiddlewareHttpClient($requests, [
+      new Response(200, body: json_encode(['value' => 1])),
+      new Response(200, body: json_encode(['value' => 2])),
     ]);
     $sut = $this->getSut(
-      $client,
-      $this->getTimeMock($time)->reveal(),
+      $this->getApiClientMock($httpClient),
     );
-    $response = $sut->get('en', 'main');
-    $this->assertInstanceOf(ApiResponse::class, $response);
-    // Make sure cache was updated.
+    // Make sure cache is used for all requests.
+    for ($i = 0; $i < 3; $i++) {
+      $response = $sut->get('en', 'main');
+      $this->assertInstanceOf(\stdClass::class, $response->data);
+      $this->assertEquals(1, $response->data->value);
+    }
+
+    // Make sure cache is bypassed when configured so and the cached content
+    // is updated.
+    $response = $sut->withBypassCache()->get('en', 'main');
     $this->assertInstanceOf(\stdClass::class, $response->data);
-    $this->assertEquals('value', $response->data->value);
-    // Re-fetch the data to make sure we still get updated data and make sure
-    // no further HTTP requests are made.
-    $response = $sut->get('en', 'main');
-    $this->assertInstanceOf(\stdClass::class, $response->data);
-    $this->assertEquals('value', $response->data->value);
+    $this->assertEquals(2, $response->data->value);
+
+    // withBypassCache() method creates a clone of ApiManager instance to ensure
+    // cache is only bypassed when explicitly told so.
+    // We defined only two responses, so this should fail to OutOfBoundException
+    // if cache was bypassed here.
+    for ($i = 0; $i < 3; $i++) {
+      $response = $sut->get('en', 'main');
+      $this->assertInstanceOf(\stdClass::class, $response->data);
+      $this->assertEquals(2, $response->data->value);
+    }
   }
 
 }
