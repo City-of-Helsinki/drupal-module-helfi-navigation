@@ -58,14 +58,14 @@ class ApiManager extends ApiClientBase {
    * Performs a request to fetch an external menu from Etusivu instance.
    *
    * @param string $langcode
-   *    The langcode.
+   *   The langcode.
    * @param string $menuId
-   *    The menu id to get.
+   *   The menu id to get.
    * @param array $options
-   *    The request options.
+   *   The request options.
    *
    * @return \Drupal\helfi_api_base\ApiClient\CacheValue
-   *    Cacheable request object.
+   *   Cacheable request object.
    *
    * @throws \Exception
    * @throws \GuzzleHttp\Exception\GuzzleException
@@ -84,9 +84,9 @@ class ApiManager extends ApiClientBase {
       $options,
       // Fixture if requests fail on local environment:
       fixture: vsprintf('%s/../fixtures/%s-%s.json', [
-          __DIR__,
-          str_replace('/', '-', ltrim($endpoint, '/')),
-          $langcode,
+        __DIR__,
+        str_replace('/', '-', ltrim($endpoint, '/')),
+        $langcode,
       ]),
     );
 

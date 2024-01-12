@@ -86,8 +86,6 @@ class ApiManagerTest extends UnitTestCase {
    *   The time prophecy.
    * @param \Psr\Log\LoggerInterface|null $logger
    *   The logger.
-   * @param string|null $apiKey
-   *   The api key.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface|null $environmentResolver
    *   The environment resolver.
    *

@@ -32,10 +32,10 @@ class MainMenuManager {
    */
   public function __construct(
     private readonly ConfigurableLanguageManagerInterface $languageManager,
-    private readonly ConfigFactoryInterface               $config,
-    private readonly ApiManager                           $apiManager,
-    private readonly MenuTreeBuilder                      $menuTreeBuilder,
-    private readonly AccountSwitcherInterface             $accountSwitcher,
+    private readonly ConfigFactoryInterface $config,
+    private readonly ApiManager $apiManager,
+    private readonly MenuTreeBuilder $menuTreeBuilder,
+    private readonly AccountSwitcherInterface $accountSwitcher,
   ) {
   }
 
