@@ -153,6 +153,10 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
   $apiManager = Drupal::service('helfi_navigation.api_manager');
 
   try {
+    // Ensure that drupalSettings library is enabled (menu library is not
+    // loaded in all tests).
+    $attachments['#attached']['library'][] = 'core/drupalSettings';
+
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
       'links' => [
         'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => '/api/v1/global-mobile-menu']),
