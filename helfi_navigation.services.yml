@@ -9,16 +9,17 @@ services:
     arguments:
       - '@helfi_api_base.internal_domain_resolver'
       - '@request_stack'
+  helfi_navigation.api_client:
+    parent: helfi_api_base.api_client_base
+    arguments:
+      - '@logger.channel.helfi_navigation'
+      - { timeout: '%helfi_navigation.request_timeout%' }
   helfi_navigation.api_manager:
     class: Drupal\helfi_navigation\ApiManager
     arguments:
-      - '@datetime.time'
-      - '@cache.default'
-      - '@http_client'
+      - '@helfi_navigation.api_client'
       - '@helfi_api_base.environment_resolver'
-      - '@logger.channel.helfi_navigation'
       - '@helfi_navigation.api_authorization'
-      - '%helfi_navigation.request_timeout%'
   helfi_navigation.menu_manager:
     class: Drupal\helfi_navigation\MainMenuManager
     arguments:

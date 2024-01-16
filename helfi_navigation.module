@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Utility\Error;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
@@ -152,6 +153,10 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
   $apiManager = Drupal::service('helfi_navigation.api_manager');
 
   try {
+    // Ensure that drupalSettings library is enabled (menu library is not
+    // loaded in all tests).
+    $attachments['#attached']['library'][] = 'core/drupalSettings';
+
     $attachments['#attached']['drupalSettings']['helfi_navigation'] = [
       'links' => [
         'api' => $apiManager->getUrl('js', $langcode, ['endpoint' => '/api/v1/global-mobile-menu']),
@@ -159,7 +164,11 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
       ],
     ];
   }
-  catch (\Exception) {
+  catch (\Exception $e) {
+    /** @var \Psr\Log\LoggerInterface $logger */
+    $logger = Drupal::service('logger.channel.helfi_navigation');
+
+    Error::logException($logger, $e);
   }
 }
 
