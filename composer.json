@@ -5,8 +5,9 @@
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
     "require": {
-        "php": "^8.1",
-        "drupal/helfi_api_base": "dev-UHF-9239-generic-api-manager"
+        "php": "^8.0",
+        "drupal/helfi_api_base": "*",
+        "ext-curl": "*"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
