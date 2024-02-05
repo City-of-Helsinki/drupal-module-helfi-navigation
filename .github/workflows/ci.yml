@@ -24,7 +24,7 @@ jobs:
         # @see https://github.com/minkphp/MinkSelenium2Driver/pull/372
         image: selenium/standalone-chrome:106.0
       db:
-        image: mariadb
+        image: mysql:8
         env:
           MYSQL_USER: drupal
           MYSQL_PASSWORD: drupal
