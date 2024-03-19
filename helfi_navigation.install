@@ -305,3 +305,12 @@ function helfi_navigation_update_9003() : void {
 function helfi_navigation_update_9004() : void {
   module_set_weight('helfi_navigation', 1);
 }
+
+/**
+ * Update global "main" navigation links.
+ */
+function helfi_navigation_update_9005() : void {
+  foreach (['fi', 'en', 'sv'] as $language) {
+    _helfi_navigation_queue_item('main', $language, 'update');
+  }
+}

@@ -35,7 +35,6 @@ final class AbsoluteUrlMenuTreeBuilderLinkSubscriber implements EventSubscriberI
    *   TRUE if the link must be absolute URL.
    */
   private function mustBeAbsolute() : bool {
-    // No need to re-evaluate this since this is not link specific.
     if ($this->mustBeAbsoluteUrl !== NULL) {
       return $this->mustBeAbsoluteUrl;
     }
@@ -45,7 +44,7 @@ final class AbsoluteUrlMenuTreeBuilderLinkSubscriber implements EventSubscriberI
       $matchingEnvironment = $this->environmentResolver->getProject(Project::ETUSIVU)
         ->getEnvironment($activeEnvironment->getEnvironmentName());
 
-      // By default, links are either absolute (external) or not. This
+      // By default, links are either absolute (external) or relative. This
       // should already be evaluated by MenuTreeBuilder service, so the
       // only thing left for us to do here is to determine whether the
       // Etusivu's domain matches instance's current domain.
