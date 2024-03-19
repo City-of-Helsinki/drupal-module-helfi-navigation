@@ -218,7 +218,7 @@ final class MenuTreeBuilder {
       ->dispatch($link);
 
     return array_merge([
-      'url' => $menuTreeBuilderLink->url->setAbsolute()->toString(TRUE)->getGeneratedUrl(),
+      'url' => $menuTreeBuilderLink->url->toString(TRUE)->getGeneratedUrl(),
     ], $menuTreeBuilderLink->item);
   }
 

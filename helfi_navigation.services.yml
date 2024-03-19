@@ -48,3 +48,8 @@ services:
     arguments:
       - '@config.factory'
       - '@helfi_api_base.vault_manager'
+  helfi_api_base.absolute_url_menu_tree_builder_subscriber:
+    class: Drupal\helfi_navigation\EventSubscriber\AbsoluteUrlMenuTreeBuilderLinkSubscriber
+    arguments: ['@helfi_api_base.environment_resolver']
+    tags:
+      - { name: event_subscriber }
