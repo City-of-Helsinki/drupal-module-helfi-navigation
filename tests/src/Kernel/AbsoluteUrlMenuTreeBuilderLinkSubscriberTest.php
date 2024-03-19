@@ -23,6 +23,7 @@ class AbsoluteUrlMenuTreeBuilderLinkSubscriberTest extends MenuTreeBuilderTestBa
    * @dataProvider absoluteUrlData
    */
   public function testAbsoluteUrl(string $langcode, EnvironmentEnum $environment, string $expected) : void {
+    $this->createLinks();
     $this->setActiveProject(Project::ASUMINEN, $environment);
     $menuTree = $this->getMenuTree($langcode);
     $this->assertEquals($expected, $menuTree['url']);
