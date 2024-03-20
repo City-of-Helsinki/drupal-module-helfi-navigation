@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\helfi_navigation;
 
@@ -139,7 +139,7 @@ final class ExternalMenuTreeBuilder {
       'provider' => 'helfi_navigation',
     ];
 
-    // Parse the URL.
+    $item->link = $item->url;
     $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
     $item->external = $this->domainResolver->isExternal($item->url);
 
@@ -190,7 +190,7 @@ final class ExternalMenuTreeBuilder {
       throw new \LogicException('Request is not set.');
     }
     $currentPath = parse_url($request->getUri(), PHP_URL_PATH);
-    $linkPath = parse_url($item->url->getUri(), PHP_URL_PATH);
+    $linkPath = parse_url($item->link, PHP_URL_PATH);
 
     // We don't care about the domain when comparing URLs because the
     // site might be served from multiple different domains.

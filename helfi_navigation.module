@@ -5,7 +5,7 @@
  * Contains alterations for the Hel.fi navigation.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityTypeInterface;

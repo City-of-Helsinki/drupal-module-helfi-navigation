@@ -1,5 +1,6 @@
 parameters:
   helfi_navigation.request_timeout: 15
+  helfi_navigation.absolute_url_always: null
 services:
   logger.channel.helfi_navigation:
     parent: logger.channel_base
@@ -36,15 +37,15 @@ services:
       - '@menu.link_tree'
       - '@plugin.manager.menu.link'
       - '@event_dispatcher'
-  helfi_navigation.cache_warmer:
-    class: Drupal\helfi_navigation\CacheWarmer
-    arguments:
-      - '@tempstore.shared'
-      - '@language_manager'
-      - '@cache_tags.invalidator'
-      - '@helfi_navigation.api_manager'
   helfi_navigation.api_authorization:
     class: Drupal\helfi_navigation\ApiAuthorization
     arguments:
       - '@config.factory'
       - '@helfi_api_base.vault_manager'
+  helfi_api_base.absolute_url_menu_tree_builder_subscriber:
+    class: Drupal\helfi_navigation\EventSubscriber\AbsoluteUrlMenuTreeBuilderLinkSubscriber
+    arguments:
+     - '@helfi_api_base.environment_resolver'
+     - '%helfi_navigation.absolute_url_always%'
+    tags:
+      - { name: event_subscriber }

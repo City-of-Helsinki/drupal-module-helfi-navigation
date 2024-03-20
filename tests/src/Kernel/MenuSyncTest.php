@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
@@ -136,7 +136,7 @@ class MenuSyncTest extends KernelTestBase {
         $this->assertEquals('base:site_name_' . $langcode, $data['menu_tree']['id']);
         $this->assertEquals($siteName, $data['menu_tree']['name']);
         $this->assertEquals($langcode, $data['langcode']);
-        $this->assertStringStartsWith('http://', $data['menu_tree']['url']);
+        $this->assertStringStartsWith('/' . $langcode, $data['menu_tree']['url']);
 
         return new ApiResponse((object) [
           'status' => [

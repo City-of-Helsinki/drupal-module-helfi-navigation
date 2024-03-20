@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\helfi_navigation\Menu;
 
@@ -218,7 +218,7 @@ final class MenuTreeBuilder {
       ->dispatch($link);
 
     return array_merge([
-      'url' => $menuTreeBuilderLink->url->setAbsolute()->toString(TRUE)->getGeneratedUrl(),
+      'url' => $menuTreeBuilderLink->url->toString(TRUE)->getGeneratedUrl(),
     ], $menuTreeBuilderLink->item);
   }
 
