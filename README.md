@@ -38,9 +38,9 @@ Only main-navigation has syncing option. Other navigations are created in Etusiv
 ## Local development
 
 - Setup local Etusivu-instance.
-  - run `drush upwd helfi-admin 123` to update admin password. it is used as api key in other instances.
+  - Run `drush upwd helfi-admin 123` to update admin password. It is used as the API key in other instances.
 - Setup any other instance with helfi_navigation module enabled.
-  - Add following line to local.settings.php. Otherwise syncing global navigation won't work
+  - Add the following line to local.settings.php. Otherwise, syncing global navigation won't work
     ```php
     $config['helfi_api_base.api_accounts']['vault'][] = [
       'id' => 'helfi_navigation',
@@ -49,17 +49,24 @@ Only main-navigation has syncing option. Other navigations are created in Etusiv
     ];
       ```
 
+Local environment forces synced links always to be absolute URLs, whereas other environments allow relative URLs.
+
+If you wish to replicate the production setup (when testing through one domain, like `helfi-proxy.docker.so` for example). Add the following line to `local.services.yml`:
+```yaml
+parameters:
+  helfi_navigation.absolute_url_always: false
+```
+
 ### Steps after both instances are up and running.
 1. Edit and save menu on any instance with helfi_navigation module enabled.
    - When adding new items, make sure both the menu link and the node are enabled. disabled content won't be synced.
 2. Run `drush cron`.
    - After that you can run `docker compose logs app` to see possible exceptions or if menu sync cron succeeded.
-3. Go to Etusivu and run drush cr. The navigations should have been updated
+3. Go to Etusivu and run drush cr. The navigation should have been updated
     based on the changes you made
 4. Instances should fetch the menus from Etusivu and update the related blocks after `drush cr` and page refresh.
 
 ## Changes not updating to the global mobile menu?
 The global mobile navigation API can be found from `/api/v1/global-mobile-menu` path so check if your changes are
-visible there. If they are, the problem is probably caused by caches. The global mobile menu is cached for 24 hours by
-the browser. You can clear this cache on Chrome by opening developer tools and on the `Network` tab select the
+visible there. If they are, the problem is probably caused by caches. The browser caches the global mobile menu for 24 hours. You can clear this cache on Chrome by opening developer tools and on the `Network` tab select the
 `Disable cache` checkbox and reload the page.

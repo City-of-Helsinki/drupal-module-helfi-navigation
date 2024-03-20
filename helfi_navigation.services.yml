@@ -1,5 +1,6 @@
 parameters:
   helfi_navigation.request_timeout: 15
+  helfi_navigation.absolute_url_always: null
 services:
   logger.channel.helfi_navigation:
     parent: logger.channel_base
@@ -50,6 +51,8 @@ services:
       - '@helfi_api_base.vault_manager'
   helfi_api_base.absolute_url_menu_tree_builder_subscriber:
     class: Drupal\helfi_navigation\EventSubscriber\AbsoluteUrlMenuTreeBuilderLinkSubscriber
-    arguments: ['@helfi_api_base.environment_resolver']
+    arguments:
+     - '@helfi_api_base.environment_resolver'
+     - '%helfi_navigation.absolute_url_always%'
     tags:
       - { name: event_subscriber }
