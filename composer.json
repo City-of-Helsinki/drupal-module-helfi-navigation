@@ -6,11 +6,11 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^8.1",
-        "drupal/helfi_api_base": "*"
+        "drupal/helfi_api_base": "*",
+        "drupal/menu_block_current_language": "^2.0"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "drupal/coder": "^8.3",
-        "drupal/menu_block_current_language": "^2.0"
     }
 }
