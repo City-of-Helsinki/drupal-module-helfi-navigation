@@ -6,14 +6,13 @@ on:
 name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
-  BROWSERTEST_OUTPUT_DIRECTORY: 'public/sites/simpletest'
   SIMPLETEST_BASE_URL: http://app:8888
 jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2']
+        php-versions: ['8.1', '8.2', '8.3']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
       options: --hostname app
@@ -35,6 +34,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
@@ -43,7 +44,9 @@ jobs:
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
       - name: Set module folder
-        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
+        run: |
+          echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
+          echo "BROWSERTEST_OUTPUT_DIRECTORY=$DRUPAL_ROOT/public/sites/simpletest" >> $GITHUB_ENV
 
       - name: Clone platform
         run: |
@@ -54,7 +57,7 @@ jobs:
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
           composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/menu_block_current_language drupal/$MODULE_NAME -W
+          composer require drupal/$MODULE_NAME -W
           # We use COMPOSER_MIRROR_PATH_REPOS=1 to mirror local repository
           # instead of symlinking it to prevent code coverage issues with
           # phpunit. Copy .git folder manually so codecov can generate line by
@@ -77,8 +80,7 @@ jobs:
 
       - name: Start services
         working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns > /dev/null 2>&1 &
+        run: vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns &
 
       - name: Run PHPUnit tests
         working-directory: ${{ env.DRUPAL_ROOT }}
@@ -88,14 +90,15 @@ jobs:
             -c $MODULE_FOLDER/phpunit.xml \
             --coverage-clover=$MODULE_FOLDER/coverage.xml \
             $MODULE_FOLDER
-          codecov --rootDir $MODULE_FOLDER
+
+      - name: Run codecov
+        working-directory: ${{ env.MODULE_FOLDER }}
+        run: codecov
 
       - name: Create an artifact from test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: results
-          path: |
-            ${{ env.DRUPAL_ROOT }}/sites/simpletest/browser_output/
-            ${{ env.DRUPAL_ROOT }}/coverage.xml
+          name: results-${{ matrix.php-versions }}
+          path: ${{ env.BROWSERTEST_OUTPUT_DIRECTORY }}
           retention-days: 1
