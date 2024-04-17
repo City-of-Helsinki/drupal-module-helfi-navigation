@@ -39,7 +39,7 @@ class MenuSyncTest extends KernelTestBase {
    *   The menu manager service.
    */
   private function getMenuManager() : MainMenuManager {
-    return $this->container->get('helfi_navigation.menu_manager');
+    return $this->container->get(MainMenuManager::class);
   }
 
   /**
