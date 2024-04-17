@@ -89,6 +89,16 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   abstract protected function getTreeFromResponse(ApiResponse $response) : mixed;
 
   /**
+   * Gets the request options.
+   *
+   * @return array
+   *   The request options.
+   */
+  protected function getRequestOptions() : array {
+    return [];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function build() : array {
@@ -109,6 +119,7 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
       $response = $this->apiManager->get(
         $langcode,
         $menuId,
+        $this->getRequestOptions(),
       );
       $menuTree = $this->menuTreeBuilder
         ->build($this->getTreeFromResponse($response), $this->getOptions());
