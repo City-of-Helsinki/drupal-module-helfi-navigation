@@ -144,7 +144,7 @@ class MenuSyncTest extends KernelTestBase {
           ],
         ]);
       }));
-    $this->container->set('helfi_navigation.api_manager', $apiManager);
+    $this->container->set(ApiManager::class, $apiManager);
 
     $this->getMenuManager()->sync($langcode);
   }
@@ -172,7 +172,7 @@ class MenuSyncTest extends KernelTestBase {
     $apiManager->expects($this->once())
       ->method('update')
       ->willReturn(new ApiResponse([]));
-    $this->container->set('helfi_navigation.api_manager', $apiManager);
+    $this->container->set(ApiManager::class, $apiManager);
 
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('Failed to parse entity published state.');

@@ -11,6 +11,7 @@ use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Service class for global navigation-related functions.
@@ -41,7 +42,7 @@ class ApiManager {
    *   The API authorization service.
    */
   public function __construct(
-    private ApiClient $client,
+    #[Autowire(service: 'helfi_navigation.api_client')] private ApiClient $client,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly ApiAuthorization $apiAuthorization,
   ) {

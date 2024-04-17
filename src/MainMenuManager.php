@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
-use Drupal\language\ConfigurableLanguageManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Menu manager service.
@@ -31,7 +32,7 @@ class MainMenuManager {
    *   The account switcher service.
    */
   public function __construct(
-    private readonly ConfigurableLanguageManagerInterface $languageManager,
+    #[Autowire(service: 'language_manager')] private readonly LanguageManagerInterface $languageManager,
     private readonly ConfigFactoryInterface $config,
     private readonly ApiManager $apiManager,
     private readonly MenuTreeBuilder $menuTreeBuilder,

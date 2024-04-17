@@ -52,7 +52,7 @@ abstract class MenuTreeBuilderTestBase extends KernelTestBase {
    *   The menu tree builder service.
    */
   protected function getMenuTreeBuilder() : MenuTreeBuilder {
-    return $this->container->get('helfi_navigation.menu_tree_builder');
+    return $this->container->get(MenuTreeBuilder::class);
   }
 
   /**

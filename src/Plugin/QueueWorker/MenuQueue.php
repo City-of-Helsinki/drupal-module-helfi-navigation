@@ -6,7 +6,7 @@ namespace Drupal\helfi_navigation\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
-use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\MainMenuManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -32,16 +32,16 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
   /**
    * The cache tag invalidator service.
    *
-   * @var \Drupal\helfi_api_base\Cache\CacheTagInvalidator
+   * @var \Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface
    */
-  private CacheTagInvalidator $cacheTagInvalidator;
+  private CacheTagInvalidatorInterface $cacheTagInvalidator;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
-    $instance->mainMenuManager = $container->get('helfi_navigation.menu_manager');
+    $instance->mainMenuManager = $container->get(MainMenuManager::class);
     $instance->cacheTagInvalidator = $container->get('helfi_api_base.cache_tag_invalidator');
     return $instance;
   }

@@ -13,6 +13,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
+use Drupal\helfi_navigation\ApiAuthorization;
+use Drupal\helfi_navigation\ApiManager;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\system\MenuInterface;
@@ -123,7 +125,7 @@ function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $ent
  * Create menu update queue item.
  */
 function _helfi_navigation_queue_item(string $menuName, string $langcode, string $action) : void {
-  if (!\Drupal::service('helfi_navigation.api_authorization')->getAuthorization()) {
+  if (!Drupal::service(ApiAuthorization::class)->getAuthorization()) {
     return;
   }
   $queue = Drupal::queue('helfi_navigation_menu_queue');
@@ -150,7 +152,7 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
   $langcode = $defaultLanguageResolver->getCurrentOrFallbackLanguage();
 
   /** @var \Drupal\helfi_navigation\ApiManager $apiManager */
-  $apiManager = Drupal::service('helfi_navigation.api_manager');
+  $apiManager = Drupal::service(ApiManager::class);
 
   try {
     // Ensure that drupalSettings library is enabled (menu library is not
@@ -164,7 +166,7 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
       ],
     ];
   }
-  catch (\Exception $e) {
+  catch (Exception $e) {
     /** @var \Psr\Log\LoggerInterface $logger */
     $logger = Drupal::service('logger.channel.helfi_navigation');
 

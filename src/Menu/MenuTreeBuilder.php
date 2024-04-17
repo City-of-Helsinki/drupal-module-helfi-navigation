@@ -16,7 +16,7 @@ use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
 use Drupal\menu_link_content\MenuLinkContentInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Create menu tree from Drupal menu.
@@ -34,7 +34,7 @@ final class MenuTreeBuilder {
    *   The 'menu link tree builder' service.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menuLinkManager
    *   The menu link manager.
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+   * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
    */
   public function __construct(

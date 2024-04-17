@@ -84,7 +84,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->configFactory = $container->get('config.factory');
     $instance->pathMatcher = $container->get('path.matcher');
-    $instance->apiManager = $container->get('helfi_navigation.api_manager');
+    $instance->apiManager = $container->get(ApiManager::class);
     $instance->defaultLanguageResolver = $container->get('helfi_api_base.default_language_resolver');
     $instance->filterByLanguage = $container->has('menu_block_current_language_tree_manipulator');
     $instance->menuLinkManager = $container->get('plugin.manager.menu.link');
