@@ -21,7 +21,10 @@ class ApiManager {
   public const MENU_ENDPOINT = '/api/v1/menu';
 
   /**
-   * Cache for one month.
+   * Cache menu data for one month.
+   *
+   * The response cache is flushed by 'helfi_navigation_menu_queue'
+   * queue worker.
    */
   public const TTL = 2629800;
 
