@@ -19,7 +19,11 @@ class ApiManager {
 
   public const GLOBAL_MENU_ENDPOINT = '/api/v1/global-menu';
   public const MENU_ENDPOINT = '/api/v1/menu';
-  public const TTL = 180;
+
+  /**
+   * Cache for one month.
+   */
+  public const TTL = 2629800;
 
   use CacheKeyTrait;
 
