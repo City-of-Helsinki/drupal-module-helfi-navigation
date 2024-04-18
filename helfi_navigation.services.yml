@@ -2,50 +2,25 @@ parameters:
   helfi_navigation.request_timeout: 15
   helfi_navigation.absolute_url_always: null
 services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
   logger.channel.helfi_navigation:
     parent: logger.channel_base
     arguments: ['helfi_navigation']
-  helfi_navigation.external_menu_tree_builder:
-    class: Drupal\helfi_navigation\ExternalMenuTreeBuilder
-    arguments:
-      - '@helfi_api_base.internal_domain_resolver'
-      - '@request_stack'
+
+  Drupal\helfi_navigation\ExternalMenuTreeBuilder: ~
+
   helfi_navigation.api_client:
     parent: helfi_api_base.api_client_base
     arguments:
       - '@logger.channel.helfi_navigation'
       - { timeout: '%helfi_navigation.request_timeout%' }
-  helfi_navigation.api_manager:
-    class: Drupal\helfi_navigation\ApiManager
-    arguments:
-      - '@helfi_navigation.api_client'
-      - '@helfi_api_base.environment_resolver'
-      - '@helfi_navigation.api_authorization'
-  helfi_navigation.menu_manager:
-    class: Drupal\helfi_navigation\MainMenuManager
-    arguments:
-      - '@language_manager'
-      - '@config.factory'
-      - '@helfi_navigation.api_manager'
-      - '@helfi_navigation.menu_tree_builder'
-      - '@account_switcher'
-  helfi_navigation.menu_tree_builder:
-    class: Drupal\helfi_navigation\Menu\MenuTreeBuilder
-    arguments:
-      - '@entity_type.manager'
-      - '@helfi_api_base.internal_domain_resolver'
-      - '@menu.link_tree'
-      - '@plugin.manager.menu.link'
-      - '@event_dispatcher'
-  helfi_navigation.api_authorization:
-    class: Drupal\helfi_navigation\ApiAuthorization
-    arguments:
-      - '@config.factory'
-      - '@helfi_api_base.vault_manager'
-  helfi_api_base.absolute_url_menu_tree_builder_subscriber:
-    class: Drupal\helfi_navigation\EventSubscriber\AbsoluteUrlMenuTreeBuilderLinkSubscriber
-    arguments:
-     - '@helfi_api_base.environment_resolver'
-     - '%helfi_navigation.absolute_url_always%'
-    tags:
-      - { name: event_subscriber }
+
+  Drupal\helfi_navigation\ApiManager: ~
+
+  Drupal\helfi_navigation\MainMenuManager: ~
+  Drupal\helfi_navigation\Menu\MenuTreeBuilder: ~
+  Drupal\helfi_navigation\ApiAuthorization: ~
+  Drupal\helfi_navigation\EventSubscriber\AbsoluteUrlMenuTreeBuilderLinkSubscriber: ~

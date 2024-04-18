@@ -27,6 +27,15 @@ final class MainNavigationMenuBlock extends ExternalMenuBlockBase {
   /**
    * {@inheritdoc}
    */
+  protected function getRequestOptions() : array {
+    return [
+      'query' => 'max-depth=' . $this->getMaxDepth(),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function getTreeFromResponse(ApiResponse $response): array {
     $tree = [];
 

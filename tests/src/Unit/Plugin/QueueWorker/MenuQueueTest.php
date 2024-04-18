@@ -6,6 +6,8 @@ namespace Drupal\Tests\helfi_navigation\Unit\Plugin\QueueWorker;
 
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\MainMenuManager;
 use Drupal\helfi_navigation\Plugin\QueueWorker\MenuQueue;
 use Drupal\Tests\UnitTestCase;
@@ -15,7 +17,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @coversDefaultClass \Drupal\helfi_navigation\Plugin\QueueWorker\MenuQueue
+ * Tests menu queue worker.
+ *
  * @group helfi_navigation
  */
 class MenuQueueTest extends UnitTestCase {
@@ -33,7 +36,7 @@ class MenuQueueTest extends UnitTestCase {
    */
   public function getSut(ObjectProphecy $menuManager) : MenuQueue {
     $container = new ContainerBuilder();
-    $container->set('helfi_navigation.menu_manager', $menuManager->reveal());
+    $container->set(MainMenuManager::class, $menuManager->reveal());
     $pubSubManager = $this->prophesize(PubSubManagerInterface::class);
     $pubSubManager->sendMessage(Argument::any())->willReturn($pubSubManager->reveal());
     $cacheTagInvalidator = new CacheTagInvalidator($pubSubManager->reveal());
@@ -42,8 +45,7 @@ class MenuQueueTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::create
-   * @covers ::processItem
+   * Tests invalid data.
    */
   public function testInvalidData() : void {
     // Make sure sync is not called for invalid data.
@@ -54,8 +56,7 @@ class MenuQueueTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::create
-   * @covers ::processItem
+   * Tests failed sync.
    */
   public function testQueueException() : void {
     // Make sure queue doesn't die if ::sync() throws an exception.
@@ -65,6 +66,32 @@ class MenuQueueTest extends UnitTestCase {
       ->willThrow(new \InvalidArgumentException());
     $this->getSut($menuManager)
       ->processItem(['menu' => 'main', 'language' => 'fi']);
+  }
+
+  /**
+   * Tests cache invalidation.
+   */
+  public function testCacheInvalidator() : void {
+    $container = new ContainerBuilder();
+    $menuManager = $this->prophesize(MainMenuManager::class);
+    $menuManager->sync('fi')
+      ->shouldBeCalled();
+    $container->set(MainMenuManager::class, $menuManager->reveal());
+    $cacheTagInvalidator = $this->prophesize(CacheTagInvalidatorInterface::class);
+    $cacheTagInvalidator->invalidateTags([
+      'config:system.menu.main',
+      'external_menu_block:main',
+      'external_menu:main:fi',
+    ])
+      ->shouldBeCalled();
+    $cacheTagInvalidator->invalidateTags([
+      'config:rest.resource.helfi_global_menu_collection',
+    ], [Project::ETUSIVU])
+      ->shouldBeCalled();
+
+    $container->set('helfi_api_base.cache_tag_invalidator', $cacheTagInvalidator->reveal());
+    $sut = MenuQueue::create($container, [], '', []);
+    $sut->processItem(['menu' => 'main', 'language' => 'fi']);
   }
 
 }

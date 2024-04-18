@@ -7,6 +7,7 @@ namespace Drupal\helfi_navigation\EventSubscriber;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -24,7 +25,7 @@ final class AbsoluteUrlMenuTreeBuilderLinkSubscriber implements EventSubscriberI
    */
   public function __construct(
     private readonly EnvironmentResolverInterface $environmentResolver,
-    private ?bool $mustBeAbsoluteUrl = NULL,
+    #[Autowire('%helfi_navigation.absolute_url_always%')] private ?bool $mustBeAbsoluteUrl = NULL,
   ) {
   }
 

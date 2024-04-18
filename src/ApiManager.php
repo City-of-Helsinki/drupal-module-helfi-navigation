@@ -11,6 +11,7 @@ use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Service class for global navigation-related functions.
@@ -19,7 +20,14 @@ class ApiManager {
 
   public const GLOBAL_MENU_ENDPOINT = '/api/v1/global-menu';
   public const MENU_ENDPOINT = '/api/v1/menu';
-  public const TTL = 180;
+
+  /**
+   * Cache menu data for one month.
+   *
+   * The response cache is flushed by 'helfi_navigation_menu_queue'
+   * queue worker.
+   */
+  public const TTL = 2629800;
 
   use CacheKeyTrait;
 
@@ -34,7 +42,7 @@ class ApiManager {
    *   The API authorization service.
    */
   public function __construct(
-    private ApiClient $client,
+    #[Autowire(service: 'helfi_navigation.api_client')] private ApiClient $client,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly ApiAuthorization $apiAuthorization,
   ) {

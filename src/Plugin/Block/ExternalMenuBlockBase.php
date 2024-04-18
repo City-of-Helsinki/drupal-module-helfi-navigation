@@ -51,8 +51,8 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->apiManager = $container->get('helfi_navigation.api_manager');
-    $instance->menuTreeBuilder = $container->get('helfi_navigation.external_menu_tree_builder');
+    $instance->apiManager = $container->get(ApiManager::class);
+    $instance->menuTreeBuilder = $container->get(ExternalMenuTreeBuilder::class);
     $instance->languageManager = $container->get('language_manager');
     $instance->defaultLanguageResolver = $container->get('helfi_api_base.default_language_resolver');
     return $instance;
@@ -89,6 +89,16 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   abstract protected function getTreeFromResponse(ApiResponse $response) : mixed;
 
   /**
+   * Gets the request options.
+   *
+   * @return array
+   *   The request options.
+   */
+  protected function getRequestOptions() : array {
+    return [];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function build() : array {
@@ -109,6 +119,7 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
       $response = $this->apiManager->get(
         $langcode,
         $menuId,
+        $this->getRequestOptions(),
       );
       $menuTree = $this->menuTreeBuilder
         ->build($this->getTreeFromResponse($response), $this->getOptions());

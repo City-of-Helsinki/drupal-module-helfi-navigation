@@ -69,9 +69,9 @@ final class GlobalMobileMenu extends ResourceBase {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->configFactory = $container->get('config.factory');
     $instance->languageManager = $container->get('language_manager');
-    $instance->apiManager = $container->get('helfi_navigation.api_manager');
+    $instance->apiManager = $container->get(ApiManager::class);
     $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
-    $instance->mainMenuManager = $container->get('helfi_navigation.menu_manager');
+    $instance->mainMenuManager = $container->get(MainMenuManager::class);
 
     return $instance;
   }
