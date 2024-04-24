@@ -7,7 +7,6 @@ namespace Drupal\helfi_navigation\Plugin\QueueWorker;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
-use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\MainMenuManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -67,7 +66,8 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
         $this->mainMenuManager->sync($language);
       }
       catch (\Throwable) {
-        // The failed sync will be logged by ApiManager.
+        // Don't invalidate remote caches if sync failed.
+        return;
       }
     }
 
@@ -80,11 +80,6 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
       // locally.
       sprintf('external_menu:%s:%s', $menuName, $language),
     ]);
-    $this->cacheTagInvalidator->invalidateTags([
-      // This is used by REST API collection endpoint on Etusivu.
-      'config:rest.resource.helfi_global_menu_collection',
-    ], [Project::ETUSIVU]);
-
   }
 
 }
