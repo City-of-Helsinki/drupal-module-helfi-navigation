@@ -179,7 +179,7 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
  */
 function helfi_navigation_form_node_form_alter(
   array &$form,
-  FormStateInterface $form_state
+  FormStateInterface $form_state,
 ) :void {
   assert($form_state->getFormObject() instanceof EntityFormInterface);
   /** @var \Drupal\node\NodeInterface $node */

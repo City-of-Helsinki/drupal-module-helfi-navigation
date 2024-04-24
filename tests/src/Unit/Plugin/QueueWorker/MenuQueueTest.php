@@ -7,7 +7,6 @@ namespace Drupal\Tests\helfi_navigation\Unit\Plugin\QueueWorker;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
-use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\MainMenuManager;
 use Drupal\helfi_navigation\Plugin\QueueWorker\MenuQueue;
 use Drupal\Tests\UnitTestCase;
@@ -83,10 +82,6 @@ class MenuQueueTest extends UnitTestCase {
       'external_menu_block:main',
       'external_menu:main:fi',
     ])
-      ->shouldBeCalled();
-    $cacheTagInvalidator->invalidateTags([
-      'config:rest.resource.helfi_global_menu_collection',
-    ], [Project::ETUSIVU])
       ->shouldBeCalled();
 
     $container->set('helfi_api_base.cache_tag_invalidator', $cacheTagInvalidator->reveal());

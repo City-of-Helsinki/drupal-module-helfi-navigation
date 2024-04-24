@@ -42,7 +42,7 @@ final class MenuTreeBuilder {
     private readonly InternalDomainResolver $domainResolver,
     private readonly MenuLinkTreeInterface $menuTree,
     private readonly MenuLinkManagerInterface $menuLinkManager,
-    private readonly EventDispatcherInterface $eventDispatcher
+    private readonly EventDispatcherInterface $eventDispatcher,
   ) {
   }
 
@@ -68,7 +68,7 @@ final class MenuTreeBuilder {
     string $menuName,
     string $langcode,
     object $rootElement = NULL,
-    MenuTreeParameters $parameters = NULL
+    MenuTreeParameters $parameters = NULL,
   ): array {
     if (!$parameters) {
       $parameters = new MenuTreeParameters();

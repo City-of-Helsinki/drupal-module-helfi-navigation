@@ -78,7 +78,7 @@ class ApiManager {
   public function get(
     string $langcode,
     string $menuId,
-    array $options = []
+    array $options = [],
   ) : ApiResponse {
     $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
 

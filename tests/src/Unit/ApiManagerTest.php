@@ -90,9 +90,9 @@ class ApiManagerTest extends UnitTestCase {
    *   The api client.
    */
   private function getApiClientMock(
-      ClientInterface $httpClient,
-      TimeInterface $time = NULL,
-      EnvironmentResolverInterface $environmentResolver = NULL,
+    ClientInterface $httpClient,
+    TimeInterface $time = NULL,
+    EnvironmentResolverInterface $environmentResolver = NULL,
   ): ApiClient {
     if (!$time) {
       $time = $this->getTimeMock(time())->reveal();

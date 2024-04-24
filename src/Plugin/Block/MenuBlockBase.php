@@ -27,7 +27,7 @@ abstract class MenuBlockBase extends SystemMenuBlock {
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->logger = $container->get('logger.channel.helfi_navigation');
