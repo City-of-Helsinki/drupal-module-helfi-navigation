@@ -53,7 +53,7 @@ trait MenuLinkTrait {
    *   The menu link.
    */
   protected function createTestLink(
-    array $overrides = []
+    array $overrides = [],
   ) : MenuLinkContentInterface {
     $defaults = [
       'menu_name' => 'main',

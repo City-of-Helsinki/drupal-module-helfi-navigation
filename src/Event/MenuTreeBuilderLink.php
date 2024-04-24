@@ -25,7 +25,7 @@ final class MenuTreeBuilderLink extends Event {
   public function __construct(
     public Url $url,
     public string $language,
-    public array $item
+    public array $item,
   ) {
   }
 

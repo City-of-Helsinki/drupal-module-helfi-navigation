@@ -130,7 +130,7 @@ final class ExternalMenuTreeBuilder {
   private function createLink(
     object $item,
     string $menu,
-    bool $expand_all_items
+    bool $expand_all_items,
   ): array {
     $link_definition = [
       'menu_name' => $menu,
