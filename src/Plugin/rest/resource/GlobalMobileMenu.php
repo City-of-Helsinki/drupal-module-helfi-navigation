@@ -107,8 +107,8 @@ final class GlobalMobileMenu extends ResourceBase {
     }
 
     $projectName = $this->environmentResolver
-      ->getActiveEnvironment()
-      ->getId();
+      ->getActiveProject()
+      ->getName();
     $site_name = $this->configFactory->get('system.site')->get('name');
 
     // Create menu tree and add data to the local menu.

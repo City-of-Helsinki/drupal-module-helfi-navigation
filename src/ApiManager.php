@@ -130,7 +130,7 @@ class ApiManager {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
 
-    $endpoint = sprintf('%s/%s', static::GLOBAL_MENU_ENDPOINT, $this->environmentResolver->getActiveEnvironment()->getId());
+    $endpoint = sprintf('%s/%s', static::GLOBAL_MENU_ENDPOINT, $this->environmentResolver->getActiveProject()->getName());
     $url = $this->getUrl('api', $langcode, ['endpoint' => $endpoint]);
 
     return $this->client->makeRequest('POST', $url, [
