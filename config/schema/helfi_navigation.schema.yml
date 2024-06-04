@@ -49,7 +49,7 @@ block.settings.external_menu_block:*:
       label: 'Maximum number of levels'
 
 helfi_navigation.settings:
-  type: mapping
+  type: config_entity
   mapping:
     global_navigation_enabled:
       type: boolean
