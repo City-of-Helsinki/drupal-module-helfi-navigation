@@ -61,7 +61,7 @@ class MenuBlockTest extends BrowserTestBase {
       ])->save();
 
     $this->config('helfi_navigation.settings')
-      ->set(['global_navigation_enabled' => TRUE])
+      ->set('global_navigation_enabled', TRUE)
       ->save();
 
     NodeType::create([
