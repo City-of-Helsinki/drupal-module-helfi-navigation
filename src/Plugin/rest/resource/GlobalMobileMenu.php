@@ -100,7 +100,10 @@ final class GlobalMobileMenu extends ResourceBase {
     // "global navigation" to show their own main menu in mobile
     // navigation, namely Rekry.
     // @see https://helsinkisolutionoffice.atlassian.net/browse/UHF-7607
-    if ($this->apiManager->hasAuthorization()) {
+    if (
+      !$this->apiManager->isManuallyDisabled() &&
+      $this->apiManager->hasAuthorization()
+    ) {
       return $this->toResourceResponse(
         $this->normalizeResponseData($apiResponse->data)
       );
