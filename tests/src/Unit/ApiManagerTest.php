@@ -99,7 +99,7 @@ class ApiManagerTest extends UnitTestCase {
     }
 
     if (!$environmentResolver) {
-      $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
+      $environmentResolver = new EnvironmentResolver($this->getConfigFactoryStub([
         'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
       ]));
     }
@@ -135,7 +135,7 @@ class ApiManagerTest extends UnitTestCase {
   ) : ApiManager {
 
     if (!$environmentResolver) {
-      $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
+      $environmentResolver = new EnvironmentResolver($this->getConfigFactoryStub([
         'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
       ]));
     }
@@ -148,6 +148,9 @@ class ApiManagerTest extends UnitTestCase {
           new AuthorizationToken(ApiAuthorization::VAULT_MANAGER_KEY, $apiKey),
         ] : []),
       ),
+      $this->getConfigFactoryStub([
+        'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
+      ])
     );
   }
 

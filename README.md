@@ -6,6 +6,10 @@
 Navigation module allows aggregation of instance specific main-navigations and sharing menus between Helfi-instances.
 The master repository for all menus is `Etusivu`-instance
 
+## How to use
+
+- Update the helfi_navigation.setting.yml configuration values.
+
 ## Features
 
 - Push instance specific main-navigation to Etusivu-instance.

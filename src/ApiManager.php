@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigException;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\ApiClient\CacheValue;
@@ -40,11 +41,14 @@ class ApiManager {
    *   EnvironmentResolver helper class.
    * @param \Drupal\helfi_navigation\ApiAuthorization $apiAuthorization
    *   The API authorization service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory.
    */
   public function __construct(
     #[Autowire(service: 'helfi_navigation.api_client')] private ApiClient $client,
     private readonly EnvironmentResolverInterface $environmentResolver,
     private readonly ApiAuthorization $apiAuthorization,
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
   }
 
@@ -193,6 +197,22 @@ class ApiManager {
    */
   public function getAuthorization() : ?string {
     return $this->apiAuthorization->getAuthorization();
+  }
+
+  /**
+   * Get global menu status from module configuration.
+   *
+   * @return bool
+   *   Is global navigation manually disabled.
+   */
+  public function isManuallyDisabled() : bool {
+    $configuration = $this->configFactory->get('helfi_navigation.settings')->getRawData();
+    if (empty($configuration)) {
+      return FALSE;
+    }
+
+    return isset($configuration['global_navigation_enabled']) &&
+      !$configuration['global_navigation_enabled'];
   }
 
 }
