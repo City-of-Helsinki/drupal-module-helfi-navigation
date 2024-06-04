@@ -207,7 +207,9 @@ class ApiManager {
    */
   public function isManuallyDisabled() : bool {
     $configuration = $this->configFactory->get('helfi_navigation.settings')->getRawData();
-    if (empty($configuration)) return false;
+    if (empty($configuration)) {
+      return FALSE;
+    }
 
     return isset($configuration['global_navigation_enabled']) &&
       !$configuration['global_navigation_enabled'];
