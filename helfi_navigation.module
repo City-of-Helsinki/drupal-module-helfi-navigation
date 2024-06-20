@@ -175,24 +175,12 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
 }
 
 /**
- * Implements hook_module_implements_alter().
- */
-function helfi_navigation_module_implements_alter(&$implementations, $hook) : void {
-  // Move hook_form_BASE_FORM_ID_alter() implementation to the top of the
-  // list, so this is always run first before any other alter hooks, so
-  // other modules can alter `content_translation_status` field.
-  if ($hook === 'form_alter' && isset($implementations['helfi_navigation'])) {
-    $group = $implementations['helfi_navigation'];
-    $implementations = ['helfi_navigation' => $group] + $implementations;
-  }
-}
-
-/**
  * Implements hook_form_BASE_FORM_ID_alter() for \Drupal\node\NodeForm.
  */
 function helfi_navigation_form_node_form_alter(
   array &$form,
   FormStateInterface $form_state,
+  $form_id,
 ) : void {
   assert($form_state->getFormObject() instanceof EntityFormInterface);
   /** @var \Drupal\node\NodeInterface $node */
@@ -210,12 +198,24 @@ function helfi_navigation_form_node_form_alter(
     $defaults['content_translation_status'] = $link->get('content_translation_status')->value;
   }
 
+  // Allow modules to hide content_translation_status field.
+  $access_results = \Drupal::moduleHandler()->invokeAll('content_translation_status_access', [$form_id]);
+  $access = TRUE;
+
+  foreach ($access_results as $result) {
+    if (!$result) {
+      $access = FALSE;
+      break;
+    }
+  }
+
   // Show menu link's 'published' field on node edit form.
   $form['menu']['content_translation_status'] = [
     '#type' => 'checkbox',
     '#title' => t('Published in the main menu'),
     '#description' => t('The selection will publish the page in hel.fi’s main and mobile menu. Set the selection as Published when you choose Provide a menu link from above. The page will not show up in the main menu or mobile menu without this selection.'),
     '#default_value' => $defaults['content_translation_status'],
+    '#access' => $access,
   ];
   $form['actions']['submit']['#submit'][] = 'helfi_navigation_form_node_form_submit';
 }
