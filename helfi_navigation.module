@@ -175,12 +175,25 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
 }
 
 /**
+ * Implements hook_module_implements_alter().
+ */
+function helfi_navigation_module_implements_alter(&$implementations, $hook) : void {
+  // Move hook_form_BASE_FORM_ID_alter() implementation to the top of the
+  // list, so this is always run first before any other alter hooks, so
+  // other modules can alter `content_translation_status` field.
+  if ($hook === 'form_alter' && isset($implementations['helfi_navigation'])) {
+    $group = $implementations['helfi_navigation'];
+    $implementations = ['helfi_navigation' => $group] + $implementations;
+  }
+}
+
+/**
  * Implements hook_form_BASE_FORM_ID_alter() for \Drupal\node\NodeForm.
  */
 function helfi_navigation_form_node_form_alter(
   array &$form,
   FormStateInterface $form_state,
-) :void {
+) : void {
   assert($form_state->getFormObject() instanceof EntityFormInterface);
   /** @var \Drupal\node\NodeInterface $node */
   $node = $form_state->getFormObject()->getEntity();
