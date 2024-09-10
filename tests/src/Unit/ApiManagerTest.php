@@ -54,7 +54,7 @@ class ApiManagerTest extends UnitTestCase {
   protected function setUp() : void {
     parent::setUp();
 
-    $this->cache = new MemoryBackend();
+    $this->cache = new MemoryBackend($this->prophesize(TimeInterface::class)->reveal());
     $this->environmentResolverConfiguration = [
       EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
       EnvironmentResolver::ENVIRONMENT_NAME_KEY => 'local',
