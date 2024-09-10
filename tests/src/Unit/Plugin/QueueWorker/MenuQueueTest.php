@@ -39,7 +39,7 @@ class MenuQueueTest extends UnitTestCase {
     $pubSubManager = $this->prophesize(PubSubManagerInterface::class);
     $pubSubManager->sendMessage(Argument::any())->willReturn($pubSubManager->reveal());
     $cacheTagInvalidator = new CacheTagInvalidator($pubSubManager->reveal());
-    $container->set('helfi_api_base.cache_tag_invalidator', $cacheTagInvalidator);
+    $container->set(CacheTagInvalidatorInterface::class, $cacheTagInvalidator);
     return MenuQueue::create($container, [], '', []);
   }
 
@@ -84,7 +84,7 @@ class MenuQueueTest extends UnitTestCase {
     ])
       ->shouldBeCalled();
 
-    $container->set('helfi_api_base.cache_tag_invalidator', $cacheTagInvalidator->reveal());
+    $container->set(CacheTagInvalidatorInterface::class, $cacheTagInvalidator->reveal());
     $sut = MenuQueue::create($container, [], '', []);
     $sut->processItem(['menu' => 'main', 'language' => 'fi']);
   }

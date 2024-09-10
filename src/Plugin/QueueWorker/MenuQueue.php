@@ -41,7 +41,7 @@ final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginI
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->mainMenuManager = $container->get(MainMenuManager::class);
-    $instance->cacheTagInvalidator = $container->get('helfi_api_base.cache_tag_invalidator');
+    $instance->cacheTagInvalidator = $container->get(CacheTagInvalidatorInterface::class);
     return $instance;
   }
 
