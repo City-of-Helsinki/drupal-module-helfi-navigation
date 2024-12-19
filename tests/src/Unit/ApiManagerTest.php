@@ -91,8 +91,8 @@ class ApiManagerTest extends UnitTestCase {
    */
   private function getApiClientMock(
     ClientInterface $httpClient,
-    TimeInterface $time = NULL,
-    EnvironmentResolverInterface $environmentResolver = NULL,
+    ?TimeInterface $time = NULL,
+    ?EnvironmentResolverInterface $environmentResolver = NULL,
   ): ApiClient {
     if (!$time) {
       $time = $this->getTimeMock(time())->reveal();
@@ -130,7 +130,7 @@ class ApiManagerTest extends UnitTestCase {
    */
   private function getSut(
     ApiClient $client,
-    EnvironmentResolverInterface $environmentResolver = NULL,
+    ?EnvironmentResolverInterface $environmentResolver = NULL,
     ?string $apiKey = '123',
   ) : ApiManager {
 

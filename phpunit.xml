@@ -17,7 +17,7 @@
   <ini name="error_reporting" value="32767"/>
     <!-- Do not limit the amount of memory tests take to run. -->
   <ini name="memory_limit" value="-1"/>
-  <env name="MINK_DRIVER_ARGS_WEBDRIVER" value='["chrome", {"browserName":"chrome","chromeOptions":{"w3c": false}}, "http://chromium:4444"]' />
+  <env name="MINK_DRIVER_ARGS_WEBDRIVER" value='["chrome", {"browserName":"chrome", "goog:chromeOptions":{"w3c": true, "args":["--no-sandbox", "--ignore-certificate-errors", "--allow-insecure-localhost", "--headless", "--dns-prefetch-disable"]}}, "http://chromium:4444"]' />
 </php>
 <testsuites>
   <testsuite name="unit">
