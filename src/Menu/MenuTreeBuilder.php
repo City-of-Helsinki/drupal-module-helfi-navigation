@@ -67,8 +67,8 @@ final class MenuTreeBuilder {
   public function build(
     string $menuName,
     string $langcode,
-    object $rootElement = NULL,
-    MenuTreeParameters $parameters = NULL,
+    ?object $rootElement = NULL,
+    ?MenuTreeParameters $parameters = NULL,
   ): array {
     if (!$parameters) {
       $parameters = new MenuTreeParameters();
@@ -120,7 +120,7 @@ final class MenuTreeBuilder {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  private function transform(array $menuItems, string $langcode, string $rootId = NULL): array {
+  private function transform(array $menuItems, string $langcode, ?string $rootId = NULL): array {
     $items = [];
 
     foreach ($menuItems as $element) {

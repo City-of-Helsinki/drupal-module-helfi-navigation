@@ -89,7 +89,7 @@ abstract class KernelTestBase extends ApiKernelTestBase {
    * @param string $apiKey
    *   The api key.
    */
-  protected function populateConfiguration(string $siteName = NULL, string $apiKey = '123') : void {
+  protected function populateConfiguration(?string $siteName = NULL, string $apiKey = '123') : void {
     $this->config('system.site')->set('name', $siteName)->save();
     $this->config('helfi_navigation.api')->set('key', $apiKey)->save();
   }
