@@ -126,7 +126,7 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
       if (!$this->menuLinkManager->hasDefinition($id)) {
         continue;
       }
-      /** @var \Drupal\Core\Menu\MenuLinkInterface $link */
+      /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $link */
       $link = $this->menuLinkManager->createInstance($id);
 
       // Filter untranslated links to remove non-canonical links.
