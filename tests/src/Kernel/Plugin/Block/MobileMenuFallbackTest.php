@@ -60,7 +60,9 @@ class MobileMenuFallbackTest extends MenuTreeBuilderTestBase {
 
     $this->setOverrideLanguageCode('fi');
     $build = $sut->build();
-    $this->assertCount(3, $build['#items']);
+    // Only 'Link 3' should be available because
+    // other links are in different language.
+    $this->assertCount(1, $build['#items']);
   }
 
 }
