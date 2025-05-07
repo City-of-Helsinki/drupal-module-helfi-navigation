@@ -24,3 +24,4 @@ services:
   Drupal\helfi_navigation\Menu\MenuTreeBuilder: ~
   Drupal\helfi_navigation\ApiAuthorization: ~
   Drupal\helfi_navigation\EventSubscriber\AbsoluteUrlMenuTreeBuilderLinkSubscriber: ~
+  Drupal\helfi_navigation\ExternalMenuLazyBuilder: ~

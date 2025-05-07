@@ -6,10 +6,10 @@ namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\ExternalMenuBlockInterface;
+use Drupal\helfi_navigation\ExternalMenuLazyBuilder;
 use Drupal\helfi_navigation\ExternalMenuTreeBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -78,17 +78,6 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   }
 
   /**
-   * Gets the external menu tree.
-   *
-   * @param \Drupal\helfi_api_base\ApiClient\ApiResponse $response
-   *   The API response.
-   *
-   * @return mixed
-   *   The external menu tree.
-   */
-  abstract protected function getTreeFromResponse(ApiResponse $response) : mixed;
-
-  /**
    * Gets the request options.
    *
    * @return array
@@ -102,43 +91,31 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
    * {@inheritdoc}
    */
   public function build() : array {
-    $build = [
+    $menuId = $this->getDerivativeId();
+    // Languages without standard support should use fallback language in menu.
+    $langcode = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage();
+
+    return [
       '#cache' => [
         'contexts' => $this->getCacheContexts(),
         'tags' => $this->getCacheTags(),
       ],
+      '#lazy_builder' => [
+        ExternalMenuLazyBuilder::class . ':build',
+        [
+          $menuId,
+          $langcode,
+          $this->getRequestOptions(),
+          $this->getOptions(),
+        ],
+      ],
+      '#sorted' => TRUE,
+      '#items' => [],
+      '#theme' => 'menu__external_menu',
+      '#menu_type' => $menuId,
+      '#create_placeholder' => TRUE,
+      '#lazy_builder_preview' => ['#markup' => ''],
     ];
-
-    $menuTree = NULL;
-
-    // Languages without standard support should use fallback language in menu.
-    $langcode = $this->defaultLanguageResolver->getCurrentOrFallbackLanguage();
-
-    try {
-      $menuId = $this->getDerivativeId();
-      $response = $this->apiManager->get(
-        $langcode,
-        $menuId,
-        $this->getRequestOptions(),
-      );
-      $menuTree = $this->menuTreeBuilder
-        ->build($this->getTreeFromResponse($response), $this->getOptions());
-
-      $build += [
-        '#sorted' => TRUE,
-        '#items' => $menuTree,
-        '#theme' => 'menu__external_menu',
-        '#menu_type' => $menuId,
-      ];
-    }
-    catch (\Exception) {
-    }
-    if (!is_array($menuTree)) {
-      // Cache for 60 seconds if request fails.
-      $build['#cache']['max-age'] = 60;
-    }
-
-    return $build;
   }
 
 }
