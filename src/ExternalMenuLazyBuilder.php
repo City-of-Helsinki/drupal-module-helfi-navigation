@@ -18,7 +18,16 @@ final readonly class ExternalMenuLazyBuilder implements TrustedCallbackInterface
   ) {
   }
 
-  private function getTreeFromResponse(ApiResponse $response) : array {
+  /**
+   * Parses the menu tree from given response.
+   *
+   * @param \Drupal\helfi_api_base\ApiClient\ApiResponse $response
+   *   The API response.
+   *
+   * @return array
+   *   The parsed response.
+   */
+  private function parseResponse(ApiResponse $response) : array {
     $type = key($response->data);
 
     // We fetch data from two different endpoints; main and global menus.
@@ -39,6 +48,23 @@ final readonly class ExternalMenuLazyBuilder implements TrustedCallbackInterface
     return $tree;
   }
 
+  /**
+   * A lazy-builder callback for external menus.
+   *
+   * @param string $menuId
+   *   The menu id to build.
+   * @param string $langcode
+   *   The language code.
+   * @param array $requestOptions
+   *   The request options.
+   * @param array $options
+   *   The options.
+   *
+   * @see \Drupal\helfi_navigation\Plugin\Block\ExternalMenuBlockBase::build()
+   *
+   * @return array
+   *   The render array.
+   */
   public function build(string $menuId, string $langcode, array $requestOptions, array $options) {
     $build = [];
     $menuTree = NULL;
@@ -50,7 +76,7 @@ final readonly class ExternalMenuLazyBuilder implements TrustedCallbackInterface
         $requestOptions,
       );
       $menuTree = $this->treeBuilder
-        ->build($this->getTreeFromResponse($response), $options);
+        ->build($this->parseResponse($response), $options);
 
       $build += [
         '#sorted' => TRUE,
