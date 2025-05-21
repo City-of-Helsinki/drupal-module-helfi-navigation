@@ -29,11 +29,10 @@ function helfi_navigation_theme_suggestions_menu_alter(array &$suggestions, arra
 
   if (isset($variables['menu_type'])) {
     $suggestions[] = 'menu__external_menu__' . $variables['menu_type'];
+  }
 
-    // @todo Figure out if this can cause issues.
-    if ($variables['menu_type'] === 'main') {
-      $suggestions[] = 'menu__external_menu__mega_menu';
-    }
+  if (!empty($variables['attributes']['theme_suggestion'])) {
+    $suggestions[] = $variables['attributes']['theme_suggestion'];
   }
 }
 
