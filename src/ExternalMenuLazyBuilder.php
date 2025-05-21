@@ -28,7 +28,7 @@ final readonly class ExternalMenuLazyBuilder implements TrustedCallbackInterface
    *   The parsed response.
    */
   private function parseResponse(ApiResponse $response) : array {
-    $type = key($response->data);
+    $type = key((array) $response->data);
 
     // We fetch data from two different endpoints; main and global menus.
     // Main menu endpoint returns links in a nested multidimensional array,
@@ -83,6 +83,7 @@ final readonly class ExternalMenuLazyBuilder implements TrustedCallbackInterface
         '#items' => $menuTree,
         '#theme' => 'menu__external_menu',
         '#menu_type' => $menuId,
+        '#attributes' => $options,
       ];
     }
     catch (\Exception) {
