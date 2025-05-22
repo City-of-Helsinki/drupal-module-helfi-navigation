@@ -208,14 +208,14 @@ final class ExternalMenuLazyBuilderTest extends UnitTestCase {
       ->willReturn($response);
 
     $this->treeBuilder
-      ->build([], (array) Argument::any())
+      ->build(Argument::exact([]), Argument::any())
       ->willReturn(NULL);
 
     $sut = $this->getSut();
     $result = $sut->build('main', 'fi', '', 2, 0, FALSE, 'fallback_theme');
 
     $this->assertEquals(60, $result['#cache']['max-age']);
-    $this->assertempty($result['#items']);
+    $this->assertEmpty($result['#items']);
   }
 
   /**
