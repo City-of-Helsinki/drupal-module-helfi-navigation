@@ -35,22 +35,6 @@ abstract class MenuBlockBase extends SystemMenuBlock {
   }
 
   /**
-   * Get menu block options.
-   *
-   * @return array
-   *   Returns the options as an array.
-   */
-  protected function getOptions(): array {
-    return [
-      'theme_suggestion' => $this->getThemeSuggestion(),
-      'menu_type' => $this->getDerivativeId(),
-      'max_depth' => $this->getMaxDepth(),
-      'level' => $this->getStartingLevel(),
-      'expand_all_items' => $this->getExpandAllItems(),
-    ];
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function getMaxDepth(): int {
