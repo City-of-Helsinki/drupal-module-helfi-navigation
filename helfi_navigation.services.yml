@@ -10,6 +10,7 @@ services:
     parent: logger.channel_base
     arguments: ['helfi_navigation']
 
+  Drupal\helfi_navigation\ExternalMenuTreeBuilderInterface: '@Drupal\helfi_navigation\ExternalMenuTreeBuilder'
   Drupal\helfi_navigation\ExternalMenuTreeBuilder: ~
 
   helfi_navigation.api_client:
