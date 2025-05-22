@@ -14,7 +14,7 @@ final readonly class ExternalMenuLazyBuilder implements ExternalMenuLazyBuilderI
 
   public function __construct(
     private ApiManager $apiManager,
-    private ExternalMenuTreeBuilder $treeBuilder,
+    private ExternalMenuTreeBuilderInterface $treeBuilder,
   ) {
   }
 
@@ -34,8 +34,8 @@ final readonly class ExternalMenuLazyBuilder implements ExternalMenuLazyBuilderI
     // Main menu endpoint returns links in a nested multidimensional array,
     // while global menu is just a flat array.
     // @see \Drupal\helfi_navigation\ApiManager::get()
-    if (is_int($type)) {
-      return $response->data;
+    if (is_numeric($type)) {
+      return (array) $response->data;
     }
     $tree = [];
 
@@ -55,25 +55,49 @@ final readonly class ExternalMenuLazyBuilder implements ExternalMenuLazyBuilderI
    *   The menu id to build.
    * @param string $langcode
    *   The language code.
-   * @param array $requestOptions
+   * @param string $requestOptions
    *   The request options.
-   * @param array $options
-   *   The options.
-   *
-   * @see \Drupal\helfi_navigation\Plugin\Block\ExternalMenuBlockBase::build()
+   * @param int $maxDepth
+   *   The maximum depth of menu levels.
+   * @param int $startingLevel
+   *   The starting level.
+   * @param bool $expandAllItems
+   *   Should all items be expanded.
+   * @param string $themeSuggestion
+   *   The theme suggestion.
    *
    * @return array
    *   The render array.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   *
+   * @see \Drupal\helfi_navigation\Plugin\Block\ExternalMenuBlockBase::build()
    */
-  public function build(string $menuId, string $langcode, array $requestOptions, array $options) {
+  public function build(
+    string $menuId,
+    string $langcode,
+    string $requestOptions,
+    int $maxDepth,
+    int $startingLevel,
+    bool $expandAllItems,
+    string $themeSuggestion,
+  ): array {
     $build = [];
     $menuTree = NULL;
+
+    $options = [
+      'menu_type' => $menuId,
+      'max_depth' => $maxDepth,
+      'level' => $startingLevel,
+      'expand_all_items' => $expandAllItems,
+      'theme_suggestion' => $themeSuggestion,
+    ];
 
     try {
       $response = $this->apiManager->get(
         $langcode,
         $menuId,
-        $requestOptions,
+        $requestOptions ? ['query' => $requestOptions] : [],
       );
       $menuTree = $this->treeBuilder
         ->build($this->parseResponse($response), $options);
@@ -88,6 +112,7 @@ final readonly class ExternalMenuLazyBuilder implements ExternalMenuLazyBuilderI
     }
     catch (\Exception) {
     }
+
     if (!is_array($menuTree)) {
       // Cache for 60 seconds if request fails.
       $build['#cache']['max-age'] = 60;
