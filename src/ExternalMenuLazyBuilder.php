@@ -10,7 +10,7 @@ use Drupal\helfi_api_base\ApiClient\ApiResponse;
 /**
  * A lazy builder for external menus.
  */
-final readonly class ExternalMenuLazyBuilder implements TrustedCallbackInterface {
+final readonly class ExternalMenuLazyBuilder implements ExternalMenuLazyBuilderInterface, TrustedCallbackInterface {
 
   public function __construct(
     private ApiManager $apiManager,
