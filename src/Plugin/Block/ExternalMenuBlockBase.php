@@ -80,11 +80,11 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
   /**
    * Gets the request options.
    *
-   * @return array
+   * @return string
    *   The request options.
    */
-  protected function getRequestOptions() : array {
-    return [];
+  protected function getRequestOptions() : string {
+    return '';
   }
 
   /**
@@ -106,7 +106,10 @@ abstract class ExternalMenuBlockBase extends MenuBlockBase implements ExternalMe
           $menuId,
           $langcode,
           $this->getRequestOptions(),
-          $this->getOptions(),
+          $this->getMaxDepth(),
+          $this->getStartingLevel(),
+          $this->getExpandAllItems(),
+          $this->getThemeSuggestion(),
         ],
       ],
       '#sorted' => TRUE,
