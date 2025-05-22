@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_navigation\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Path\PathMatcherInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
@@ -19,13 +21,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * This is used to render non-javascript version of mobile
  * navigation.
- *
- * @Block(
- *   id = "external_menu_block_fallback",
- *   admin_label = @Translation("External - Fallback mobile menu"),
- *   category = @Translation("External menu"),
- * )
  */
+#[Block(
+  id: "external_menu_block_fallback",
+  admin_label: new TranslatableMarkup("External - Fallback mobile menu"),
+  category: new TranslatableMarkup("External menu"),
+)]
 final class MobileMenuFallbackBlock extends MenuBlockBase {
 
   /**
