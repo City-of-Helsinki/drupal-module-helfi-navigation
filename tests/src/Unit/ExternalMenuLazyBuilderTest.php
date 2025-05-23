@@ -38,8 +38,10 @@ final class ExternalMenuLazyBuilderTest extends UnitTestCase {
 
   /**
    * Default options.
+   *
+   * @var array
    */
-  protected array $lazyBuilderOptions = [
+  protected array $defaultOptions = [
     'menuId' => 'main',
     'langcode' => 'fi',
     'maxDepth' => 4,
@@ -71,76 +73,79 @@ final class ExternalMenuLazyBuilderTest extends UnitTestCase {
   }
 
   /**
-   * Test build with numeric-keyed API response.
+   * Provides data for testBuildWithVariousDataFormats().
+   *
+   * @return array
+   *   Test cases.
    */
-  public function testBuildWithNumericKeyedData(): void {
-    for ($i = 0; $i < 3; $i++) {
-      $data[$i] = new \stdClass();
+  public static function menuTreeDataProvider(): array {
+    $numericData = array_fill(0, 3, new \stdClass());
+
+    $objectData = [];
+    foreach (['Item A', 'Item B', 'Item C'] as $title) {
+      $item = new \stdClass();
+      $item->menu_tree = [['title' => $title]];
+      $objectData[] = $item;
     }
 
-    $expectedMenuTree = [
-      ['title' => 'Menu item'],
-      ['title' => 'Another menu item'],
-      ['title' => 'Yet another menu item'],
+    return [
+      'numeric-keyed' => [
+        $numericData,
+        [
+          ['title' => 'Item 1'],
+          ['title' => 'Item 2'],
+          ['title' => 'Item 3'],
+        ],
+        [],
+        FALSE,
+      ],
+      'object-keyed' => [
+        $objectData,
+        [
+          ['title' => 'Item A'],
+          ['title' => 'Item B'],
+          ['title' => 'Item C'],
+        ],
+        [
+          'menuId' => 'other',
+          'themeSuggestion' => 'menu__external_menu__other',
+        ],
+        TRUE,
+      ],
     ];
-
-    $result = $this->simulateLazyBuilderBuild(
-      $data,
-      $expectedMenuTree,
-      $this->lazyBuilderOptions,
-    );
-
-    $this->assertEquals($expectedMenuTree, $result['#items']);
-    $this->assertEquals('menu__external_menu', $result['#theme']);
-    $this->assertEquals('main', $result['#menu_type']);
-    $this->assertEquals('menu__external_menu__' . $result['#menu_type'], $result['#attributes']['theme_suggestion']);
-    $this->assertArrayNotHasKey('#cache', $result);
   }
 
   /**
-   * Test build with object-keyed API response.
+   * Tests build() with different response formats.
+   *
+   * @param array|object $data
+   *   The raw API data.
+   * @param array $expectedTree
+   *   The expected menu tree.
+   * @param array $overrides
+   *   Any overrides to default lazy builder options.
+   * @param bool $objectKeyed
+   *   Whether the API data should be cast to object.
+   *
+   * @dataProvider menuTreeDataProvider
    */
-  public function testBuildWithObjectKeyedData(): void {
-    $item1 = new \stdClass();
-    $item1->menu_tree = [['title' => 'Menu item']];
-    $item2 = new \stdClass();
-    $item2->menu_tree = [['title' => 'Another menu item']];
-    $item3 = new \stdClass();
-    $item3->menu_tree = [['title' => 'Yet another menu item']];
+  public function testBuildWithVariousDataFormats(array|object $data, array $expectedTree, array $overrides, bool $objectKeyed): void {
+    $options = $this->getLazyBuilderOptions($overrides);
+    $result = $this->simulateLazyBuilderBuild($data, $expectedTree, $options, $objectKeyed);
 
-    $data = [$item1, $item2,
-      $item3,
-    ];
-
-    $expectedMenuTree = [
-      ['title' => 'Menu item'],
-      ['title' => 'Another menu item'],
-      ['title' => 'Yet another menu item'],
-    ];
-
-    $this->lazyBuilderOptions['menuId'] = 'other';
-    $this->lazyBuilderOptions['themeSuggestion'] = 'menu__external_menu__other';
-
-    $result = $this->simulateLazyBuilderBuild(
-      $data,
-      $expectedMenuTree,
-      $this->lazyBuilderOptions,
-      TRUE
-    );
-
-    $this->assertEquals($expectedMenuTree, $result['#items']);
+    $this->assertEquals($expectedTree, $result['#items']);
     $this->assertEquals('menu__external_menu', $result['#theme']);
-    $this->assertEquals('other', $result['#menu_type']);
-    $this->assertEquals('menu__external_menu__' . $result['#menu_type'], $result['#attributes']['theme_suggestion']);
+    $this->assertEquals($options['menuId'], $result['#menu_type']);
+    $this->assertEquals($options['themeSuggestion'], $result['#attributes']['theme_suggestion']);
     $this->assertArrayNotHasKey('#cache', $result);
   }
 
   /**
-   * Test build when the API call fails (e.g. throws an exception).
+   * Tests build() when the API call fails.
    */
   public function testBuildWhenApiFails(): void {
     $this->apiManager
-      ->get('fi', 'failing_menu', (array) Argument::any())
+      ->get('fi', 'failing_menu', Argument::type('array'))
       ->willThrow(new \Exception('API error'));
 
     $sut = $this->getSut();
@@ -151,20 +156,15 @@ final class ExternalMenuLazyBuilderTest extends UnitTestCase {
   }
 
   /**
-   * Test the build with an empty API response.
+   * Tests build() when API returns an empty response.
    */
   public function testBuildWithEmptyResponse(): void {
-    $result = $this->simulateLazyBuilderBuild(
-      [],
-      [],
-      $this->lazyBuilderOptions,
-    );
-
+    $result = $this->simulateLazyBuilderBuild([], [], $this->defaultOptions, FALSE);
     $this->assertEquals([], $result['#items']);
   }
 
   /**
-   * Tests fallback cache when treeBuilder returns null.
+   * Tests build() when tree builder returns NULL.
    */
   public function testBuildWhenTreeBuilderReturnsNull(): void {
     $response = new ApiResponse((object) []);
@@ -174,7 +174,7 @@ final class ExternalMenuLazyBuilderTest extends UnitTestCase {
       ->willReturn($response);
 
     $this->treeBuilder
-      ->build(Argument::exact([]), Argument::any())
+      ->build([], Argument::any())
       ->willReturn(NULL);
 
     $sut = $this->getSut();
@@ -185,62 +185,77 @@ final class ExternalMenuLazyBuilderTest extends UnitTestCase {
   }
 
   /**
-   * Test trustedCallbacks() returns the expected callback method.
+   * Tests that trustedCallbacks() returns the correct value.
    */
   public function testTrustedCallbacks(): void {
     $this->assertEquals(['build'], ExternalMenuLazyBuilder::trustedCallbacks());
   }
 
   /**
-   * Simulates the lazy builder build method.
+   * Gets lazy builder options with optional overrides.
+   *
+   * @param array $overrides
+   *   Options to override.
+   *
+   * @return array
+   *   Merged options.
    */
-  protected function simulateLazyBuilderBuild($data, $expectedMenuTree, $lazyBuilderOptions = [], $objectKeyed = FALSE): array {
+  private function getLazyBuilderOptions(array $overrides = []): array {
+    return array_merge($this->defaultOptions, $overrides);
+  }
+
+  /**
+   * Simulates the lazy builder build method.
+   *
+   * @param array|object $data
+   *   The API response data.
+   * @param array $expectedMenuTree
+   *   The expected menu tree.
+   * @param array $options
+   *   The options for the builder.
+   * @param bool $objectKeyed
+   *   Whether to use object casting for the data.
+   *
+   * @return array
+   *   The render array result.
+   */
+  private function simulateLazyBuilderBuild(array|object $data, array $expectedMenuTree, array $options, bool $objectKeyed): array {
     $response = $objectKeyed
       ? new ApiResponse((object) $data)
       : new ApiResponse((array) $data);
 
-    if ($data === NULL) {
-      $response = new ApiResponse((object) []);
-    }
-
-    [
-      'menuId' => $menuId,
-      'langcode' => $langcode,
-      'maxDepth' => $maxDepth,
-      'startingLevel' => $startingLevel,
-      'expandAllItems' => $expandAllItems,
-      'themeSuggestion' => $themeSuggestion,
-    ] = $this->lazyBuilderOptions;
-
-    $requestOptions = !empty($maxDepth)
-      ? ['query' => "max-depth=$maxDepth"]
-      : (array) Argument::any();
+    $requestOptions = !empty($options['maxDepth'])
+      ? ['query' => "max-depth={$options['maxDepth']}"]
+      : [];
 
     $this->apiManager
-      ->get($langcode, $menuId, $requestOptions)
+      ->get($options['langcode'], $options['menuId'], $requestOptions)
       ->willReturn($response);
 
     $treeBuilderOptions = [
-      'menu_type' => $menuId,
-      'max_depth' => $maxDepth,
-      'level' => $startingLevel,
-      'expand_all_items' => $expandAllItems,
-      'theme_suggestion' => $themeSuggestion,
+      'menu_type' => $options['menuId'],
+      'max_depth' => $options['maxDepth'],
+      'level' => $options['startingLevel'],
+      'expand_all_items' => $options['expandAllItems'],
+      'theme_suggestion' => $options['themeSuggestion'],
     ];
 
     $this->treeBuilder
       ->build($data, $treeBuilderOptions)
       ->willReturn($expectedMenuTree);
+
     $sut = $this->getSut();
 
+    $query = $options['maxDepth'] > 0 ? "max-depth={$options['maxDepth']}" : '';
+
     return $sut->build(
-      $menuId,
-      $langcode,
-      !empty($maxDepth) ? "max-depth=$maxDepth" : '',
-      $maxDepth,
-      $startingLevel,
-      $expandAllItems,
-      $themeSuggestion,
+      $options['menuId'],
+      $options['langcode'],
+      $query,
+      $options['maxDepth'],
+      $options['startingLevel'],
+      $options['expandAllItems'],
+      $options['themeSuggestion'],
     );
   }
 
