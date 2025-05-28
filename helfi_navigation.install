@@ -233,6 +233,16 @@ function _helfi_navigation_generate_blocks(string $theme, ?string $region = NULL
       $block = Block::create($block_config);
     }
     $block->save();
+
+    // Ignore the external menu block dependencies for menu configurations.
+    // Without this, configuration import will fail with an error when trying
+    // to delete the menu that the block depends on. The dependency is obsolete,
+    // but Drupal still adds it because of the block's plugin.
+    $config_factory = \Drupal::configFactory();
+    $block_configuration = $config_factory->getEditable("block.block.$id");
+    $raw_data = $block_configuration->getRawData();
+    unset($raw_data['dependencies']['config']);
+    $block_configuration->setData($raw_data)->save(TRUE);
   }
 }
 
