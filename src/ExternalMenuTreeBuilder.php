@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * Helper class for external menu tree actions.
  */
-final class ExternalMenuTreeBuilder {
+final class ExternalMenuTreeBuilder implements ExternalMenuTreeBuilderInterface {
 
   /**
    * All menu link IDs in active trail.

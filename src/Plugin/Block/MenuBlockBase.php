@@ -35,21 +35,6 @@ abstract class MenuBlockBase extends SystemMenuBlock {
   }
 
   /**
-   * Get menu block options.
-   *
-   * @return array
-   *   Returns the options as an array.
-   */
-  protected function getOptions(): array {
-    return [
-      'menu_type' => $this->getDerivativeId(),
-      'max_depth' => $this->getMaxDepth(),
-      'level' => $this->getStartingLevel(),
-      'expand_all_items' => $this->getExpandAllItems(),
-    ];
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function getMaxDepth(): int {
@@ -69,6 +54,27 @@ abstract class MenuBlockBase extends SystemMenuBlock {
    */
   public function getExpandAllItems(): bool {
     return $this->getConfiguration()['expand_all_items'] ?: FALSE;
+  }
+
+  /**
+   * Get theme suggestion based on the menu block id.
+   *
+   * @return string|null
+   *   Returns empty or theme suggestion.
+   */
+  protected function getThemeSuggestion(): ?string {
+    $id = $this->getConfiguration()['id'];
+
+    if (!str_starts_with($id, 'external_')) {
+      return NULL;
+    }
+
+    if (str_starts_with($id, 'external_menu_')) {
+      $suffix = substr($id, strlen('external_menu_'));
+      return 'menu__external_menu__' . $suffix;
+    }
+
+    return 'menu__' . $id;
   }
 
 }
