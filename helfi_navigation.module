@@ -182,6 +182,11 @@ function helfi_navigation_form_node_form_alter(
   FormStateInterface $form_state,
   $form_id,
 ) : void {
+  // Skip if node cannot be added to navigation.
+  if (!isset($form['menu'])) {
+    return;
+  }
+
   assert($form_state->getFormObject() instanceof EntityFormInterface);
   /** @var \Drupal\node\NodeInterface $node */
   $node = $form_state->getFormObject()->getEntity();
