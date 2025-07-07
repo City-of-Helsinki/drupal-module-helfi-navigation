@@ -43,16 +43,6 @@ class MenuSyncTest extends KernelTestBase {
   }
 
   /**
-   * Make sure nothing gets queued when api key is not set.
-   */
-  public function testQueueNoApiKey() : void {
-    $queue = $this->getQueue();
-
-    _helfi_navigation_queue_item('main', 'fi', 'insert');
-    $this->assertEquals(0, $queue->numberOfItems());
-  }
-
-  /**
    * Make sure items are queued only once.
    */
   public function testQueue() : void {

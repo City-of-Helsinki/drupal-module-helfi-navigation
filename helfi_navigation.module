@@ -13,7 +13,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_navigation\ApiAuthorization;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\MenuLinkContentInterface;
@@ -125,9 +124,6 @@ function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $ent
  * Create menu update queue item.
  */
 function _helfi_navigation_queue_item(string $menuName, string $langcode, string $action) : void {
-  if (!Drupal::service(ApiAuthorization::class)->getAuthorization()) {
-    return;
-  }
   $queue = Drupal::queue('helfi_navigation_menu_queue');
 
   static $items = [];
