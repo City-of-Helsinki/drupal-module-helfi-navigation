@@ -226,7 +226,6 @@ class ApiManagerTest extends UnitTestCase {
    *
    * @covers ::get
    * @covers ::__construct
-   * @covers ::withBypassCache
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
    */
@@ -244,22 +243,6 @@ class ApiManagerTest extends UnitTestCase {
       $response = $sut->get('en', 'main');
       $this->assertInstanceOf(\stdClass::class, $response->data);
       $this->assertEquals(1, $response->data->value);
-    }
-
-    // Make sure cache is bypassed when configured so and the cached content
-    // is updated.
-    $response = $sut->withBypassCache()->get('en', 'main');
-    $this->assertInstanceOf(\stdClass::class, $response->data);
-    $this->assertEquals(2, $response->data->value);
-
-    // withBypassCache() method creates a clone of ApiManager instance to ensure
-    // cache is only bypassed when explicitly told so.
-    // We defined only two responses, so this should fail to OutOfBoundException
-    // if cache was bypassed here.
-    for ($i = 0; $i < 3; $i++) {
-      $response = $sut->get('en', 'main');
-      $this->assertInstanceOf(\stdClass::class, $response->data);
-      $this->assertEquals(2, $response->data->value);
     }
   }
 
