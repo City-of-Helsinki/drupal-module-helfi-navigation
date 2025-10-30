@@ -20,6 +20,7 @@ use Drupal\helfi_navigation\ApiManager;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -152,6 +153,45 @@ class ApiManagerTest extends UnitTestCase {
         'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
       ])
     );
+  }
+
+  /**
+   * Tests ping() against request failure.
+   *
+   * @covers ::ping
+   */
+  public function testPingException(): void {
+    $client = $this->createMockHttpClient([
+      new TransferException(),
+    ]);
+    $client = $this->getSut($this->getApiClientMock($client));
+    $this->assertFalse($client->ping());
+  }
+
+  /**
+   * Tests a successful ping().
+   *
+   * @covers ::ping
+   */
+  public function testPingSuccess(): void {
+    $client = $this->createMockHttpClient([
+      new Response(body: json_encode(['foo' => 'bar'])),
+    ]);
+    $client = $this->getSut($this->getApiClientMock($client), apiKey: NULL);
+    $this->assertTrue($client->ping());
+  }
+
+  /**
+   * Tests ping() with authorization.
+   *
+   * @covers ::ping
+   */
+  public function testPingSuccessWithAuthorization(): void {
+    $client = $this->createMockHttpClient([
+      new Response(body: json_encode(['foo' => 'bar'])),
+    ]);
+    $client = $this->getSut($this->getApiClientMock($client));
+    $this->assertTrue($client->ping());
   }
 
   /**

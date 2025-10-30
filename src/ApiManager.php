@@ -12,6 +12,7 @@ use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
@@ -51,6 +52,33 @@ class ApiManager {
     private readonly ApiAuthorization $apiAuthorization,
     private readonly ConfigFactoryInterface $configFactory,
   ) {
+  }
+
+  /**
+   * Checks if the API is responding or not.
+   *
+   * @return bool
+   *   TRUE if API is responding, FALSE if not.
+   */
+  public function ping(): bool {
+    $headers = [];
+
+    // Make sure to include authorization if configured, so we can validate
+    // the API credentials as well.
+    if ($this->hasAuthorization()) {
+      $headers = ['Authorization' => sprintf('Basic %s', $this->getAuthorization())];
+    }
+    $url = $this->getUrl('api', 'fi', self::GLOBAL_MENU_ENDPOINT);
+
+    try {
+      $response = $this->client->makeRequest('GET', $url, [
+        'headers' => $headers,
+      ]);
+      return !empty($response->data);
+    }
+    catch (GuzzleException) {
+    }
+    return FALSE;
   }
 
   /**
