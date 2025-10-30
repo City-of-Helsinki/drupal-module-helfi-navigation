@@ -4,7 +4,7 @@ type: module
 core_version_requirement: ^10 || ^11
 dependencies:
   - drupal:block
-  - drupal:helfi_api_base
+  - helfi_api_base:helfi_api_base
   - drupal:menu_link_content
   - drupal:language
   - drupal:rest

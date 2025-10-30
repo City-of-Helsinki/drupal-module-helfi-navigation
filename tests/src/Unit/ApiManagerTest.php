@@ -20,6 +20,7 @@ use Drupal\helfi_navigation\ApiManager;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -155,6 +156,45 @@ class ApiManagerTest extends UnitTestCase {
   }
 
   /**
+   * Tests ping() against request failure.
+   *
+   * @covers ::ping
+   */
+  public function testPingException(): void {
+    $client = $this->createMockHttpClient([
+      new TransferException(),
+    ]);
+    $client = $this->getSut($this->getApiClientMock($client));
+    $this->assertFalse($client->ping());
+  }
+
+  /**
+   * Tests a successful ping().
+   *
+   * @covers ::ping
+   */
+  public function testPingSuccess(): void {
+    $client = $this->createMockHttpClient([
+      new Response(body: json_encode(['foo' => 'bar'])),
+    ]);
+    $client = $this->getSut($this->getApiClientMock($client), apiKey: NULL);
+    $this->assertTrue($client->ping());
+  }
+
+  /**
+   * Tests ping() with authorization.
+   *
+   * @covers ::ping
+   */
+  public function testPingSuccessWithAuthorization(): void {
+    $client = $this->createMockHttpClient([
+      new Response(body: json_encode(['foo' => 'bar'])),
+    ]);
+    $client = $this->getSut($this->getApiClientMock($client));
+    $this->assertTrue($client->ping());
+  }
+
+  /**
    * Tests missing api key.
    *
    * @covers ::__construct
@@ -226,7 +266,6 @@ class ApiManagerTest extends UnitTestCase {
    *
    * @covers ::get
    * @covers ::__construct
-   * @covers ::withBypassCache
    * @covers ::getUrl
    * @covers \Drupal\helfi_navigation\ApiAuthorization::__construct
    */
@@ -244,22 +283,6 @@ class ApiManagerTest extends UnitTestCase {
       $response = $sut->get('en', 'main');
       $this->assertInstanceOf(\stdClass::class, $response->data);
       $this->assertEquals(1, $response->data->value);
-    }
-
-    // Make sure cache is bypassed when configured so and the cached content
-    // is updated.
-    $response = $sut->withBypassCache()->get('en', 'main');
-    $this->assertInstanceOf(\stdClass::class, $response->data);
-    $this->assertEquals(2, $response->data->value);
-
-    // withBypassCache() method creates a clone of ApiManager instance to ensure
-    // cache is only bypassed when explicitly told so.
-    // We defined only two responses, so this should fail to OutOfBoundException
-    // if cache was bypassed here.
-    for ($i = 0; $i < 3; $i++) {
-      $response = $sut->get('en', 'main');
-      $this->assertInstanceOf(\stdClass::class, $response->data);
-      $this->assertEquals(2, $response->data->value);
     }
   }
 

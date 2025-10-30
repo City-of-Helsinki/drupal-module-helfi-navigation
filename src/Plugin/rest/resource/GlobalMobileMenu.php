@@ -35,7 +35,7 @@ final class GlobalMobileMenu extends ResourceBase {
   private ApiManager $apiManager;
 
   /**
-   * The language manager service..
+   * The language manager service.
    *
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */

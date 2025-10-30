@@ -12,6 +12,7 @@ use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
@@ -19,6 +20,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  */
 class ApiManager {
 
+  public const GLOBAL_MENU_MOBILE_ENDPOINT = '/api/v1/global-mobile-menu';
   public const GLOBAL_MENU_ENDPOINT = '/api/v1/global-menu';
   public const MENU_ENDPOINT = '/api/v1/menu';
 
@@ -53,15 +55,30 @@ class ApiManager {
   }
 
   /**
-   * Allow cache to be bypassed.
+   * Checks if the API is responding or not.
    *
-   * @return $this
-   *   The self.
+   * @return bool
+   *   TRUE if API is responding, FALSE if not.
    */
-  public function withBypassCache() : self {
-    $instance = clone $this;
-    $instance->client = $this->client->withBypassCache();
-    return $instance;
+  public function ping(): bool {
+    $headers = [];
+
+    // Make sure to include authorization if configured, so we can validate
+    // the API credentials as well.
+    if ($this->hasAuthorization()) {
+      $headers = ['Authorization' => sprintf('Basic %s', $this->getAuthorization())];
+    }
+    $url = $this->getUrl('api', 'fi', self::GLOBAL_MENU_ENDPOINT);
+
+    try {
+      $response = $this->client->makeRequest('GET', $url, [
+        'headers' => $headers,
+      ]);
+      return !empty($response->data);
+    }
+    catch (GuzzleException) {
+    }
+    return FALSE;
   }
 
   /**
@@ -71,7 +88,7 @@ class ApiManager {
    *   The langcode.
    * @param string $menuId
    *   The menu id to get.
-   * @param array $options
+   * @param array $requestOptions
    *   The request options.
    *
    * @return \Drupal\helfi_api_base\ApiClient\ApiResponse
@@ -82,30 +99,29 @@ class ApiManager {
   public function get(
     string $langcode,
     string $menuId,
-    array $options = [],
+    array $requestOptions = [],
   ) : ApiResponse {
-    $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $options);
+    $key = $this->getCacheKey(sprintf('external_menu:%s:%s', $menuId, $langcode), $requestOptions);
 
     // Try to fetch from cache.
     return $this->client->cache(
       $key,
-      // Fetch an external menu from Etusivu instance.
-      function () use ($langcode, $menuId, $options) {
-        $endpoint = match ($menuId) {
-          'main' => self::GLOBAL_MENU_ENDPOINT,
-          default => sprintf('%s/%s', self::MENU_ENDPOINT, $menuId),
-        };
+      function () use ($langcode, $menuId, $requestOptions) {
+        $path = sprintf('%s/%s', self::MENU_ENDPOINT, $menuId);
 
-        $url = $this->getUrl('api', $langcode, ['endpoint' => $endpoint]);
+        if ($menuId === 'main') {
+          $path = self::GLOBAL_MENU_ENDPOINT;
+        }
+        $url = $this->getUrl('api', $langcode, $path);
 
         // Fixture is used if requests fail on local environment.
         $fixture = vsprintf('%s/../fixtures/%s-%s.json', [
           __DIR__,
-          str_replace('/', '-', ltrim($endpoint, '/')),
+          str_replace('/', '-', ltrim($path, '/')),
           $langcode,
         ]);
 
-        $response = $this->client->makeRequestWithFixture($fixture, 'GET', $url, $options);
+        $response = $this->client->makeRequestWithFixture($fixture, 'GET', $url, $requestOptions);
 
         return new CacheValue(
           $response,
@@ -134,8 +150,12 @@ class ApiManager {
       throw new ConfigException('Missing "helfi_navigation.api" key setting.');
     }
 
-    $endpoint = sprintf('%s/%s', static::GLOBAL_MENU_ENDPOINT, $this->environmentResolver->getActiveProject()->getName());
-    $url = $this->getUrl('api', $langcode, ['endpoint' => $endpoint]);
+    $path = vsprintf('%s/%s', [
+      static::GLOBAL_MENU_ENDPOINT,
+      $this->environmentResolver->getActiveProject()->getName(),
+    ]);
+
+    $url = $this->getUrl('api', $langcode, $path);
 
     return $this->client->makeRequest('POST', $url, [
       'json' => $data,
@@ -150,13 +170,13 @@ class ApiManager {
    *   The type.
    * @param string $langcode
    *   The langcode.
-   * @param array $options
-   *   The url options.
+   * @param string|null $path
+   *   The path.
    *
    * @return string
    *   The URL.
    */
-  public function getUrl(string $type, string $langcode, array $options = []) : string {
+  public function getUrl(string $type, string $langcode, ?string $path = NULL) : string {
     $activeEnvironment = $this->environmentResolver
       ->getActiveEnvironment();
     $activeEnvironmentName = $activeEnvironment
@@ -169,12 +189,12 @@ class ApiManager {
       'js' => sprintf(
         '%s/%s',
         $activeEnvironment->getUrl($langcode),
-        ltrim($options['endpoint'], '/')
+        ltrim($path, '/')
       ),
       'api' => sprintf(
         '%s/%s',
         $env->getInternalAddress($langcode),
-        ltrim($options['endpoint'], '/')
+        ltrim($path, '/')
       ),
     };
   }
