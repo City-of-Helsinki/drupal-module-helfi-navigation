@@ -175,6 +175,8 @@ class ApiManager {
    *
    * @return string
    *   The URL.
+   *
+   * @throws \InvalidArgumentException
    */
   public function getUrl(string $type, string $langcode, ?string $path = NULL) : string {
     $activeEnvironment = $this->environmentResolver
