@@ -50,6 +50,7 @@ class MenuContentTranslationStatusTest extends BrowserTestBase {
 
     NodeType::create([
       'type' => 'page',
+      'name' => 'Page',
     ])->save();
 
     $this->placeBlock('local_tasks_block');

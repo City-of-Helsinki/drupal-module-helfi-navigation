@@ -142,13 +142,13 @@ function _helfi_navigation_queue_item(string $menuName, string $langcode, string
  */
 function helfi_navigation_page_attachments(array &$attachments) : void {
   /** @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver $defaultLanguageResolver */
-  $defaultLanguageResolver = Drupal::service('helfi_api_base.default_language_resolver');
+  $defaultLanguageResolver = \Drupal::service('helfi_api_base.default_language_resolver');
 
   // Languages without standard support should use fallback language in menu.
   $langcode = $defaultLanguageResolver->getCurrentOrFallbackLanguage();
 
   /** @var \Drupal\helfi_navigation\ApiManager $apiManager */
-  $apiManager = Drupal::service(ApiManager::class);
+  $apiManager = \Drupal::service(ApiManager::class);
 
   try {
     // Ensure that drupalSettings library is enabled (menu library is not
@@ -162,9 +162,9 @@ function helfi_navigation_page_attachments(array &$attachments) : void {
       ],
     ];
   }
-  catch (Exception $e) {
+  catch (\Exception $e) {
     /** @var \Psr\Log\LoggerInterface $logger */
-    $logger = Drupal::service('logger.channel.helfi_navigation');
+    $logger = \Drupal::service('logger.channel.helfi_navigation');
 
     Error::logException($logger, $e);
   }

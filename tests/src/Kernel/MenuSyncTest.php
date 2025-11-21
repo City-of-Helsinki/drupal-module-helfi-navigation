@@ -121,7 +121,7 @@ class MenuSyncTest extends KernelTestBase {
     $apiManager->expects($this->once())
       ->method('update')
       // Capture arguments passed to syncMenu() so we can test them.
-      ->will($this->returnCallback(function (string $langcode, array $data) use ($siteName) {
+      ->willReturnCallback(function (string $langcode, array $data) use ($siteName) {
         $this->assertEquals($siteName, $data['site_name']);
         $this->assertEquals('base:site_name_' . $langcode, $data['menu_tree']['id']);
         $this->assertEquals($siteName, $data['menu_tree']['name']);
@@ -133,7 +133,7 @@ class MenuSyncTest extends KernelTestBase {
             (object) ['value' => TRUE],
           ],
         ]);
-      }));
+      });
     $this->container->set(ApiManager::class, $apiManager);
 
     $this->getMenuManager()->sync($langcode);
