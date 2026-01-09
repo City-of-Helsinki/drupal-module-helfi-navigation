@@ -128,7 +128,15 @@ final class GlobalMobileMenu extends ResourceBase {
       'status' => [['value' => TRUE]],
       'uuid' => [['value' => $this->configFactory->get('system.site')->get('uuid')]],
       'weight' => [['value' => 0]],
+      'no_global_navigation' => [['value' => $this->apiManager->isManuallyDisabled()]],
     ];
+
+    // If global navigation is disabled, only return local menu.
+    if ($this->apiManager->isManuallyDisabled()) {
+      return $this->toResourceResponse(
+        $this->normalizeResponseData([$projectName => $site_data])
+      );
+    }
 
     // Add local menu to the api response.
     $apiResponse->data->{$projectName} = $site_data;
