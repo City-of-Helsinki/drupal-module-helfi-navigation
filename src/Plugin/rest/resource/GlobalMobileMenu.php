@@ -93,10 +93,7 @@ final class GlobalMobileMenu extends ResourceBase {
     $site_data = $this->createLocalMenuData($site_name, $projectName, $langcode);
 
     // Handle non-core sites that only need local menu.
-    if (
-      $this->apiManager->isManuallyDisabled() &&
-      !$this->apiManager->hasAuthorization()
-    ) {
+    if ($this->excludeGlobalNavigationMenuItems()) {
       return $this->toResourceResponse(
         $this->normalizeResponseData([$projectName => $site_data])
       );
@@ -191,6 +188,17 @@ final class GlobalMobileMenu extends ResourceBase {
       'uuid' => [['value' => $this->configFactory->get('system.site')->get('uuid')]],
       'weight' => [['value' => 0]],
     ];
+  }
+
+  /**
+   * Check if global navigation items should be excluded from mobile-nav.
+   *
+   * @return bool
+   *   Exclude global navigation items.
+   */
+  private function excludeGlobalNavigationMenuItems() : bool {
+    return $this->apiManager->isManuallyDisabled() &&
+      !$this->apiManager->hasAuthorization();
   }
 
 }
