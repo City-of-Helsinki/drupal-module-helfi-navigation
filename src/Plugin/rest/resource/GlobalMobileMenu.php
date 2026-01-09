@@ -86,6 +86,21 @@ final class GlobalMobileMenu extends ResourceBase {
     $langcode = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
+    $projectName = $this->environmentResolver
+      ->getActiveProject()
+      ->getName();
+    $site_name = $this->configFactory->get('system.site')->get('name');
+    $site_data = $this->createLocalMenuData($site_name, $projectName, $langcode);
+
+    // Handle non-core sites that only need local menu.
+    if (
+      $this->apiManager->isManuallyDisabled() &&
+      !$this->apiManager->hasAuthorization()
+    ) {
+      return $this->toResourceResponse(
+        $this->normalizeResponseData([$projectName => $site_data])
+      );
+    }
 
     try {
       // Fetch the main menu from Etusivu instance.
@@ -106,35 +121,6 @@ final class GlobalMobileMenu extends ResourceBase {
     ) {
       return $this->toResourceResponse(
         $this->normalizeResponseData($apiResponse->data)
-      );
-    }
-
-    $projectName = $this->environmentResolver
-      ->getActiveProject()
-      ->getName();
-    $site_name = $this->configFactory->get('system.site')->get('name');
-
-    // Create menu tree and add data to the local menu.
-    $menuTree = $this->mainMenuManager->build($langcode);
-    // This is used by Mobile navigation javascript to
-    // figure out if special handling is needed.
-    $menuTree['is_injected'] = TRUE;
-    $menuTree['no_global_navigation'] = $this->apiManager->isManuallyDisabled();
-
-    $site_data = [
-      'langcode' => [['value' => $langcode]],
-      'menu_tree' => [0 => $menuTree],
-      'name' => [['value' => $site_name]],
-      'project' => [['value' => $projectName]],
-      'status' => [['value' => TRUE]],
-      'uuid' => [['value' => $this->configFactory->get('system.site')->get('uuid')]],
-      'weight' => [['value' => 0]],
-    ];
-
-    // If global navigation is disabled, only return local menu.
-    if ($this->apiManager->isManuallyDisabled()) {
-      return $this->toResourceResponse(
-        $this->normalizeResponseData([$projectName => $site_data])
       );
     }
 
@@ -173,6 +159,38 @@ final class GlobalMobileMenu extends ResourceBase {
    */
   private function normalizeResponseData(array|object $data): array {
     return json_decode(json_encode($data), TRUE);
+  }
+
+  /**
+   * Create the local menu data structure that matches the global navigation.
+   *
+   * @param string $siteName
+   *   The site name.
+   * @param string $projectName
+   *   The project name.
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return array
+   *   Local menu data.
+   */
+  private function createLocalMenuData(string $siteName, string $projectName, string $langcode) : array {
+    // Create menu tree and add data to the local menu.
+    $menuTree = $this->mainMenuManager->build($langcode);
+    // This is used by Mobile navigation javascript to
+    // figure out if special handling is needed.
+    $menuTree['is_injected'] = TRUE;
+    $menuTree['no_global_navigation'] = $this->apiManager->isManuallyDisabled();
+
+    return [
+      'langcode' => [['value' => $langcode]],
+      'menu_tree' => [0 => $menuTree],
+      'name' => [['value' => $siteName]],
+      'project' => [['value' => $projectName]],
+      'status' => [['value' => TRUE]],
+      'uuid' => [['value' => $this->configFactory->get('system.site')->get('uuid')]],
+      'weight' => [['value' => 0]],
+    ];
   }
 
 }
