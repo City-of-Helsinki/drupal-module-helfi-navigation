@@ -123,4 +123,26 @@ class GlobalMobileMenuTest extends MenuTreeBuilderTestBase {
     $this->assertArrayNotHasKey(Project::ASUMINEN, $array);
   }
 
+  /**
+   * Test the non-core site menu creation.
+   */
+  public function testOnlyLocalMenu(): void {
+    $this->grantRestfulPermissions();
+    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
+    $this->container->get('config.factory')
+      ->getEditable('helfi_navigation.settings')
+      ->set('global_navigation_enabled', FALSE)
+      ->save();
+    $this->config('system.site')
+      ->set('name', Project::ASUMINEN)
+      ->save();
+
+    $request = $this->getMockedRequest('/api/v1/global-mobile-menu');
+    $response = $this->processRequest($request);
+    $array = json_decode($response->getContent(), TRUE);
+
+    $this->assertCount(1, $array);
+    $this->assertArrayHasKey('asuminen', $array);
+  }
+
 }
