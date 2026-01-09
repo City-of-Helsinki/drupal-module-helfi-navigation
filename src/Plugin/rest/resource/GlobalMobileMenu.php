@@ -87,14 +87,14 @@ final class GlobalMobileMenu extends ResourceBase {
     $langcode = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
-    $projectName = $this->environmentResolver
-      ->getActiveProject()
-      ->getName();
     $site_name = $this->configFactory->get('system.site')->get('name');
-    $site_data = $this->createLocalMenuData($site_name, $projectName, $langcode);
 
     // Handle non-core sites that only need local menu.
     if ($this->excludeGlobalNavigationMenuItems()) {
+      $projectName = $this->environmentResolver
+        ->getActiveProject()
+        ->getName();
+      $site_data = $this->createLocalMenuData($site_name, $langcode);
       return $this->toResourceResponse(
         $this->normalizeResponseData([$projectName => $site_data])
       );
@@ -111,6 +111,10 @@ final class GlobalMobileMenu extends ResourceBase {
     // Combine global and local menu items for mobile navigation.
     // @see https://helsinkisolutionoffice.atlassian.net/browse/UHF-7607
     if ($this->useEnrichedMobileNavigation()) {
+      $projectName = $this->environmentResolver
+        ->getActiveProject()
+        ->getName();
+      $site_data = $this->createLocalMenuData($site_name, $langcode);
       $apiResponse->data->{$projectName} = $site_data;
     }
 
@@ -161,7 +165,11 @@ final class GlobalMobileMenu extends ResourceBase {
    * @return array
    *   Local menu data.
    */
-  private function createLocalMenuData(string $siteName, string $projectName, string $langcode) : array {
+  private function createLocalMenuData(string $siteName, string $langcode) : array {
+    $projectName = $this->environmentResolver
+      ->getActiveProject()
+      ->getName();
+
     // Create menu tree and add data to the local menu.
     $menuTree = $this->mainMenuManager->build($langcode);
     // This is used by Mobile navigation javascript to

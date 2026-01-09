@@ -72,12 +72,21 @@ class GlobalMobileMenuTest extends MenuTreeBuilderTestBase {
    */
   public function test404() : void {
     $this->grantRestfulPermissions();
+    $this->container->get('config.factory')
+      ->getEditable('helfi_navigation.settings')
+      ->set('global_navigation_enabled', TRUE)
+      ->save();
+
     // Make sure a 404 response is sent when we fail to fetch mobile navigation.
     $request = $this->getMockedRequest('/api/v1/global-mobile-menu');
     $response = $this->processRequest($request);
 
     $this->assertEquals(HttpResponse::HTTP_NOT_FOUND, $response->getStatusCode());
   }
+
+
+  // public function setGlobalNavigationEnabled(bool $enbled = TRUE) : void {
+  // }
 
   /**
    * @covers ::get
