@@ -108,7 +108,6 @@ final class GlobalMobileMenu extends ResourceBase {
     }
 
     // Combine global and local menu items for to mobile navigation.
-    // Currently used in Rekry.
     // @see https://helsinkisolutionoffice.atlassian.net/browse/UHF-7607
     if ($this->useEnrichedMobileNavigation()) {
       $apiResponse->data->{$projectName} = $site_data;
@@ -193,6 +192,9 @@ final class GlobalMobileMenu extends ResourceBase {
 
   /**
    * Mobile navigation should use global and local menu items.
+   *
+   * Currently used only in Rekry which is not part of global navigation
+   * but still wants to show the full navigation structure.
    *
    * @return bool
    *   Enrich the mobile navigation with local menu.
