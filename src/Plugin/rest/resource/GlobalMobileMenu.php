@@ -94,9 +94,10 @@ final class GlobalMobileMenu extends ResourceBase {
       $projectName = $this->environmentResolver
         ->getActiveProject()
         ->getName();
-      $site_data = $this->createLocalMenuData($site_name, $langcode);
       return $this->toResourceResponse(
-        $this->normalizeResponseData([$projectName => $site_data])
+        $this->normalizeResponseData(
+          [$projectName => $this->createLocalMenuData($site_name, $langcode)]
+        )
       );
     }
 
@@ -114,8 +115,7 @@ final class GlobalMobileMenu extends ResourceBase {
       $projectName = $this->environmentResolver
         ->getActiveProject()
         ->getName();
-      $site_data = $this->createLocalMenuData($site_name, $langcode);
-      $apiResponse->data->{$projectName} = $site_data;
+      $apiResponse->data->{$projectName} = $this->createLocalMenuData($site_name, $langcode);
     }
 
     return $this->toResourceResponse(
