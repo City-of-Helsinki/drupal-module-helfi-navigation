@@ -107,22 +107,12 @@ final class GlobalMobileMenu extends ResourceBase {
       return new ResourceResponse([], 404);
     }
 
-    // If authorization key is set, just return the menu without enrichment.
-    // This is used to so instances that are not a part of the
-    // "global navigation" to show their own main menu in mobile
-    // navigation, namely Rekry.
+    // Combine global and local menu items for to mobile navigation.
+    // Currently used in Rekry.
     // @see https://helsinkisolutionoffice.atlassian.net/browse/UHF-7607
-    if (
-      !$this->apiManager->isManuallyDisabled() &&
-      $this->apiManager->hasAuthorization()
-    ) {
-      return $this->toResourceResponse(
-        $this->normalizeResponseData($apiResponse->data)
-      );
+    if ($this->useEnrichedMobileNavigation()) {
+      $apiResponse->data->{$projectName} = $site_data;
     }
-
-    // Add local menu to the api response.
-    $apiResponse->data->{$projectName} = $site_data;
 
     return $this->toResourceResponse(
       $this->normalizeResponseData($apiResponse->data)
@@ -198,6 +188,17 @@ final class GlobalMobileMenu extends ResourceBase {
    */
   private function excludeGlobalNavigationMenuItems() : bool {
     return $this->apiManager->isManuallyDisabled() &&
+      !$this->apiManager->hasAuthorization();
+  }
+
+  /**
+   * Mobile navigation should use global and local menu items.
+   *
+   * @return bool
+   *   Enrich the mobile navigation with local menu.
+   */
+  private function useEnrichedMobileNavigation() : bool {
+    return !$this->apiManager->isManuallyDisabled() &&
       !$this->apiManager->hasAuthorization();
   }
 
