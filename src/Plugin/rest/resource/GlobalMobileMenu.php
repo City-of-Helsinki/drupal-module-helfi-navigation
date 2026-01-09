@@ -119,6 +119,7 @@ final class GlobalMobileMenu extends ResourceBase {
     // This is used by Mobile navigation javascript to
     // figure out if special handling is needed.
     $menuTree['is_injected'] = TRUE;
+    $menuTree['no_global_navigation'] = $this->apiManager->isManuallyDisabled();
 
     $site_data = [
       'langcode' => [['value' => $langcode]],
@@ -128,7 +129,6 @@ final class GlobalMobileMenu extends ResourceBase {
       'status' => [['value' => TRUE]],
       'uuid' => [['value' => $this->configFactory->get('system.site')->get('uuid')]],
       'weight' => [['value' => 0]],
-      'no_global_navigation' => [['value' => $this->apiManager->isManuallyDisabled()]],
     ];
 
     // If global navigation is disabled, only return local menu.
