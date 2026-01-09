@@ -84,10 +84,6 @@ class GlobalMobileMenuTest extends MenuTreeBuilderTestBase {
     $this->assertEquals(HttpResponse::HTTP_NOT_FOUND, $response->getStatusCode());
   }
 
-
-  // public function setGlobalNavigationEnabled(bool $enbled = TRUE) : void {
-  // }
-
   /**
    * @covers ::get
    * @covers ::__construct

@@ -157,8 +157,6 @@ final class GlobalMobileMenu extends ResourceBase {
    *
    * @param string $siteName
    *   The site name.
-   * @param string $projectName
-   *   The project name.
    * @param string $langcode
    *   The langcode.
    *
