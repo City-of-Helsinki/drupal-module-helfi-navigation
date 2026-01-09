@@ -7,24 +7,25 @@ namespace Drupal\helfi_navigation\Plugin\rest\resource;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MainMenuManager;
+use Drupal\rest\Attribute\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Represents Global menu records as resources.
- *
- * @RestResource(
- *   id = "helfi_global_mobile_menu",
- *   label = @Translation("Global mobile menu"),
- *   uri_paths = {
- *     "canonical" = "/api/v1/global-mobile-menu",
- *   }
- * )
  */
+#[RestResource(
+  id: 'helfi_global_mobile_menu',
+  label: new TranslatableMarkup('Global mobile menu'),
+  uri_paths: [
+    'canonical' => '/api/v1/global-mobile-menu',
+  ],
+)]
 final class GlobalMobileMenu extends ResourceBase {
 
   /**
@@ -107,7 +108,7 @@ final class GlobalMobileMenu extends ResourceBase {
       return new ResourceResponse([], 404);
     }
 
-    // Combine global and local menu items for to mobile navigation.
+    // Combine global and local menu items for mobile navigation.
     // @see https://helsinkisolutionoffice.atlassian.net/browse/UHF-7607
     if ($this->useEnrichedMobileNavigation()) {
       $apiResponse->data->{$projectName} = $site_data;
