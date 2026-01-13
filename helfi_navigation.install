@@ -10,6 +10,7 @@ declare(strict_types=1);
 use Drupal\block\Entity\Block;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_navigation\ApiManager;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\rest\Entity\RestResourceConfig;
 
@@ -26,12 +27,22 @@ function helfi_navigation_install($is_syncing) : void {
 
   /** @var \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler */
   $theme_handler = \Drupal::service('theme_handler');
+  /** @var \Drupal\helfi_navigation\ApiManager $apiManager */
+  $apiManager = \Drupal::service(ApiManager::class);
+  $enabled = !$apiManager->isManuallyDisabled();
 
   if (!str_starts_with($theme_handler->getDefault(), 'hdbt')) {
     return;
   }
   // Generate global navigation blocks.
-  _helfi_navigation_generate_blocks($theme_handler->getDefault());
+  _helfi_navigation_generate_blocks($theme_handler->getDefault(), blockEnabled: $enabled);
+
+  update_user_rest_permissions();
+
+  // On non-core sites, do not delete the old blocks.
+  if (!$enabled) {
+    return;
+  }
 
   // Delete old instance specific menu blocks.
   $old_menu_blocks = [
@@ -56,8 +67,6 @@ function helfi_navigation_install($is_syncing) : void {
   foreach ($block_storage->loadMultiple($delete) as $block) {
     $block->delete();
   }
-
-  update_user_rest_permissions();
 
 }
 
@@ -174,7 +183,7 @@ function _helfi_navigation_get_block_configuration() : array {
  *
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function _helfi_navigation_generate_blocks(string $theme, ?string $region = NULL, int $labelDisplay = 0) : void {
+function _helfi_navigation_generate_blocks(string $theme, ?string $region = NULL, int $labelDisplay = 0, bool $blockEnabled = TRUE) : void {
   assert(\Drupal::languageManager() instanceof ConfigurableLanguageManagerInterface);
 
   $default_config = [
@@ -186,7 +195,7 @@ function _helfi_navigation_generate_blocks(string $theme, ?string $region = NULL
       'expand_all_items' => FALSE,
     ],
     'langcode' => 'en',
-    'status' => TRUE,
+    'status' => $blockEnabled,
     'provider' => NULL,
     'theme' => $theme,
     'visibility' => [],
