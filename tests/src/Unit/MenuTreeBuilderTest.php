@@ -10,6 +10,7 @@ use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,10 +26,10 @@ class MenuTreeBuilderTest extends UnitTestCase {
   /**
    * Tests root element validation.
    *
-   * @dataProvider rootElementExceptionData
    * @covers ::__construct
    * @covers ::build
    */
+  #[DataProvider(methodName: 'rootElementExceptionData')]
   public function testRootElementException(\stdClass $rootElement) : void {
     $this->expectException(\LogicException::class);
     $this->expectExceptionMessage('Missing $rootElement->name, $rootElement->url or $rootElement->id property.');
@@ -57,7 +58,7 @@ class MenuTreeBuilderTest extends UnitTestCase {
    * @return array
    *   The data.
    */
-  public function rootElementExceptionData() : array {
+  public static function rootElementExceptionData() : array {
     return [
       [
         (object) [],

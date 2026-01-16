@@ -10,6 +10,7 @@ use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MainMenuManager;
 use Drupal\Tests\helfi_navigation\Traits\MenuLinkTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -110,9 +111,8 @@ class MenuSyncTest extends KernelTestBase {
 
   /**
    * Make sure syncMenu() is called with correct values.
-   *
-   * @dataProvider configTranslationData
    */
+  #[DataProvider(methodName: 'configTranslationData')]
   public function testConfigTranslation(string $langcode) : void {
     $siteName = 'Site name ' . $langcode;
     $this->populateConfiguration($siteName);
@@ -145,7 +145,7 @@ class MenuSyncTest extends KernelTestBase {
    * @return array
    *   The data.
    */
-  public function configTranslationData() : array {
+  public static function configTranslationData() : array {
     return [
       ['fi'],
       ['en'],

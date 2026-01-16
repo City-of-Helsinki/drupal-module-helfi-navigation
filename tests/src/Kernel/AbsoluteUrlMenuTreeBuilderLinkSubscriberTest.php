@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_navigation\Kernel;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests absolute url subscriber.
@@ -19,9 +20,8 @@ class AbsoluteUrlMenuTreeBuilderLinkSubscriberTest extends MenuTreeBuilderTestBa
 
   /**
    * Tests that URLs are converted to absolute when the domains don't match.
-   *
-   * @dataProvider absoluteUrlData
    */
+  #[DataProvider(methodName: 'absoluteUrlData')]
   public function testAbsoluteUrl(string $langcode, EnvironmentEnum $environment, string $expected) : void {
     $this->createLinks();
     $this->setActiveProject(Project::ASUMINEN, $environment);
@@ -35,7 +35,7 @@ class AbsoluteUrlMenuTreeBuilderLinkSubscriberTest extends MenuTreeBuilderTestBa
    * @return array[]
    *   The data.
    */
-  public function absoluteUrlData() : array {
+  public static function absoluteUrlData() : array {
     return [
       // The URL should be absolute because the local environment has
       // a project-specific domains.
