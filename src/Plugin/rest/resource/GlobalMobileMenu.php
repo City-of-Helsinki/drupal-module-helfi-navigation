@@ -7,24 +7,25 @@ namespace Drupal\helfi_navigation\Plugin\rest\resource;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MainMenuManager;
+use Drupal\rest\Attribute\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Represents Global menu records as resources.
- *
- * @RestResource(
- *   id = "helfi_global_mobile_menu",
- *   label = @Translation("Global mobile menu"),
- *   uri_paths = {
- *     "canonical" = "/api/v1/global-mobile-menu",
- *   }
- * )
  */
+#[RestResource(
+  id: 'helfi_global_mobile_menu',
+  label: new TranslatableMarkup('Global mobile menu'),
+  uri_paths: [
+    'canonical' => '/api/v1/global-mobile-menu',
+  ],
+)]
 final class GlobalMobileMenu extends ResourceBase {
 
   /**
@@ -86,6 +87,19 @@ final class GlobalMobileMenu extends ResourceBase {
     $langcode = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
+    $site_name = $this->configFactory->get('system.site')->get('name');
+
+    // Handle non-core sites that only need local menu.
+    if ($this->excludeGlobalNavigationMenuItems()) {
+      $projectName = $this->environmentResolver
+        ->getActiveProject()
+        ->getName();
+      return $this->toResourceResponse(
+        $this->normalizeResponseData(
+          [$projectName => $this->createLocalMenuData($site_name, $langcode)]
+        )
+      );
+    }
 
     try {
       // Fetch the main menu from Etusivu instance.
@@ -95,43 +109,14 @@ final class GlobalMobileMenu extends ResourceBase {
       return new ResourceResponse([], 404);
     }
 
-    // If authorization key is set, just return the menu without enrichment.
-    // This is used to so instances that are not a part of the
-    // "global navigation" to show their own main menu in mobile
-    // navigation, namely Rekry.
+    // Combine global and local menu items for mobile navigation.
     // @see https://helsinkisolutionoffice.atlassian.net/browse/UHF-7607
-    if (
-      !$this->apiManager->isManuallyDisabled() &&
-      $this->apiManager->hasAuthorization()
-    ) {
-      return $this->toResourceResponse(
-        $this->normalizeResponseData($apiResponse->data)
-      );
+    if ($this->useEnrichedMobileNavigation()) {
+      $projectName = $this->environmentResolver
+        ->getActiveProject()
+        ->getName();
+      $apiResponse->data->{$projectName} = $this->createLocalMenuData($site_name, $langcode);
     }
-
-    $projectName = $this->environmentResolver
-      ->getActiveProject()
-      ->getName();
-    $site_name = $this->configFactory->get('system.site')->get('name');
-
-    // Create menu tree and add data to the local menu.
-    $menuTree = $this->mainMenuManager->build($langcode);
-    // This is used by Mobile navigation javascript to
-    // figure out if special handling is needed.
-    $menuTree['is_injected'] = TRUE;
-
-    $site_data = [
-      'langcode' => [['value' => $langcode]],
-      'menu_tree' => [0 => $menuTree],
-      'name' => [['value' => $site_name]],
-      'project' => [['value' => $projectName]],
-      'status' => [['value' => TRUE]],
-      'uuid' => [['value' => $this->configFactory->get('system.site')->get('uuid')]],
-      'weight' => [['value' => 0]],
-    ];
-
-    // Add local menu to the api response.
-    $apiResponse->data->{$projectName} = $site_data;
 
     return $this->toResourceResponse(
       $this->normalizeResponseData($apiResponse->data)
@@ -165,6 +150,65 @@ final class GlobalMobileMenu extends ResourceBase {
    */
   private function normalizeResponseData(array|object $data): array {
     return json_decode(json_encode($data), TRUE);
+  }
+
+  /**
+   * Create the local menu data structure that matches the global navigation.
+   *
+   * @param string $siteName
+   *   The site name.
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return array
+   *   Local menu data.
+   */
+  private function createLocalMenuData(string $siteName, string $langcode) : array {
+    $projectName = $this->environmentResolver
+      ->getActiveProject()
+      ->getName();
+
+    // Create menu tree and add data to the local menu.
+    $menuTree = $this->mainMenuManager->build($langcode);
+    // This is used by Mobile navigation javascript to
+    // figure out if special handling is needed.
+    $menuTree['is_injected'] = TRUE;
+    $menuTree['no_global_navigation'] = $this->apiManager->isManuallyDisabled();
+
+    return [
+      'langcode' => [['value' => $langcode]],
+      'menu_tree' => [0 => $menuTree],
+      'name' => [['value' => $siteName]],
+      'project' => [['value' => $projectName]],
+      'status' => [['value' => TRUE]],
+      'uuid' => [['value' => $this->configFactory->get('system.site')->get('uuid')]],
+      'weight' => [['value' => 0]],
+    ];
+  }
+
+  /**
+   * Check if global navigation items should be excluded from mobile-nav.
+   *
+   * @return bool
+   *   Exclude global navigation items.
+   */
+  private function excludeGlobalNavigationMenuItems() : bool {
+    return $this->apiManager->isManuallyDisabled() &&
+      !$this->apiManager->hasAuthorization();
+  }
+
+  /**
+   * Mobile navigation should use global and local menu items.
+   *
+   * Currently used only in Rekry which is not part of global navigation
+   * but still wants to show the full navigation structure.
+   *
+   * @return bool
+   *   Enrich the mobile navigation with local menu.
+   */
+  private function useEnrichedMobileNavigation() : bool {
+    return !$this->apiManager->isManuallyDisabled() &&
+      !$this->apiManager->hasAuthorization();
   }
 
 }
