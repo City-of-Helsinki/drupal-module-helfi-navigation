@@ -1,0 +1,556 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Function _helfi_navigation_get_block_configuration\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_navigation.install
+
+		-
+			message: "#^Function helfi_navigation_install\\(\\) has parameter \\$is_syncing with no type specified\\.$#"
+			count: 1
+			path: helfi_navigation.install
+
+		-
+			message: "#^Function helfi_navigation_uninstall\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: helfi_navigation.install
+
+		-
+			message: "#^Function helfi_navigation_uninstall\\(\\) has parameter \\$is_syncing with no type specified\\.$#"
+			count: 1
+			path: helfi_navigation.install
+
+		-
+			message: "#^Function helfi_navigation_entity_base_field_info\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Function helfi_navigation_form_node_form_alter\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Function helfi_navigation_form_node_form_alter\\(\\) has parameter \\$form_id with no type specified\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Function helfi_navigation_form_node_form_submit\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Function helfi_navigation_page_attachments\\(\\) has parameter \\$attachments with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Function helfi_navigation_preprocess_menu__external_menu__fallback\\(\\) has parameter \\$variables with no type specified\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Function helfi_navigation_theme\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Function helfi_navigation_theme_suggestions_menu_alter\\(\\) has parameter \\$suggestions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Function helfi_navigation_theme_suggestions_menu_alter\\(\\) has parameter \\$variables with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Parameter \\#1 \\$menuName of function _helfi_navigation_queue_item expects string, int\\|string\\|null given\\.$#"
+			count: 1
+			path: helfi_navigation.module
+
+		-
+			message: "#^Using nullsafe method call on non\\-nullable type Drupal\\\\Core\\\\Config\\\\ImmutableConfig\\. Use \\-\\> instead\\.$#"
+			count: 1
+			path: src/ApiAuthorization.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: string$#"
+			count: 1
+			path: src/ApiManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ApiManager\\:\\:get\\(\\) has parameter \\$requestOptions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ApiManager\\:\\:update\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Event\\\\MenuTreeBuilderLink\\:\\:__construct\\(\\) has parameter \\$item with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Event/MenuTreeBuilderLink.php
+
+		-
+			message: "#^Argument of an invalid type array\\|object supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: src/ExternalMenuLazyBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuLazyBuilder\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuLazyBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuLazyBuilder\\:\\:parseResponse\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuLazyBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuLazyBuilderInterface\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuLazyBuilderInterface.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$external\\.$#"
+			count: 2
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 2
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$link\\.$#"
+			count: 2
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$name\\.$#"
+			count: 2
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$url\\.$#"
+			count: 4
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilder\\:\\:build\\(\\) has parameter \\$items with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilder\\:\\:build\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilder\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilder\\:\\:createLink\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilder\\:\\:transform\\(\\) has parameter \\$items with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilder\\:\\:transform\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilder\\:\\:transform\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilder\\:\\:updateActiveTrail\\(\\) has parameter \\$tree with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilderInterface\\:\\:build\\(\\) has parameter \\$items with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilderInterface.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilderInterface\\:\\:build\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilderInterface.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilderInterface\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ExternalMenuTreeBuilderInterface.php
+
+		-
+			message: "#^Cannot access offset 'redirect' on array\\|bool\\|float\\|int\\|string\\|UnitEnum\\.$#"
+			count: 1
+			path: src/HelfiNavigationServiceProvider.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\HelfiNavigationServiceProvider\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/HelfiNavigationServiceProvider.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\MainMenuManager\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MainMenuManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Menu\\\\MenuTreeBuilder\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Menu/MenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Menu\\\\MenuTreeBuilder\\:\\:processItem\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Menu/MenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Menu\\\\MenuTreeBuilder\\:\\:transform\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Menu/MenuTreeBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$entity_type_id of method Drupal\\\\Core\\\\Entity\\\\EntityTypeManagerInterface\\:\\:getStorage\\(\\) expects string, int\\|string\\|null given\\.$#"
+			count: 1
+			path: src/Menu/MenuTreeBuilder.php
+
+		-
+			message: "#^Parameter \\#1 \\$plugin_id of method Drupal\\\\Component\\\\Plugin\\\\Discovery\\\\DiscoveryInterface\\:\\:hasDefinition\\(\\) expects string, int\\|string\\|null given\\.$#"
+			count: 1
+			path: src/Menu/MenuTreeBuilder.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Block\\\\ExternalMenuBlockBase\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Block/ExternalMenuBlockBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Block\\\\ExternalMenuBlockBase\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Block/ExternalMenuBlockBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Block\\\\MenuBlockBase\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Block/MenuBlockBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Block\\\\MobileMenuFallbackBlock\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Block/MobileMenuFallbackBlock.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Block\\\\MobileMenuFallbackBlock\\:\\:buildParentLinks\\(\\) has parameter \\$parents with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Block/MobileMenuFallbackBlock.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Block\\\\MobileMenuFallbackBlock\\:\\:buildParentLinks\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Block/MobileMenuFallbackBlock.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Block\\\\MobileMenuFallbackBlock\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Block/MobileMenuFallbackBlock.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\DebugDataItem\\\\ApiAvailability\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/DebugDataItem/ApiAvailability.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Derivative\\\\ExternalMenuBlock\\:\\:getDerivativeDefinitions\\(\\) has parameter \\$base_plugin_definition with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Derivative/ExternalMenuBlock.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Derivative\\\\ExternalMenuBlock\\:\\:getDerivativeDefinitions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Derivative/ExternalMenuBlock.php
+
+		-
+			message: "#^Property Drupal\\\\helfi_navigation\\\\Plugin\\\\Derivative\\\\ExternalMenuBlock\\:\\:\\$externalMenus type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Derivative/ExternalMenuBlock.php
+
+		-
+			message: "#^Cannot access offset 'description' on array\\|Drupal\\\\Component\\\\Plugin\\\\Definition\\\\PluginDefinitionInterface\\.$#"
+			count: 1
+			path: src/Plugin/Menu/ExternalMenuLink.php
+
+		-
+			message: "#^Cannot access offset 'title' on array\\|Drupal\\\\Component\\\\Plugin\\\\Definition\\\\PluginDefinitionInterface\\.$#"
+			count: 1
+			path: src/Plugin/Menu/ExternalMenuLink.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Menu\\\\ExternalMenuLink\\:\\:updateLink\\(\\) has parameter \\$new_definition_values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Menu/ExternalMenuLink.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Menu\\\\ExternalMenuLink\\:\\:updateLink\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Menu/ExternalMenuLink.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\QueueWorker\\\\MenuQueue\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/QueueWorker/MenuQueue.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\rest\\\\resource\\\\GlobalMobileMenu\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/rest/resource/GlobalMobileMenu.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\rest\\\\resource\\\\GlobalMobileMenu\\:\\:createLocalMenuData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/rest/resource/GlobalMobileMenu.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\rest\\\\resource\\\\GlobalMobileMenu\\:\\:normalizeResponseData\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/rest/resource/GlobalMobileMenu.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\rest\\\\resource\\\\GlobalMobileMenu\\:\\:normalizeResponseData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/rest/resource/GlobalMobileMenu.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\rest\\\\resource\\\\GlobalMobileMenu\\:\\:toResourceResponse\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/rest/resource/GlobalMobileMenu.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Plugin/rest/resource/GlobalMobileMenu.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Functional\\\\MenuBlockTest\\:\\:assertActiveTrail\\(\\) has parameter \\$expectedActiveTrail with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuBlockTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Functional\\\\MenuBlockTest\\:\\:assertActiveTrail\\(\\) has parameter \\$expectedAriaCurrent with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuBlockTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Functional\\\\MenuBlockTest\\:\\:createLinks\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuBlockTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Functional\\\\MenuBlockTest\\:\\:createTestLink\\(\\) has parameter \\$overrides with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuBlockTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$value of method Drupal\\\\Tests\\\\BrowserTestBase\\:\\:setContainerParameter\\(\\) expects array\\|bool\\|string, int given\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuBlockTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$string of method PHPUnit\\\\Framework\\\\Assert\\:\\:assertStringStartsWith\\(\\) expects string, string\\|false\\|null given\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuContentTranslationStatusTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\AbsoluteUrlMenuTreeBuilderLinkSubscriberTest\\:\\:absoluteUrlData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/AbsoluteUrlMenuTreeBuilderLinkSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\ExternalMenuTreeBuilderTest\\:\\:getExternalMenuTree\\(\\) has parameter \\$requestStack with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy but does not specify its types\\: T$#"
+			count: 1
+			path: tests/src/Kernel/ExternalMenuTreeBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\ExternalMenuTreeBuilderTest\\:\\:getExternalMenuTree\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ExternalMenuTreeBuilderTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 1
+			path: tests/src/Kernel/ExternalMenuTreeBuilderTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$requestStack of class Drupal\\\\helfi_navigation\\\\ExternalMenuTreeBuilder constructor expects Symfony\\\\Component\\\\HttpFoundation\\\\RequestStack, object given\\.$#"
+			count: 1
+			path: tests/src/Kernel/ExternalMenuTreeBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\KernelTestBase\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Kernel/KernelTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\MenuSyncTest\\:\\:configTranslationData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MenuSyncTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\MenuSyncTest\\:\\:createLinks\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MenuSyncTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\MenuSyncTest\\:\\:createTestLink\\(\\) has parameter \\$overrides with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MenuSyncTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\MenuTreeBuilderTest\\:\\:assertTree\\(\\) has parameter \\$tree with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MenuTreeBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\MenuTreeBuilderTestBase\\:\\:createLinks\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MenuTreeBuilderTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\MenuTreeBuilderTestBase\\:\\:createTestLink\\(\\) has parameter \\$overrides with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MenuTreeBuilderTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Kernel\\\\MenuTreeBuilderTestBase\\:\\:getMenuTree\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MenuTreeBuilderTestBase.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 3
+			path: tests/src/Kernel/Plugin/rest/resource/GlobalMobileMenuTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ApiManagerTest\\:\\:getTimeMock\\(\\) return type with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/src/Unit/ApiManagerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$configFactoryClosure of class Drupal\\\\helfi_api_base\\\\Environment\\\\EnvironmentResolver constructor expects Closure, Drupal\\\\Core\\\\Config\\\\ConfigFactoryInterface&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 2
+			path: tests/src/Unit/ApiManagerTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$time of class Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiClient constructor expects Drupal\\\\Component\\\\Datetime\\\\TimeInterface, object given\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiManagerTest.php
+
+		-
+			message: "#^Parameter \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 7
+			path: tests/src/Unit/ApiManagerTest.php
+
+		-
+			message: "#^Property Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ApiManagerTest\\:\\:\\$environmentResolverConfiguration type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiManagerTest.php
+
+		-
+			message: "#^Call to an undefined method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiResponse\\|Prophecy\\\\Prophecy\\\\MethodProphecy\\:\\:willReturn\\(\\)\\.$#"
+			count: 2
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Call to an undefined method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiResponse\\|Prophecy\\\\Prophecy\\\\MethodProphecy\\:\\:willThrow\\(\\)\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Call to an undefined method Drupal\\\\helfi_navigation\\\\ApiManager\\|Prophecy\\\\Prophecy\\\\ObjectProphecy\\<Drupal\\\\helfi_navigation\\\\ApiManager\\>\\:\\:reveal\\(\\)\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:getLazyBuilderOptions\\(\\) has parameter \\$overrides with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:getLazyBuilderOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:menuTreeDataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:simulateLazyBuilderBuild\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:simulateLazyBuilderBuild\\(\\) has parameter \\$expectedMenuTree with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:simulateLazyBuilderBuild\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:simulateLazyBuilderBuild\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:testBuildWithVariousDataFormats\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:testBuildWithVariousDataFormats\\(\\) has parameter \\$expectedTree with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:testBuildWithVariousDataFormats\\(\\) has parameter \\$overrides with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$requestOptions of method Drupal\\\\helfi_navigation\\\\ApiManager\\:\\:get\\(\\) expects array, Prophecy\\\\Argument\\\\Token\\\\TypeToken given\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Property Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ExternalMenuLazyBuilderTest\\:\\:\\$defaultOptions type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ExternalMenuLazyBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\MenuTreeBuilderTest\\:\\:rootElementExceptionData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/MenuTreeBuilderTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\Plugin\\\\QueueWorker\\\\MenuQueueTest\\:\\:getSut\\(\\) has parameter \\$menuManager with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy but does not specify its types\\: T$#"
+			count: 1
+			path: tests/src/Unit/Plugin/QueueWorker/MenuQueueTest.php
