@@ -203,6 +203,9 @@ final class GlobalMobileMenu extends ResourceBase {
    * Currently used only in Rekry which is not part of global navigation
    * but still wants to show the full navigation structure.
    *
+   * For this to work, the site should not have a valid authorization token
+   * via DRUPAL_NAVIGATION_VAULT environment variable.
+   *
    * @return bool
    *   Enrich the mobile navigation with local menu.
    */

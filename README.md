@@ -34,6 +34,12 @@ A block extending `ExternalMenuBlock`-class handles:
 - Caching the fetched navigation request.
 - Rendering the navigation.
 
+### Main navigation mobile menu
+
+Mobile menu has additional configuration options:
+- `$config['helfi_navigation.settings']['global_navigation_enabled']`: When `false`, the mobile menu is rendered with only local main menu items.
+- `DRUPAL_NAVIGATION_VAULT` environment variable: if this variable is not set (and the above `global_navigation_enabled`-setting is `true`), mobile menu will render with both global menu items from etusivu API and local main menu items (special feature currently only in use in `rekry`).
+
 ### Other navigations
 
 A menu block extending `ExternalMenuBlock`-class can also handle all other supported menus.
