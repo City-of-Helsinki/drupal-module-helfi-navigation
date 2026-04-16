@@ -10,6 +10,7 @@ use Drupal\Core\Cache\MemoryBackend;
 use Drupal\Core\Config\ConfigException;
 use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
@@ -18,6 +19,7 @@ use Drupal\helfi_api_base\Vault\VaultManager;
 use Drupal\helfi_navigation\ApiAuthorization;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\TransferException;
@@ -33,6 +35,7 @@ use Psr\Log\LoggerInterface;
 class ApiManagerTest extends UnitTestCase {
 
   use ApiTestTrait;
+  use EnvironmentResolverTrait;
   use ProphecyTrait;
 
   /**
@@ -43,23 +46,12 @@ class ApiManagerTest extends UnitTestCase {
   private ?CacheBackendInterface $cache;
 
   /**
-   * The default environment resolver config.
-   *
-   * @var array
-   */
-  private array $environmentResolverConfiguration = [];
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() : void {
     parent::setUp();
 
     $this->cache = new MemoryBackend($this->prophesize(TimeInterface::class)->reveal());
-    $this->environmentResolverConfiguration = [
-      EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
-      EnvironmentResolver::ENVIRONMENT_NAME_KEY => 'local',
-    ];
   }
 
   /**
@@ -100,9 +92,7 @@ class ApiManagerTest extends UnitTestCase {
     }
 
     if (!$environmentResolver) {
-      $environmentResolver = new EnvironmentResolver($this->getConfigFactoryStub([
-        'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
-      ]));
+      $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Local);
     }
 
     $logger = $this->prophesize(LoggerInterface::class)->reveal();
@@ -136,9 +126,7 @@ class ApiManagerTest extends UnitTestCase {
   ) : ApiManager {
 
     if (!$environmentResolver) {
-      $environmentResolver = new EnvironmentResolver($this->getConfigFactoryStub([
-        'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
-      ]));
+      $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Local);
     }
     return new ApiManager(
       $client,
@@ -150,7 +138,10 @@ class ApiManagerTest extends UnitTestCase {
         ] : []),
       ),
       $this->getConfigFactoryStub([
-        'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
+        'helfi_api_base.environment_resolver.settings' => [
+          EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
+          EnvironmentResolver::ENVIRONMENT_NAME_KEY => EnvironmentEnum::Local->value,
+        ],
       ])
     );
   }
