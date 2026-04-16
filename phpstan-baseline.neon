@@ -451,11 +451,6 @@ parameters:
 			path: tests/src/Unit/ApiManagerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$configFactoryClosure of class Drupal\\\\helfi_api_base\\\\Environment\\\\EnvironmentResolver constructor expects Closure, Drupal\\\\Core\\\\Config\\\\ConfigFactoryInterface&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
-			count: 2
-			path: tests/src/Unit/ApiManagerTest.php
-
-		-
 			message: "#^Parameter \\#3 \\$time of class Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiClient constructor expects Drupal\\\\Component\\\\Datetime\\\\TimeInterface, object given\\.$#"
 			count: 1
 			path: tests/src/Unit/ApiManagerTest.php
@@ -463,11 +458,6 @@ parameters:
 		-
 			message: "#^Parameter \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
 			count: 7
-			path: tests/src/Unit/ApiManagerTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_navigation\\\\Unit\\\\ApiManagerTest\\:\\:\\$environmentResolverConfiguration type has no value type specified in iterable type array\\.$#"
-			count: 1
 			path: tests/src/Unit/ApiManagerTest.php
 
 		-
