@@ -140,7 +140,16 @@ final class ExternalMenuTreeBuilder implements ExternalMenuTreeBuilderInterface 
     ];
 
     $item->link = $item->url;
-    $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
+
+    // #UHF-12734 mega menu would have wrong url on current page's link.
+    if (Url::fromRoute('<front>')->toString() === $item->link) {
+      // Cannot use UrlHelper for the current site's frontpage url since
+      // it would change the url from /fi/asuminen to /fi/asuminen/asuminen.
+      $item->url = Url::fromRoute('<front>');
+    } else {
+      $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
+    }
+
     $item->external = $this->domainResolver->isExternal($item->url);
 
     if (isset($item->weight)) {
