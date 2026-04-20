@@ -206,7 +206,7 @@ final class ExternalMenuTreeBuilder implements ExternalMenuTreeBuilderInterface 
    * @param string|null $url
    *   The url.
    *
-   * @return Url
+   * @return \Drupal\Core\Url
    *   The url object.
    */
   private function createUrl(?string $url): Url {
