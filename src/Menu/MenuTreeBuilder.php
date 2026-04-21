@@ -13,6 +13,7 @@ use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\views\Plugin\Menu\ViewsMenuLink;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
 use Drupal\menu_link_content\MenuLinkContentInterface;
@@ -73,7 +74,6 @@ final class MenuTreeBuilder {
     if (!$parameters) {
       $parameters = new MenuTreeParameters();
     }
-    $parameters->onlyEnabledLinks();
 
     $tree = $this->menuTree->load($menuName, $parameters);
     $tree = $this->menuTree->transform($tree, [
@@ -124,18 +124,52 @@ final class MenuTreeBuilder {
     $items = [];
 
     foreach ($menuItems as $element) {
+      // Skip disabled links. Since $menuItems is a hierarchical tree, this
+      // will skip all children as well.
+      if (!$element->link->isEnabled()) {
+        continue;
+      }
+
+      $pluginId = $element->link->getPluginId();
+      $parentId = $element->link->getParent();
+      $urlObject = $element->link->getUrlObject();
+      $title = $element->link->getTitle();
+      $isExpanded = $element->link->isExpanded();
+      $weight = $element->link->getWeight();
+      $langAttribute = NULL;
+
       /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
-      if (!$link = $this->getEntity($element->link, $langcode)) {
+      if ($link = $this->getEntity($element->link, $langcode)) {
+        $this->evaluateEntityAccess($element, $langcode);
+
+        // Only show accessible links.
+        if ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) {
+          continue;
+        }
+
+        // Get properties from the menu link content entity, to make sure
+        // proper translation is used.
+        $pluginId = $link->getPluginId();
+        $parentId = $link->getParentId();
+        $urlObject = $link->getUrlObject();
+        $title = $link->getTitle();
+        $isExpanded = $link->isExpanded();
+        $weight = $link->getWeight();
+
+        // Make sure the url object retains the language information.
+        if (!$urlObject->getOption('language')) {
+          $urlObject->setOptions(['language' => $link->language()]);
+        }
+
+        if ($link->hasField('lang_attribute')) {
+          $langAttribute = $link->get('lang_attribute')->value;
+        }
+      }
+      elseif (!$element->link instanceof ViewsMenuLink) {
+        // Skip unsupported link types.
         continue;
       }
-      $this->evaluateEntityAccess($element, $langcode);
 
-      // Only show accessible links.
-      if ($element->access instanceof AccessResultInterface && !$element->access->isAllowed()) {
-        continue;
-      }
-
-      $parentId = $link->getParentId();
       // The first level link (depth 0) always links to a currently active
       // instance, meaning second level (depth 1) links have no proper
       // parent. Use a pre-defined root id to keep the menu structure
@@ -144,10 +178,10 @@ final class MenuTreeBuilder {
         $parentId = (string) $rootId;
       }
 
-      $isExternal = $this->domainResolver->isExternal($link->getUrlObject());
+      $isExternal = $this->domainResolver->isExternal($urlObject);
 
       // Include all parent ids for given menu links.
-      if ($parents = $this->menuLinkManager->getParentIds($link->getPluginId())) {
+      if ($parents = $this->menuLinkManager->getParentIds($pluginId)) {
         $parents = array_keys($parents);
 
         // Add first level root item as parent as well.
@@ -156,23 +190,16 @@ final class MenuTreeBuilder {
         }
       }
 
-      $urlObject = $link->getUrlObject();
-
-      // Make sure the url object retains the language information.
-      if (!$urlObject->getOption('language')) {
-        $urlObject->setOptions(['language' => $link->language()]);
-      }
-
       $item = [
-        'id' => $link->getPluginId(),
-        'name' => $link->getTitle(),
+        'id' => $pluginId,
+        'name' => $title,
         'parentId' => $parentId,
         'attributes' => new \stdClass(),
         'external' => $isExternal,
         'hasItems' => FALSE,
-        'expanded' => $link->isExpanded(),
+        'expanded' => $isExpanded,
         'parents' => $parents ?? [],
-        'weight' => $link->getWeight(),
+        'weight' => $weight,
       ];
 
       if ($isExternal) {
@@ -183,10 +210,7 @@ final class MenuTreeBuilder {
         $item['attributes']->{"data-protocol"} = $protocol;
       }
 
-      if (
-        $link->hasField('lang_attribute') &&
-        $langAttribute = $link->get('lang_attribute')->value
-      ) {
+      if ($langAttribute) {
         $item['attributes']->{"lang"} = $langAttribute;
       }
 
