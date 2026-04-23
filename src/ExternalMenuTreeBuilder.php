@@ -140,7 +140,7 @@ final class ExternalMenuTreeBuilder implements ExternalMenuTreeBuilderInterface 
     ];
 
     $item->link = $item->url;
-    $item->url = !empty($item->url) ? UrlHelper::parse($item->url) : new Url('<nolink>');
+    $item->url = $this->createUrl($item->url);
     $item->external = $this->domainResolver->isExternal($item->url);
 
     if (isset($item->weight)) {
@@ -198,6 +198,32 @@ final class ExternalMenuTreeBuilder implements ExternalMenuTreeBuilderInterface 
       return TRUE;
     }
     return FALSE;
+  }
+
+  /**
+   * Create url-object for given url.
+   *
+   * @param string|null $url
+   *   The url.
+   *
+   * @return \Drupal\Core\Url
+   *   The url object.
+   */
+  private function createUrl(?string $url): Url {
+    if (!$url) {
+      return new Url('<nolink>');
+    }
+
+    static $frontPage = NULL;
+    if (!$frontPage) {
+      $frontPage = new Url('<front>');
+    }
+
+    if ($url === $frontPage->toString()) {
+      return $frontPage;
+    }
+
+    return UrlHelper::parse($url);
   }
 
 }
