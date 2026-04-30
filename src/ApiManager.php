@@ -10,6 +10,7 @@ use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use GuzzleHttp\Exception\GuzzleException;
@@ -183,8 +184,14 @@ class ApiManager {
       ->getActiveEnvironment();
     $activeEnvironmentName = $activeEnvironment
       ->getEnvironmentName();
-    $env = $this->environmentResolver
-      ->getEnvironment(Project::ETUSIVU, $activeEnvironmentName);
+
+    // Get matching environment for etusivu project. Use test environment as
+    // fallback.
+    $etusivu_project = $this->environmentResolver->getProject(Project::ETUSIVU);
+    if (!$etusivu_project->hasEnvironment($activeEnvironmentName)) {
+      $activeEnvironmentName = EnvironmentEnum::Test->value;
+    }
+    $env = $etusivu_project->getEnvironment($activeEnvironmentName);
 
     return match ($type) {
       'canonical' => $env->getUrl($langcode),
