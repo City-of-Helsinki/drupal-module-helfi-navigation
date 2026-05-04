@@ -187,11 +187,11 @@ class ApiManager {
 
     // Get matching environment for etusivu project. Use test environment as
     // fallback.
-    $etusivu_project = $this->environmentResolver->getProject(Project::ETUSIVU);
-    if (!$etusivu_project->hasEnvironment($activeEnvironmentName)) {
+    $etusivuProject = $this->environmentResolver->getProject(Project::ETUSIVU);
+    if (!$etusivuProject->hasEnvironment($activeEnvironmentName)) {
       $activeEnvironmentName = EnvironmentEnum::Test->value;
     }
-    $env = $etusivu_project->getEnvironment($activeEnvironmentName);
+    $env = $etusivuProject->getEnvironment($activeEnvironmentName);
 
     return match ($type) {
       'canonical' => $env->getUrl($langcode),
