@@ -115,6 +115,8 @@ class ApiManagerTest extends UnitTestCase {
    *   The environment resolver.
    * @param string|null $apiKey
    *   The api key.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum|null $environment
+   *   The environment.
    *
    * @return \Drupal\helfi_navigation\ApiManager
    *   The api manager instance.
@@ -123,10 +125,11 @@ class ApiManagerTest extends UnitTestCase {
     ApiClient $client,
     ?EnvironmentResolverInterface $environmentResolver = NULL,
     ?string $apiKey = '123',
+    ?EnvironmentEnum $environment = EnvironmentEnum::Local,
   ) : ApiManager {
 
     if (!$environmentResolver) {
-      $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Local);
+      $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, $environment);
     }
     return new ApiManager(
       $client,
@@ -140,7 +143,7 @@ class ApiManagerTest extends UnitTestCase {
       $this->getConfigFactoryStub([
         'helfi_api_base.environment_resolver.settings' => [
           EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
-          EnvironmentResolver::ENVIRONMENT_NAME_KEY => EnvironmentEnum::Local->value,
+          EnvironmentResolver::ENVIRONMENT_NAME_KEY => $environment->value,
         ],
       ])
     );
@@ -275,6 +278,22 @@ class ApiManagerTest extends UnitTestCase {
       $this->assertInstanceOf(\stdClass::class, $response->data);
       $this->assertEquals(1, $response->data->value);
     }
+  }
+
+  /**
+   * Tests getUrl() with fallback environment.
+   *
+   * @covers ::getUrl
+   */
+  public function testGetUrlWithFallbackEnvironment() : void {
+    $sut = $this->getSut(
+      client: $this->getApiClientMock($this->createMockHttpClient([])),
+      environmentResolver: $this->getEnvironmentResolver(Project::GRANTS, EnvironmentEnum::Dev),
+      environment: EnvironmentEnum::Dev,
+    );
+
+    $url = $sut->getUrl('canonical', 'fi');
+    $this->assertEquals('https://www.test.hel.ninja/fi', $url);
   }
 
 }
