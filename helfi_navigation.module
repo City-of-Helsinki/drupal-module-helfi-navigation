@@ -27,7 +27,7 @@ function helfi_navigation_theme_suggestions_menu_alter(array &$suggestions, arra
   }
 
   if (isset($variables['menu_type'])) {
-    $suggestions[] = 'menu__external_menu__' . $variables['menu_type'];
+    $suggestions[] = 'menu__external_menu__' . str_replace('-', '_', $variables['menu_type']);
   }
 
   if (!empty($variables['attributes']['theme_suggestion'])) {
