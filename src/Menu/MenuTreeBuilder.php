@@ -302,7 +302,7 @@ final class MenuTreeBuilder {
     $routeParameters = $element->link->getRouteParameters();
     $entityType = key($routeParameters);
 
-    if (!$this->entityTypeManager->hasDefinition($entityType)) {
+    if (!$entityType || !$this->entityTypeManager->hasDefinition($entityType)) {
       return;
     }
     $storage = $this->entityTypeManager
