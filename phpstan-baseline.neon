@@ -21,6 +21,15 @@ parameters:
 			path: helfi_navigation.install
 
 		-
+			message: """
+				#^Call to deprecated function menu_ui_get_menu_link_defaults\\(\\)\\:
+				in drupal\\:11\\.4\\.0 and is removed from drupal\\:13\\.0\\.0\\. Use
+				  \\\\Drupal\\\\menu_ui\\\\MenuUiUtility\\:\\:getMenuLinkDefaults\\(\\) instead\\.$#
+			"""
+			count: 1
+			path: helfi_navigation.module
+
+		-
 			message: "#^Function helfi_navigation_entity_base_field_info\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: helfi_navigation.module
@@ -226,12 +235,12 @@ parameters:
 			path: src/Menu/MenuTreeBuilder.php
 
 		-
-			message: "#^Parameter \\#1 \\$entity_type_id of method Drupal\\\\Core\\\\Entity\\\\EntityTypeManagerInterface\\:\\:getStorage\\(\\) expects string, int\\|string\\|null given\\.$#"
+			message: "#^Parameter \\#1 \\$entity_type_id of method Drupal\\\\Core\\\\Entity\\\\EntityTypeManagerInterface\\:\\:getStorage\\(\\) expects string, int\\<min, \\-1\\>\\|int\\<1, max\\>\\|string given\\.$#"
 			count: 1
 			path: src/Menu/MenuTreeBuilder.php
 
 		-
-			message: "#^Parameter \\#1 \\$plugin_id of method Drupal\\\\Component\\\\Plugin\\\\Discovery\\\\DiscoveryInterface\\:\\:hasDefinition\\(\\) expects string, int\\|string\\|null given\\.$#"
+			message: "#^Parameter \\#1 \\$plugin_id of method Drupal\\\\Component\\\\Plugin\\\\Discovery\\\\DiscoveryInterface\\:\\:hasDefinition\\(\\) expects string, int\\<min, \\-1\\>\\|int\\<1, max\\>\\|string given\\.$#"
 			count: 1
 			path: src/Menu/MenuTreeBuilder.php
 
@@ -274,6 +283,11 @@ parameters:
 			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\DebugDataItem\\\\ApiAvailability\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Plugin/DebugDataItem/ApiAvailability.php
+
+		-
+			message: "#^Cannot access offset 'admin_label' on array\\|Drupal\\\\Component\\\\Plugin\\\\Definition\\\\PluginDefinitionInterface\\.$#"
+			count: 1
+			path: src/Plugin/Derivative/ExternalMenuBlock.php
 
 		-
 			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Derivative\\\\ExternalMenuBlock\\:\\:getDerivativeDefinitions\\(\\) has parameter \\$base_plugin_definition with no value type specified in iterable type array\\.$#"
