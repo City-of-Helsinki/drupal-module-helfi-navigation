@@ -28,13 +28,20 @@ final class ExternalMenuBlock extends DeriverBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed>|\Drupal\Component\Plugin\Definition\PluginDefinitionInterface $base_plugin_definition
+   * @phpstan-return array<string, array<string, mixed>>
    */
   public function getDerivativeDefinitions($base_plugin_definition) : array {
     foreach ($this->externalMenus as $menu) {
       $admin_label = ucfirst(str_replace('-', ' ', $menu));
       $this->derivatives[$menu] = $base_plugin_definition;
+
+      if (!is_array($this->derivatives[$menu])) {
+        continue;
+      }
+
       $this->derivatives[$menu]['admin_label'] = 'External - ' . $admin_label;
-      $this->derivatives[$menu]['config_dependencies']['config'] = [$menu];
     }
     return $this->derivatives;
   }
