@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace Drupal\helfi_navigation\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides block plugin definitions for custom menus.
  *
  * @see \Drupal\helfi_navigation\Plugin\Block\ExternalMenuBlock
  */
-final class ExternalMenuBlock extends DeriverBase implements ContainerDeriverInterface {
+final class ExternalMenuBlock extends DeriverBase {
 
   /**
    * The external menus.
@@ -28,26 +25,6 @@ final class ExternalMenuBlock extends DeriverBase implements ContainerDeriverInt
     'header-top-navigation',
     'header-language-links',
   ];
-
-  /**
-   * Constructs a new ExternalMenuBlock instance.
-   *
-   * @param \Drupal\Core\Entity\EntityStorageInterface $menuStorage
-   *   The menu storage.
-   */
-  public function __construct(
-    protected readonly EntityStorageInterface $menuStorage,
-  ) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, $base_plugin_id) : static {
-    return new static(
-      $container->get('entity_type.manager')->getStorage('menu')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -65,12 +42,6 @@ final class ExternalMenuBlock extends DeriverBase implements ContainerDeriverInt
       }
 
       $this->derivatives[$menu]['admin_label'] = 'External - ' . $admin_label;
-
-      // Add config dependency for the menu entity.
-      $menu_entity = $this->menuStorage->load($menu);
-      if ($menu_entity) {
-        $this->derivatives[$menu]['config_dependencies']['config'] = [$menu_entity->getConfigDependencyName()];
-      }
     }
     return $this->derivatives;
   }
