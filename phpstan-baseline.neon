@@ -285,21 +285,6 @@ parameters:
 			path: src/Plugin/DebugDataItem/ApiAvailability.php
 
 		-
-			message: "#^Cannot access offset 'admin_label' on array\\|Drupal\\\\Component\\\\Plugin\\\\Definition\\\\PluginDefinitionInterface\\.$#"
-			count: 1
-			path: src/Plugin/Derivative/ExternalMenuBlock.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Derivative\\\\ExternalMenuBlock\\:\\:getDerivativeDefinitions\\(\\) has parameter \\$base_plugin_definition with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Plugin/Derivative/ExternalMenuBlock.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_navigation\\\\Plugin\\\\Derivative\\\\ExternalMenuBlock\\:\\:getDerivativeDefinitions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Plugin/Derivative/ExternalMenuBlock.php
-
-		-
 			message: "#^Property Drupal\\\\helfi_navigation\\\\Plugin\\\\Derivative\\\\ExternalMenuBlock\\:\\:\\$externalMenus type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Plugin/Derivative/ExternalMenuBlock.php
