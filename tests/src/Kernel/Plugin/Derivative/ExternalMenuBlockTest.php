@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_navigation\Kernel\Plugin\Derivative;
 
+use Drupal\Component\Plugin\Definition\PluginDefinitionInterface;
 use Drupal\helfi_navigation\Plugin\Derivative\ExternalMenuBlock;
 use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
@@ -43,9 +44,9 @@ final class ExternalMenuBlockTest extends KernelTestBase {
   ];
 
   /**
-   * Tests derivative definitions.
+   * Tests derivative definitions with an array base plugin definition.
    */
-  public function testDerivativeDefinitions(): void {
+  public function testDerivativeDefinitionsWithArray(): void {
     $deriver = new ExternalMenuBlock();
     $definitions = $deriver->getDerivativeDefinitions([
       'id' => 'external_menu_block',
@@ -58,6 +59,24 @@ final class ExternalMenuBlockTest extends KernelTestBase {
       $expected_label = 'External - ' . ucfirst(str_replace('-', ' ', $menu));
       $this->assertSame($expected_label, $definitions[$menu]['admin_label']);
       $this->assertArrayNotHasKey('config_dependencies', $definitions[$menu]);
+    }
+  }
+
+  /**
+   * Tests derivative definitions with a PluginDefinitionInterface object.
+   *
+   * Object-based definitions are returned as-is; admin_label is not set.
+   */
+  public function testDerivativeDefinitionsWithPluginDefinitionObject(): void {
+    $base_plugin_definition = $this->createMock(PluginDefinitionInterface::class);
+
+    $deriver = new ExternalMenuBlock();
+    $definitions = $deriver->getDerivativeDefinitions($base_plugin_definition);
+
+    $this->assertSame(self::EXTERNAL_MENUS, array_keys($definitions));
+
+    foreach (self::EXTERNAL_MENUS as $menu) {
+      $this->assertSame($base_plugin_definition, $definitions[$menu]);
     }
   }
 
