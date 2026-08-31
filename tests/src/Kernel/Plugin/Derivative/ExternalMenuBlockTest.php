@@ -26,6 +26,7 @@ final class ExternalMenuBlockTest extends KernelTestBase {
     'system',
     'block',
     'language',
+    'diff',
     'helfi_api_base',
     'helfi_navigation',
   ];
