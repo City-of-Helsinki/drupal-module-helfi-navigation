@@ -23,6 +23,7 @@ final class MainNavigationMenuBlockTest extends KernelTestBase {
     'block',
     'language',
     'helfi_navigation',
+    'diff',
     'helfi_api_base',
   ];
 
