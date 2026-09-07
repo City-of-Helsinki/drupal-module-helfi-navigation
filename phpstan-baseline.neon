@@ -293,12 +293,6 @@ parameters:
 			path: src/Menu/MenuTreeBuilder.php
 
 		-
-			message: '#^Offset string\|null on list\<\(int\|string\)\> in isset\(\) does not exist\.$#'
-			identifier: isset.offset
-			count: 1
-			path: src/Menu/MenuTreeBuilder.php
-
-		-
 			message: '#^Parameter \#1 \$entity_type_id of method Drupal\\Core\\Entity\\EntityTypeManagerInterface\:\:getStorage\(\) expects string, int\<min, \-1\>\|int\<1, max\>\|string given\.$#'
 			identifier: argument.type
 			count: 1
