@@ -185,7 +185,7 @@ final class MenuTreeBuilder {
         $parents = array_keys($parents);
 
         // Add first level root item as parent as well.
-        if (!isset($parents[$rootId]) && $rootId) {
+        if ($rootId && !in_array($rootId, $parents, TRUE)) {
           $parents[] = $rootId;
         }
       }
