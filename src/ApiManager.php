@@ -198,12 +198,12 @@ class ApiManager {
       'js' => sprintf(
         '%s/%s',
         $activeEnvironment->getUrl($langcode),
-        ltrim($path, '/')
+        ltrim($path ?? '', '/')
       ),
       'api' => sprintf(
         '%s/%s',
         $env->getInternalAddress($langcode),
-        ltrim($path, '/')
+        ltrim($path ?? '', '/')
       ),
     };
   }
