@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace Drupal\helfi_navigation\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Queue\Attribute\QueueWorker;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_navigation\MainMenuManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Processes menu sync tasks.
- *
- * @QueueWorker(
- *  id = "helfi_navigation_menu_queue",
- *  title = @Translation("Queue worker for menu synchronization"),
- *  cron = {"time" = 15}
- * )
  */
+#[QueueWorker(
+  id: 'helfi_navigation_menu_queue',
+  title: new TranslatableMarkup('Queue worker for menu synchronization'),
+  cron: ['time' => 15],
+)]
 final class MenuQueue extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**
