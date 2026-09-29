@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_navigation\EventSubscriber;
 
+use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
@@ -51,7 +52,7 @@ final class AbsoluteUrlMenuTreeBuilderLinkSubscriber implements EventSubscriberI
       // Etusivu's domain matches instance's current domain.
       return $this->mustBeAbsoluteUrl = $matchingEnvironment->getBaseUrl() !== $activeEnvironment->getBaseUrl();
     }
-    catch (\InvalidArgumentException) {
+    catch (EnvironmentResolverException) {
     }
     return FALSE;
   }
