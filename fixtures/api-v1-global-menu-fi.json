@@ -27,7 +27,7 @@
     ],
     "menu_tree": [
       {
-        "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne/kaupunkiymparisto-ja-liikenne",
+        "url": "https://helfi-kymp.docker.so/fi/kaupunkiymparisto-ja-liikenne",
         "id": "base:kaupunkiymp_rist_ja_liikenne",
         "name": "Kaupunkiympäristö ja liikenne",
         "external": false,
@@ -429,7 +429,7 @@
     ],
     "menu_tree": [
       {
-        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut/sosiaali-ja-terveyspalvelut",
+        "url": "https://helfi-sote.docker.so/fi/sosiaali-ja-terveyspalvelut",
         "id": "base:sosiaali_ja_terveyspalvelut",
         "name": "Sosiaali- ja terveyspalvelut",
         "external": false,
