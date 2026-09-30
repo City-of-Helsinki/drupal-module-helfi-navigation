@@ -27,7 +27,7 @@
     ],
     "menu_tree": [
       {
-        "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic",
+        "url": "https://helfi-kymp.docker.so/en/urban-environment-and-traffic",
         "id": "base:urban_environment_and_traffic",
         "name": "Urban environment and traffic",
         "external": false,
@@ -443,7 +443,7 @@
     ],
     "menu_tree": [
       {
-        "url": "https://helfi-sote.docker.so/en/health-and-social-services/health-and-social-services",
+        "url": "https://helfi-sote.docker.so/en/health-and-social-services",
         "id": "base:health_and_social_services",
         "name": "Health and Social Services",
         "external": false,

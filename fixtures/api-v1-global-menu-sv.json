@@ -27,7 +27,7 @@
     ],
     "menu_tree": [
       {
-        "url": "https://helfi-kymp.docker.so/sv/stadsmiljo-och-trafik/stadsmiljo-och-trafik",
+        "url": "https://helfi-kymp.docker.so/sv/stadsmiljo-och-trafik",
         "id": "base:stadsmilj_ock_trafik",
         "name": "Stadsmiljö ock trafik",
         "external": false,
@@ -427,7 +427,7 @@
     ],
     "menu_tree": [
       {
-        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster/social-och-halsovardstjanster",
+        "url": "https://helfi-sote.docker.so/sv/social-och-halsovardstjanster",
         "id": "base:social_och_h_lsov_rdstj_nster",
         "name": "Social- och hälsovårdstjänster",
         "external": false,
