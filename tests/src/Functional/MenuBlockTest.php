@@ -213,20 +213,20 @@ class MenuBlockTest extends BrowserTestBase {
    */
   public function testActiveTrail() : void {
     $content = [
-      '/urban-environment-and-traffic/urban-environment-and-traffic' =>
+      '/urban-environment-and-traffic' =>
         [
           'title' => 'Urban environment and traffic',
           'active_trail' => [
-            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
+            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
           ],
           'aria_current' => [
-            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
+            'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
           ],
         ],
       '/urban-environment-and-traffic/parking' => [
         'title' => 'Parking',
         'active_trail' => [
-          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
         ],
         'aria_current' => [
@@ -238,7 +238,7 @@ class MenuBlockTest extends BrowserTestBase {
         // Third level is not visible in menu block, make sure two parents are
         // set in active trail.
         'active_trail' => [
-          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/parking',
         ],
         'aria_current' => [],
@@ -248,7 +248,7 @@ class MenuBlockTest extends BrowserTestBase {
       '/urban-environment-and-traffic/cycling' => [
         'title' => 'Cycling',
         'active_trail' => [
-          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/urban-environment-and-traffic',
+          'https://helfi-kymp.docker.so/en/urban-environment-and-traffic',
           'https://helfi-kymp.docker.so/en/urban-environment-and-traffic/cycling',
         ],
         'aria_current' => [
