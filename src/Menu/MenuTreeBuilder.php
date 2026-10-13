@@ -13,6 +13,8 @@ use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Session\AccountSwitcherInterface;
+use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\views\Plugin\Menu\ViewsMenuLink;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Event\MenuTreeBuilderLink;
@@ -37,6 +39,8 @@ final class MenuTreeBuilder {
    *   The menu link manager.
    * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
+   * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
+   *   The account switcher.
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
@@ -44,11 +48,15 @@ final class MenuTreeBuilder {
     private readonly MenuLinkTreeInterface $menuTree,
     private readonly MenuLinkManagerInterface $menuLinkManager,
     private readonly EventDispatcherInterface $eventDispatcher,
+    private readonly AccountSwitcherInterface $accountSwitcher,
   ) {
   }
 
   /**
    * Builds menu tree for synchronization.
+   *
+   * The tree is always built as an anonymous user, so only the links visible
+   * to everyone are included, whoever the current user is.
    *
    * @param string $menuName
    *   Menu type.
@@ -75,6 +83,40 @@ final class MenuTreeBuilder {
       $parameters = new MenuTreeParameters();
     }
 
+    $this->accountSwitcher->switchTo(new AnonymousUserSession());
+
+    try {
+      return $this->doBuild($menuName, $langcode, $rootElement, $parameters);
+    }
+    finally {
+      $this->accountSwitcher->switchBack();
+    }
+  }
+
+  /**
+   * Builds the menu tree as the current user.
+   *
+   * @param string $menuName
+   *   Menu type.
+   * @param string $langcode
+   *   Language code.
+   * @param object|null $rootElement
+   *   The root element.
+   * @param \Drupal\Core\Menu\MenuTreeParameters $parameters
+   *   The menu tree parameters.
+   *
+   * @return array<mixed>
+   *   The resulting tree.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  private function doBuild(
+    string $menuName,
+    string $langcode,
+    ?object $rootElement,
+    MenuTreeParameters $parameters,
+  ): array {
     $tree = $this->menuTree->load($menuName, $parameters);
     $tree = $this->menuTree->transform($tree, [
       // Sync menu links accessible to anonymous users and sort them

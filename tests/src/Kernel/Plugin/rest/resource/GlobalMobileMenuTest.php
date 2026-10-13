@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_navigation\Kernel\Plugin\rest\Resource;
 
+use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -70,18 +71,21 @@ class GlobalMobileMenuTest extends MenuTreeBuilderTestBase {
    * @covers ::create
    * @covers ::get
    */
-  public function test404() : void {
+  public function testApiFailure() : void {
     $this->grantRestfulPermissions();
     $this->container->get('config.factory')
       ->getEditable('helfi_navigation.settings')
       ->set('global_navigation_enabled', TRUE)
       ->save();
 
-    // Make sure a 404 response is sent when we fail to fetch mobile navigation.
+    // Make sure an uncacheable 503 response is sent when we fail to fetch
+    // mobile navigation.
     $request = $this->getMockedRequest('/api/v1/global-mobile-menu');
     $response = $this->processRequest($request);
 
-    $this->assertEquals(HttpResponse::HTTP_NOT_FOUND, $response->getStatusCode());
+    $this->assertEquals(HttpResponse::HTTP_SERVICE_UNAVAILABLE, $response->getStatusCode());
+    $this->assertInstanceOf(CacheableResponseInterface::class, $response);
+    $this->assertSame(0, $response->getCacheableMetadata()->getCacheMaxAge());
   }
 
   /**

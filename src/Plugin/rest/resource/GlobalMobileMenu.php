@@ -107,7 +107,11 @@ final class GlobalMobileMenu extends ResourceBase {
       $apiResponse = $this->apiManager->get($langcode, 'main', []);
     }
     catch (\Exception $e) {
-      return new ResourceResponse([], 404);
+      // Server errors are not cached, so the menu is fetched again on the
+      // next request.
+      $response = new ResourceResponse([], 503);
+      $response->getCacheableMetadata()->setCacheMaxAge(0);
+      return $response;
     }
 
     // Combine global and local menu items for mobile navigation.

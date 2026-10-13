@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_navigation\Unit;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
+use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\Tests\UnitTestCase;
@@ -47,7 +48,8 @@ class MenuTreeBuilderTest extends UnitTestCase {
       new InternalDomainResolver(),
       $menuTree->reveal(),
       $this->prophesize(MenuLinkManagerInterface::class)->reveal(),
-      $this->prophesize(EventDispatcherInterface::class)->reveal()
+      $this->prophesize(EventDispatcherInterface::class)->reveal(),
+      $this->prophesize(AccountSwitcherInterface::class)->reveal(),
     );
     $menuTreeBuilder->build('main', 'en', $rootElement);
   }

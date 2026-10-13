@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_navigation\Kernel;
 
+use Drupal\Tests\user\Traits\UserCreationTrait;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -15,6 +16,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
 
   use ProphecyTrait;
+  use UserCreationTrait;
 
   /**
    * Tests menu tree without root object.
@@ -29,6 +31,55 @@ class MenuTreeBuilderTest extends MenuTreeBuilderTestBase {
 
     $tree = $this->getMenuTreeBuilder()->build('main', 'en');
     $this->assertTree($tree, FALSE);
+  }
+
+  /**
+   * Tests that the tree is built as an anonymous user.
+   *
+   * @covers ::build
+   * @covers ::doBuild
+   */
+  public function testBuildAsAnonymous() : void {
+    $this->createLinks();
+    $this->nodes[0]->setUnpublished()->save();
+
+    $account = $this->setUpCurrentUser(permissions: [
+      'access content',
+      'access content overview',
+      'bypass node access',
+    ]);
+    $tree = $this->getMenuTreeBuilder()->build('main', 'en');
+
+    // The links to the unpublished node and the admin page are not included,
+    // even though the current user can access them.
+    $this->assertSame(['Link 5 internal', 'Link 6'], array_column($tree, 'name'));
+    $this->assertSame($account->id(), $this->container->get('current_user')->id());
+  }
+
+  /**
+   * Tests that the menus are rebuilt when a linked node is (un)published.
+   *
+   * @covers \helfi_navigation_node_update
+   */
+  public function testNodePublishedStateChange() : void {
+    $node = $this->createNodeWithAlias();
+    $this->createTestLink([
+      'title' => 'Node link',
+      'link' => ['uri' => 'entity:node/' . $node->id()],
+    ]);
+    $queue = $this->container->get('queue')->get('helfi_navigation_menu_queue');
+    $queue->deleteQueue();
+    $checksum = $this->container->get('cache_tags.invalidator.checksum');
+    $original = $checksum->getCurrentChecksum(['config:system.menu.main']);
+
+    // Saving the node without changing its published state does nothing.
+    $node->setTitle('Changed')->save();
+    $this->assertEquals(0, $queue->numberOfItems());
+    $this->assertEquals($original, $checksum->getCurrentChecksum(['config:system.menu.main']));
+
+    $node->setUnpublished()->save();
+    $this->assertEquals(1, $queue->numberOfItems());
+    $this->assertNotEquals($original, $checksum->getCurrentChecksum(['config:system.menu.main']));
   }
 
   /**
