@@ -11,6 +11,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MainMenuManager;
+use Drupal\helfi_navigation\MenuItemSanitizer;
 use Drupal\rest\Attribute\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
@@ -149,7 +150,18 @@ final class GlobalMobileMenu extends ResourceBase {
    *   Normalized data array.
    */
   private function normalizeResponseData(array|object $data): array {
-    return json_decode(json_encode($data), TRUE);
+    $data = json_decode(json_encode($data), TRUE);
+
+    // The menu items come from the global navigation API, so remove the URLs
+    // and attributes that are not safe to render.
+    foreach ($data as &$menu) {
+      if (isset($menu['menu_tree']) && is_array($menu['menu_tree'])) {
+        $menu['menu_tree'] = MenuItemSanitizer::sanitizeTree($menu['menu_tree']);
+      }
+    }
+    unset($menu);
+
+    return $data;
   }
 
   /**

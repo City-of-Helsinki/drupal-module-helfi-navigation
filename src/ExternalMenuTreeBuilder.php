@@ -155,7 +155,7 @@ final class ExternalMenuTreeBuilder implements ExternalMenuTreeBuilderInterface 
     }
 
     return [
-      'attributes' => new Attribute($item->attributes ?? []),
+      'attributes' => new Attribute(MenuItemSanitizer::filterAttributes((array) ($item->attributes ?? []))),
       'title' => $item->name,
       'id' => $item->id,
       'parent_id' => $item->parentId ?? NULL,
@@ -210,7 +210,9 @@ final class ExternalMenuTreeBuilder implements ExternalMenuTreeBuilderInterface 
    *   The url object.
    */
   private function createUrl(?string $url): Url {
-    if (!$url) {
+    // The menu items come from the global navigation API, so only render the
+    // URLs with an allowed protocol as links.
+    if (!$url || !MenuItemSanitizer::isSafeUrl($url)) {
       return new Url('<nolink>');
     }
 
