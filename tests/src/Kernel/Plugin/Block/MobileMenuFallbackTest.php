@@ -57,6 +57,11 @@ class MobileMenuFallbackTest extends MenuTreeBuilderTestBase {
     // - Link 2 is unpublished.
     // - Link 3 is in different language.
     $this->assertCount(3, $build['#items']);
+    // The cacheability of the links' access results is kept.
+    $this->assertContains('user.permissions', $build['#cache']['contexts']);
+    $this->assertContains('url', $build['#cache']['contexts']);
+    $this->assertContains('route.menu_active_trails:main', $build['#cache']['contexts']);
+    $this->assertContains('config:system.menu.main', $build['#cache']['tags']);
 
     $this->setOverrideLanguageCode('fi');
     $build = $sut->build();

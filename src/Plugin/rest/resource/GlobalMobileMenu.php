@@ -11,6 +11,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\helfi_navigation\MainMenuManager;
+use Drupal\helfi_navigation\MenuItemSanitizer;
 use Drupal\rest\Attribute\RestResource;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
@@ -106,7 +107,11 @@ final class GlobalMobileMenu extends ResourceBase {
       $apiResponse = $this->apiManager->get($langcode, 'main', []);
     }
     catch (\Exception $e) {
-      return new ResourceResponse([], 404);
+      // Server errors are not cached, so the menu is fetched again on the
+      // next request.
+      $response = new ResourceResponse([], 503);
+      $response->getCacheableMetadata()->setCacheMaxAge(0);
+      return $response;
     }
 
     // Combine global and local menu items for mobile navigation.
@@ -149,7 +154,18 @@ final class GlobalMobileMenu extends ResourceBase {
    *   Normalized data array.
    */
   private function normalizeResponseData(array|object $data): array {
-    return json_decode(json_encode($data), TRUE);
+    $data = json_decode(json_encode($data), TRUE);
+
+    // The menu items come from the global navigation API, so remove the URLs
+    // and attributes that are not safe to render.
+    foreach ($data as &$menu) {
+      if (isset($menu['menu_tree']) && is_array($menu['menu_tree'])) {
+        $menu['menu_tree'] = MenuItemSanitizer::sanitizeTree($menu['menu_tree']);
+      }
+    }
+    unset($menu);
+
+    return $data;
   }
 
   /**

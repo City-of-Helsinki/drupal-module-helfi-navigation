@@ -7,15 +7,18 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_navigation\ApiManager;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\MenuLinkContentInterface;
+use Drupal\node\NodeInterface;
 use Drupal\system\MenuInterface;
 
 /**
@@ -118,6 +121,47 @@ function helfi_navigation_menu_link_content_insert(MenuLinkContentInterface $ent
  */
 function helfi_navigation_menu_link_content_delete(MenuLinkContentInterface $entity) : void {
   _helfi_navigation_queue_item($entity->getMenuName(), $entity->language()->getId(), 'delete');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * The menus check the access to the linked nodes only when they are built, so
+ * rebuild the menus that link to the node when its published state changes.
+ */
+function helfi_navigation_node_update(NodeInterface $node) : void {
+  if (!$original = $node->getOriginal()) {
+    return;
+  }
+  $langcodes = [];
+
+  foreach (array_keys($node->getTranslationLanguages() + $original->getTranslationLanguages()) as $langcode) {
+    $isPublished = $node->hasTranslation($langcode) && $node->getTranslation($langcode)->isPublished();
+    $wasPublished = $original->hasTranslation($langcode) && $original->getTranslation($langcode)->isPublished();
+
+    if ($isPublished !== $wasPublished) {
+      $langcodes[] = $langcode;
+    }
+  }
+
+  if (!$langcodes) {
+    return;
+  }
+  /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menuLinkManager */
+  $menuLinkManager = \Drupal::service('plugin.manager.menu.link');
+  $links = $menuLinkManager->loadLinksByRoute('entity.node.canonical', ['node' => $node->id()]);
+  $menus = array_unique(array_map(fn (MenuLinkInterface $link) => $link->getMenuName(), $links));
+
+  if (!$menus) {
+    return;
+  }
+  Cache::invalidateTags(array_map(fn (string $menu) => 'config:system.menu.' . $menu, $menus));
+
+  if (in_array('main', $menus, TRUE)) {
+    foreach ($langcodes as $langcode) {
+      _helfi_navigation_queue_item('main', $langcode, 'update');
+    }
+  }
 }
 
 /**

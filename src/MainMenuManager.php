@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_navigation;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Session\AccountSwitcherInterface;
-use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\helfi_navigation\Menu\MenuTreeBuilder;
 use Drupal\language\ConfigurableLanguageManagerInterface;
@@ -28,15 +26,12 @@ class MainMenuManager {
    *   The api manager.
    * @param \Drupal\helfi_navigation\Menu\MenuTreeBuilder $menuTreeBuilder
    *   The menu tree builder.
-   * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
-   *   The account switcher service.
    */
   public function __construct(
     #[Autowire(service: 'language_manager')] private readonly ConfigurableLanguageManagerInterface $languageManager,
     private readonly ConfigFactoryInterface $config,
     private readonly ApiManager $apiManager,
     private readonly MenuTreeBuilder $menuTreeBuilder,
-    private readonly AccountSwitcherInterface $accountSwitcher,
   ) {
   }
 
@@ -50,9 +45,8 @@ class MainMenuManager {
    * @throws \InvalidArgumentException
    */
   public function sync(string $langcode): bool {
-    // Sync the menu as an anonymous user to make sure no sensitive
+    // The menu tree is built as an anonymous user to make sure no sensitive
     // links are synced.
-    $this->accountSwitcher->switchTo(new AnonymousUserSession());
     $response = $this->apiManager->update(
       $langcode,
       [
@@ -61,7 +55,6 @@ class MainMenuManager {
         'menu_tree' => $this->build($langcode),
       ]
     );
-    $this->accountSwitcher->switchBack();
 
     if (!isset($response->data->status)) {
       throw new \InvalidArgumentException('Failed to parse entity published state.');

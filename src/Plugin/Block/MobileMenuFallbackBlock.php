@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_navigation\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
@@ -201,18 +202,18 @@ final class MobileMenuFallbackBlock extends MenuBlockBase {
     $build['#theme'] = 'menu__external_menu__fallback';
     $build['#menu_link_back'] = $menu_link_back;
     $build['#menu_link_current_or_parent'] = $menu_link_current_or_parent;
-    $build['#cache'] = [
-      'contexts' => [
+    // Keep the cacheability of the menu links' access results.
+    $cacheability = CacheableMetadata::createFromRenderArray($build)
+      ->addCacheContexts([
         'url',
         'route.menu_active_trails:main',
-      ],
-      'tags' => [
-        'config:system.menu.main',
-      ],
-    ];
+      ])
+      ->addCacheTags(['config:system.menu.main']);
+
     if ($this->pathMatcher->isFrontPage()) {
-      $build['#cache']['contexts'][] = 'url.path.is_front';
+      $cacheability->addCacheContexts(['url.path.is_front']);
     }
+    $cacheability->applyTo($build);
 
     return $build;
   }

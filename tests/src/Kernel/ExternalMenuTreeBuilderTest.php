@@ -96,4 +96,47 @@ class ExternalMenuTreeBuilderTest extends MenuTreeBuilderTestBase {
     $this->assertTrue($externalTree[0]['below'][0]['is_currentPage']);
   }
 
+  /**
+   * Tests that the unsafe URLs and attributes are not rendered.
+   *
+   * @covers ::createLink
+   * @covers ::createUrl
+   */
+  public function testUnsafeItems() : void {
+    $request = $this->prophesize(Request::class);
+    $request->getUri()->willReturn('http://localhost/test');
+    $requestStack = $this->prophesize(RequestStack::class);
+    $requestStack->getCurrentRequest()->willReturn($request->reveal());
+
+    $items = json_decode(json_encode([
+      [
+        'id' => 'safe',
+        'name' => 'Safe',
+        'url' => 'https://www.hel.fi/fi',
+        'attributes' => ['lang' => 'fi', 'onclick' => 'alert(1)'],
+        'sub_tree' => [
+          [
+            'id' => 'unsafe',
+            'name' => 'Unsafe',
+            'url' => 'javascript:alert(document.cookie)',
+          ],
+        ],
+      ],
+    ], JSON_THROW_ON_ERROR));
+    $externalMenuTreeBuilder = new ExternalMenuTreeBuilder(
+      $this->container->get('helfi_api_base.internal_domain_resolver'),
+      $requestStack->reveal(),
+    );
+    $tree = $externalMenuTreeBuilder->build($items, [
+      'level' => 0,
+      'menu_type' => 'main',
+      'expand_all_items' => FALSE,
+      'max_depth' => 10,
+    ]);
+
+    $this->assertSame('https://www.hel.fi/fi', $tree[0]['url']->toString());
+    $this->assertSame(['lang' => 'fi'], $tree[0]['attributes']->toArray());
+    $this->assertSame('<nolink>', $tree[0]['below'][0]['url']->getRouteName());
+  }
+
 }
